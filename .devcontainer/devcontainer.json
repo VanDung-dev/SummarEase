@@ -1,0 +1,26 @@
+{
+  "name": "SummarEase Dev Container",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/app",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.formatOnSave": true,
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "ms-python.python",
+        "dbaeumer.vscode-eslint",
+        "xdebug.php-debug",
+        "esbenp.prettier-vscode",
+        "bmewburn.vscode-intelephense-client"
+      ]
+    }
+  },
+  "forwardPorts": [3000, 8080, 5001],
+  "remoteUser": "root",
+  "postCreateCommand": "echo 'Welcome to SummarEase dev environment!'"
+}

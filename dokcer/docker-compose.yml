@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile-node
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../frontend:/app
+    container_name: summar-frontend
+
+  backend-php:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile-php
+    ports:
+      - "8080:80"
+    volumes:
+      - ../backend-php:/var/www/html
+    container_name: summar-backend
+
+  backend-nlp:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile-python
+    ports:
+      - "5001:5001"
+    volumes:
+      - ../backend-nlp:/app
+    container_name: summar-nlp
