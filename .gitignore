@@ -49,4 +49,5 @@ build/
 *.log
 temp/
 *.tmp
-
+*.http
+test_http/
