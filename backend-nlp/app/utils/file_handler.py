@@ -71,7 +71,7 @@ def extract_text_from_epub(file_path):
     book = epub.read_epub(file_path)
     text = ""
     for doc in book.get_items():
-        if doc.get_type() == epub.DOCUMENT:
+        if doc.get_type():
             content = doc.get_content().decode('utf-8', errors='ignore')
             soup = BeautifulSoup(content, 'html.parser')
             text += soup.get_text() + "\n"
