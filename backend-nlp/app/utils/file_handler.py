@@ -1,10 +1,9 @@
 import os
-from docx import Document
 import fitz  # PyMuPDF
 import chardet
-import textract
 from ebooklib import epub
 from bs4 import BeautifulSoup
+from docx import Document
 
 def extract_text_from_txt(file_path):
     """
@@ -57,66 +56,6 @@ def extract_text_from_pdf(file_path):
         for page in pdf:
             text += page.get_text()
     return text
-
-def extract_text_from_doc(file_path):
-    """
-    Trích xuất văn bản từ tệp DOC sử dụng textract.
-
-    Đầu vào:
-        - file_path (str): Đường dẫn đến tệp DOC.
-
-    Trả về:
-        - str: Nội dung văn bản được trích xuất.
-
-    Ngoại lệ:
-        - ValueError: Nếu không thể trích xuất hoặc thiếu công cụ 'antiword'.
-    """
-    try:
-        # Sử dụng textract để trích xuất văn bản
-        text = textract.process(file_path).decode('utf-8', errors='ignore')
-        return text
-    except Exception as e:
-        raise ValueError(f"Không thể trích xuất văn bản từ tệp DOC: {str(e)}. Vui lòng cài đặt 'antiword'.")
-
-def extract_text_from_rtf(file_path):
-    """
-    Trích xuất văn bản từ tệp RTF sử dụng textract.
-
-    Đầu vào:
-        - file_path (str): Đường dẫn đến tệp RTF.
-
-    Trả về:
-        - str: Nội dung văn bản được trích xuất.
-
-    Ngoại lệ:
-        - ValueError: Nếu không thể trích xuất hoặc thiếu công cụ 'unrtf'.
-    """
-    try:
-        # Sử dụng textract để trích xuất văn bản
-        text = textract.process(file_path).decode('utf-8', errors='ignore')
-        return text
-    except Exception as e:
-        raise ValueError(f"Không thể trích xuất văn bản từ tệp RTF: {str(e)}. Vui lòng cài đặt 'unrtf'.")
-
-def extract_text_from_odt(file_path):
-    """
-    Trích xuất văn bản từ tệp ODT sử dụng textract.
-
-    Đầu vào:
-        - file_path (str): Đường dẫn đến tệp ODT.
-
-    Trả về:
-        - str: Nội dung văn bản được trích xuất.
-
-    Ngoại lệ:
-        - ValueError: Nếu không thể trích xuất hoặc thiếu công cụ 'libreoffice'.
-    """
-    try:
-        # Sử dụng textract để trích xuất văn bản
-        text = textract.process(file_path).decode('utf-8', errors='ignore')
-        return text
-    except Exception as e:
-        raise ValueError(f"Không thể trích xuất văn bản từ tệp ODT: {str(e)}. Vui lòng cài đặt 'libreoffice'.")
 
 def extract_text_from_epub(file_path):
     """
@@ -172,12 +111,6 @@ def extract_text(file_path: str) -> str:
         return extract_text_from_docx(file_path)
     elif ext == '.pdf':
         return extract_text_from_pdf(file_path)
-    elif ext == '.doc':
-        return extract_text_from_doc(file_path)
-    elif ext == '.rtf':
-        return extract_text_from_rtf(file_path)
-    elif ext == '.odt':
-        return extract_text_from_odt(file_path)
     elif ext == '.epub':
         return extract_text_from_epub(file_path)
     else:
