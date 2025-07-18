@@ -79,19 +79,6 @@ def extract_text_from_epub(file_path):
             text += soup.get_text() + "\n"
     return text
 
-def extract_text_from_md(file_path):
-    """
-    Trích xuất văn bản từ tệp Markdown.
-
-    Đầu vào:
-        - file_path (str): Đường dẫn đến tệp Markdown.
-
-    Trả về:
-        - str: Nội dung văn bản được trích xuất.
-    """
-    # Sử dụng hàm xử lý TXT cho Markdown
-    return extract_text_from_txt(file_path)
-
 def extract_text_from_web(url: str) -> str:
     """
     Trích xuất văn bản từ trang web sử dụng requests và BeautifulSoup.
