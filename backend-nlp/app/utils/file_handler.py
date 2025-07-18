@@ -1,9 +1,11 @@
 import os
 import fitz  # PyMuPDF
 import chardet
+import requests
 from ebooklib import epub
 from bs4 import BeautifulSoup
 from docx import Document
+from urllib.parse import urlparse  # Để kiểm tra URL hợp lệ
 
 def extract_text_from_txt(file_path):
     """
@@ -90,28 +92,85 @@ def extract_text_from_md(file_path):
     # Sử dụng hàm xử lý TXT cho Markdown
     return extract_text_from_txt(file_path)
 
-def extract_text(file_path: str) -> str:
+def extract_text_from_web(url: str) -> str:
     """
-    Trích xuất văn bản từ tệp dựa trên định dạng.
+    Trích xuất văn bản từ trang web sử dụng requests và BeautifulSoup.
 
     Đầu vào:
-        - file_path (str): Đường dẫn đến tệp cần trích xuất.
+        - url (str): Địa chỉ URL của trang web.
 
     Trả về:
         - str: Nội dung văn bản được trích xuất.
 
     Ngoại lệ:
-        - ValueError: Nếu định dạng tệp không được hỗ trợ.
+        - ValueError: Nếu URL không hợp lệ hoặc không thể tải nội dung.
     """
-    # Xác định phần mở rộng tệp
-    ext = os.path.splitext(file_path)[-1].lower()
-    if ext in ['.txt', '.md', '.markdown']:
-        return extract_text_from_txt(file_path)
-    elif ext == '.docx':
-        return extract_text_from_docx(file_path)
-    elif ext == '.pdf':
-        return extract_text_from_pdf(file_path)
-    elif ext == '.epub':
-        return extract_text_from_epub(file_path)
+    # Kiểm tra URL hợp lệ
+    parsed_url = urlparse(url)
+    if not parsed_url.scheme or not parsed_url.netloc:
+        raise ValueError(f"URL không hợp lệ: {url}")
+
+    # Gửi yêu cầu HTTP với header giả lập trình duyệt
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+
+    try:
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()  # Kiểm tra mã trạng thái HTTP
+    except requests.exceptions.RequestException as e:
+        raise ValueError(f"Không thể tải trang web: {e}")
+
+    # Xác định mã hóa và giải mã nội dung
+    if response.encoding:
+        encoding = response.encoding
     else:
-        raise ValueError(f"Định dạng tệp không được hỗ trợ: {ext}")
+        detected = chardet.detect(response.content)
+        encoding = detected.get('encoding', 'utf-8')
+
+    html_content = response.content.decode(encoding, errors='ignore')
+
+    # Phân tích và trích xuất văn bản
+    soup = BeautifulSoup(html_content, 'html.parser')
+
+    # Loại bỏ các thẻ script và style
+    for element in soup(['script', 'style', 'noscript', 'meta', 'link']):
+        element.decompose()
+
+    text = soup.get_text(separator='\n', strip=True)
+    return text
+
+
+def extract_text(source: str) -> str:
+    """
+    Trích xuất văn bản từ tệp hoặc trang web dựa trên đầu vào.
+
+    Đầu vào:
+        - source (str): Đường dẫn tệp hoặc URL trang web.
+
+    Trả về:
+        - str: Nội dung văn bản được trích xuất.
+
+    Ngoại lệ:
+        - ValueError: Nếu định dạng không được hỗ trợ.
+    """
+    # Kiểm tra nếu là URL web
+    parsed = urlparse(source)
+    if parsed.scheme in ['http', 'https']:
+        return extract_text_from_web(source)
+
+    # Xử lý file cục bộ
+    if not os.path.exists(source):
+        raise FileNotFoundError(f"Không tìm thấy tệp: {source}")
+
+    ext = os.path.splitext(source)[-1].lower()
+    if ext in ['.txt', '.md', '.markdown']:
+        return extract_text_from_txt(source)
+    elif ext == '.docx':
+        return extract_text_from_docx(source)
+    elif ext == '.pdf':
+        return extract_text_from_pdf(source)
+    elif ext == '.epub':
+        return extract_text_from_epub(source)
+    else:
+        raise ValueError(f"Định dạng không được hỗ trợ: {ext}")
