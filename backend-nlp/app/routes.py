@@ -84,14 +84,14 @@ def summarize_file():
             parsed = urlparse(source)
             if parsed.scheme not in ['http', 'https'] or not parsed.netloc:
                 return jsonify({"error": f"URL không hợp lệ: {source}"}), 400
-            filename = source  # Sử dụng URL làm tên nguồn
-            temp_path = None  # Không cần tệp tạm cho URL
+            filename = source
+            temp_path = None
         elif 'file' in request.files:
             file = request.files['file']
             if file.filename == '':
                 return jsonify({"error": "Tệp chưa được chọn"}), 400
             # Xác thực định dạng tệp
-            allowed_extensions = {'pdf', 'docx', 'txt', 'doc', 'rtf', 'odt', 'epub', 'md', 'markdown'}
+            allowed_extensions = {'pdf', 'docx', 'txt', 'epub', 'md', 'markdown'}
             file_ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else ''
             if file_ext not in allowed_extensions:
                 # Xử lý xóa tệp tạm nếu có
