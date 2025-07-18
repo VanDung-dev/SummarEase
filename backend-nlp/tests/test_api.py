@@ -124,7 +124,7 @@ def test_summarize_file_no_file(client):
 
     assert response.status_code == 400
     data = response.get_json()
-    assert data['error'] == 'Không tìm thấy tệp trong yêu cầu'
+    assert data['error'] == 'Không tìm thấy tệp hoặc URL trong yêu cầu'
 
 
 def test_summarize_file_invalid_extension(client):

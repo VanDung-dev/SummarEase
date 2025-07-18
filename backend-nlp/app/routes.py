@@ -94,6 +94,10 @@ def summarize_file():
             allowed_extensions = {'pdf', 'docx', 'txt', 'doc', 'rtf', 'odt', 'epub', 'md', 'markdown'}
             file_ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else ''
             if file_ext not in allowed_extensions:
+                # Xử lý xóa tệp tạm nếu có
+                temp_path = os.path.join(tempfile.gettempdir(), file.filename)
+                file.save(temp_path)
+                os.remove(temp_path)  # Xóa tệp tạm ngay lập tức
                 return jsonify({"error": "Định dạng tệp không được hỗ trợ"}), 400
             # Lưu tệp tạm thời
             temp_path = os.path.join(tempfile.gettempdir(), file.filename)
