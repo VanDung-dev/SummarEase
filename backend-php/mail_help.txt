@@ -7,3 +7,5 @@ Email Verification: trong app\Models\User.php cần chỉnh email như trên VÀ
 //use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class User extends Authenticatable// implements MustVerifyEmail
+
+Dịch vụ Mail thì tìm đồ có free tier, đừng có free trial. Cái nào được quảng cáo là cho mục đích gửi Transactional Email á
