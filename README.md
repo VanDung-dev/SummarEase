@@ -34,6 +34,7 @@
 ---
 
 ## **Cấu trúc thư mục tổng thể**
+- Lưu ý: đây là khung mẫu, không nhất thiết phải làm đúng theo yêu cầu `thư mục tổng thể`
 
 ```aiignore
 SummarEase/
