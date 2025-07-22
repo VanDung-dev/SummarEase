@@ -1,10 +1,10 @@
 ```
 cd backendPHP
-composer install --no-scripts
+composer install
+npm install
+npm audit fix
 ```
-```
-php artisan key:generate
-```
+
 ```
 php artisan serve
 ```
