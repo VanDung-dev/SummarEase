@@ -1,0 +1,84 @@
+### Lấy văn bản thuần để test với Python
+POST http://localhost:5001/summarize
+Content-Type: application/json
+
+{
+"text": "Trong nghiên cứu này, chúng tôi trình bày một phương pháp mới nhằm cải thiện độ chính xác của hệ thống nhận diện thực thể có tên (NER) trong tiếng Việt. Phương pháp đề xuất kết hợp BERT với cơ chế CRF để khai thác tốt hơn ngữ cảnh trong chuỗi văn bản. Thí nghiệm trên bộ dữ liệu VLSP 2018 cho thấy mô hình của chúng tôi vượt trội so với các phương pháp hiện có, đạt F1-score lên đến 93.4%. Ngoài ra, chúng tôi còn thảo luận ảnh hưởng của kích thước embedding và chiều sâu mô hình đến hiệu năng hệ thống.",
+"ratio": 0.3
+}
+
+### Lấy văn bản từ file để test với Python
+POST http://localhost:5001/summarize-file
+Content-Type: multipart/form-data; boundary=MyBoundary
+
+--MyBoundary
+Content-Disposition: form-data; name="file"; filename="sample.pdf"
+Content-Type: application/pdf
+
+< sample.pdf
+--MyBoundary
+Content-Disposition: form-data; name="ratio"
+
+0.25
+--MyBoundary--
+
+### lấy văn bản từ web để test với Python
+POST http://localhost:5001/summarize-file
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"
+
+https://docs.python.org/3/tutorial/appetite.html
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="ratio"
+
+0.25
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="language"
+
+english
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+###Lấy văn bản thuần để test với PHP
+POST http://localhost:8000/api/summarize/text
+Content-Type: application/json
+
+{
+"text": "Trong nghiên cứu này, chúng tôi trình bày một phương pháp mới nhằm cải thiện độ chính xác của hệ thống nhận diện thực thể có tên (NER) trong tiếng Việt. Phương pháp đề xuất kết hợp BERT với cơ chế CRF để khai thác tốt hơn ngữ cảnh trong chuỗi văn bản. Thí nghiệm trên bộ dữ liệu VLSP 2018 cho thấy mô hình của chúng tôi vượt trội so với các phương pháp hiện có, đạt F1-score lên đến 93.4%. Ngoài ra, chúng tôi còn thảo luận ảnh hưởng của kích thước embedding và chiều sâu mô hình đến hiệu năng hệ thống.",
+"ratio": 0.3
+}
+
+### Lấy văn bản từ file để test với PHP
+POST http://localhost:8000/api/summarize/file
+Content-Type: multipart/form-data; boundary=MyBoundary
+
+--MyBoundary
+Content-Disposition: form-data; name="file"; filename="sample.pdf"
+Content-Type: application/pdf
+
+<sample.pdf
+--MyBoundary
+Content-Disposition: form-data; name="ratio"
+
+0.25
+--MyBoundary--
+
+### lấy văn bản từ web để test với PHP
+POST http://localhost:8000/api/summarize/file
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"
+
+https://docs.python.org/3/tutorial/appetite.html
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="ratio"
+
+0.25
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="language"
+
+english
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
