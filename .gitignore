@@ -78,3 +78,5 @@ test_http/
 ../backendPHP/Homestead.yaml
 ../backendPHP/Thumbs.db
 ../backendPHP/vendor/
+../backendPHP/storage/framework/
+../backendPHP/storage/logs/
