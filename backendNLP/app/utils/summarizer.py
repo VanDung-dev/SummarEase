@@ -1,7 +1,9 @@
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.summarizers.text_rank import TextRankSummarizer
 from .tokenizer import VietnameseTokenizer, EnglishTokenizer
-import os
+from collections import Counter
+import string
+
 
 def load_stop_words(file_path: str) -> set:
     """
@@ -22,25 +24,19 @@ def load_stop_words(file_path: str) -> set:
     except FileNotFoundError:
         raise ValueError(f"Không tìm thấy tệp từ dừng: {file_path}")
 
-def textrank_summarize(text: str, ratio: float = 0.2, language: str = "vietnamese", stop_words_path: str = None) -> str:
+
+def extract_keywords(text: str, language: str = "vietnamese", n_keywords: int = 5) -> list:
     """
-    Tóm tắt văn bản sử dụng thuật toán TextRank từ thư viện Sumy.
+    Trích xuất các từ khóa quan trọng từ văn bản.
 
     Đầu vào:
-        - text (str): Văn bản cần tóm tắt.
-        - ratio (float): Tỷ lệ số câu trong tóm tắt so với văn bản gốc (mặc định: 0.2).
-        - language (str): Ngôn ngữ của văn bản ("vietnamese" hoặc "english", mặc định: "vietnamese").
-        - stop_words_path (str, tùy chọn): Đường dẫn đến tệp chứa danh sách từ dừng.
+        - text (str): Văn bản cần trích xuất từ khóa
+        - language (str): Ngôn ngữ của văn bản
+        - n_keywords (int): Số lượng từ khóa cần trích xuất
 
     Trả về:
-        - str: Nội dung văn bản được tóm tắt.
-
-    Ngoại lệ:
-        - ValueError: Nếu văn bản rỗng hoặc ngôn ngữ không được hỗ trợ.
+        - list: Danh sách các từ khóa quan trọng
     """
-    if not text.strip():
-        raise ValueError("Nội dung văn bản không được để trống")
-
     # Chọn tokenizer dựa trên ngôn ngữ
     if language.lower() == "vietnamese":
         tokenizer = VietnameseTokenizer()
@@ -49,7 +45,91 @@ def textrank_summarize(text: str, ratio: float = 0.2, language: str = "vietnames
     else:
         raise ValueError(f"Ngôn ngữ không được hỗ trợ: {language}")
 
-    # Khởi tạo parser với tokenizer được chọn
+    # Phân tách câu và từ
+    sentences = tokenizer.to_sentences(text)
+    words = []
+    for sentence in sentences:
+        words.extend(tokenizer.to_words(sentence))
+
+    # Loại bỏ dấu câu và chuyển đổi thành chữ thường
+    words = [word.lower() for word in words if word not in string.punctuation]
+
+    # Đếm tần suất xuất hiện của từ
+    word_counts = Counter(words)
+
+    # Lấy các từ xuất hiện nhiều nhất (trừ stop words)
+    keywords = [word for word, count in word_counts.most_common(n_keywords * 2) if len(word) > 2]
+
+    return keywords[:n_keywords]
+
+
+def highlight_keywords(text: str, keywords: list) -> str:
+    """
+    Đánh dấu các từ khóa trong văn bản tóm tắt
+
+    Đầu vào:
+        - summary (str): Văn bản tóm tắt
+        - keywords (list): Danh sách từ khóa
+
+    Trả về:
+        - str: Văn bản với các từ khóa được đánh dấu
+    """
+    for keyword in keywords:
+        text = text.replace(keyword, f"**{keyword}**")
+    return text
+
+
+def generate_title(text: str, keywords: list, language: str = "vietnamese") -> str:
+    """
+    Tạo tiêu đề cho văn bản dựa trên từ khóa và nội dung
+
+    Đầu vào:
+        - text (str): Văn bản cần tạo tiêu đề
+        - keywords (list): Danh sách từ khóa
+        - language (str): Ngôn ngữ của văn bản
+
+    Trả về:
+        - str: Tiêu đề được tạo
+    """
+    if language.lower() == "vietnamese":
+        tokenizer = VietnameseTokenizer()
+    else:
+        tokenizer = EnglishTokenizer()
+
+    sentences = tokenizer.to_sentences(text)
+    if not sentences:
+        return "Tiêu đề mặc định"
+
+    first_sentence = sentences[0]
+    if keywords:
+        return f"{keywords[0]}: {first_sentence[:50]}..." if len(first_sentence) > 50 else first_sentence
+    return first_sentence[:70] + "..." if len(first_sentence) > 70 else first_sentence
+
+
+def textrank_summarize(text: str, ratio: float = 0.2, language: str = "vietnamese", stop_words_path: str = None,
+                       highlight: bool = True) -> dict:
+    """
+    Cập nhật hàm tóm tắt để trả về cả từ khóa và văn bản có đánh dấu
+
+    Trả về:
+        - dict: {
+            "summary": văn bản tóm tắt,
+            "keywords": danh sách từ khóa,
+            "highlighted_summary": văn bản có từ khóa đánh dấu
+        }
+    """
+    if not text.strip():
+        raise ValueError("Nội dung văn bản không được để trống")
+
+    # Chọn tokenizer
+    if language.lower() == "vietnamese":
+        tokenizer = VietnameseTokenizer()
+    elif language.lower() == "english":
+        tokenizer = EnglishTokenizer()
+    else:
+        raise ValueError(f"Ngôn ngữ không được hỗ trợ: {language}")
+
+    # Tạo bản tóm tắt
     parser = PlaintextParser.from_string(text, tokenizer)
     summarizer = TextRankSummarizer()
 
@@ -65,4 +145,15 @@ def textrank_summarize(text: str, ratio: float = 0.2, language: str = "vietnames
     summary_sentences = summarizer(parser.document, n_sentences)
     summary = " ".join(str(sentence) for sentence in summary_sentences)
 
-    return summary
+    # Trích xuất từ khóa
+    keywords = extract_keywords(text, language)
+
+    # Tạo kết quả
+    result = {
+        "summary": summary,
+        "keywords": keywords,
+        "highlighted_summary": highlight_keywords(summary, keywords) if highlight else summary,
+        "title": generate_title(summary, keywords, language)
+    }
+
+    return result
