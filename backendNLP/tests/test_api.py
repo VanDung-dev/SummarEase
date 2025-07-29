@@ -1,11 +1,20 @@
 import pytest
 import json
 import os
+import sys
 from unittest.mock import patch
+from pathlib import Path
+
+# Thêm thư mục gốc vào PYTHONPATH
+root_dir = Path(__file__).parent.parent
+sys.path.insert(0, str(root_dir))
+
 try:
     from app.main import app
-except ImportError:
-    raise ImportError("Không thể nhập 'app' từ 'app.main'. Vui lòng kiểm tra app/main.py.")
+except ImportError as e:
+    print(f"Lỗi import: {e}")
+    print(f"Current sys.path: {sys.path}")
+    raise
 
 @pytest.fixture
 def client():
@@ -18,7 +27,12 @@ def client():
 def test_summarize_text_success(client):
     """Kiểm tra tuyến /summarize với yêu cầu hợp lệ."""
     with patch('app.routes.clean_text', return_value="Văn bản đã được làm sạch") as mock_clean, \
-            patch('app.routes.textrank_summarize', return_value="Tóm tắt văn bản") as mock_summarize:
+            patch('app.routes.textrank_summarize', return_value={
+                "summary": "Tóm tắt văn bản",
+                "highlighted_summary": "**Tóm tắt** văn bản",
+                "keywords": ["Tóm tắt"],
+                "title": "Tiêu đề tóm tắt"
+            }) as mock_summarize:
         response = client.post(
             '/summarize',
             data=json.dumps({
@@ -90,13 +104,22 @@ def test_summarize_file_success(client):
     """Kiểm tra tuyến /summarize-file với tệp hợp lệ."""
     with patch('app.routes.extract_text', return_value="Văn bản từ tệp") as mock_extract, \
             patch('app.routes.clean_text', return_value="Văn bản đã làm sạch") as mock_clean, \
-            patch('app.routes.textrank_summarize', return_value="Tóm tắt từ tệp") as mock_summarize, \
+            patch('app.routes.textrank_summarize', return_value={
+                "summary": "Tóm tắt từ tệp",
+                "highlighted_summary": "**Tóm tắt** từ tệp",
+                "keywords": ["Tóm tắt"],
+                "title": "Tiêu đề từ tệp"
+            }) as mock_summarize, \
             patch('os.path.exists', return_value=True), \
             patch('os.remove') as mock_remove:
+        # Tạo file tạm giả lập
+        with open('test.txt', 'w') as f:
+            f.write('test content')
+
         response = client.post(
             '/summarize-file',
             data={
-                'file': (open(os.devnull, 'rb'), 'test.txt'),
+                'file': (open('test.txt', 'rb'), 'test.txt'),
                 'ratio': '0.2',
                 'language': 'vietnamese'
             },
@@ -112,6 +135,9 @@ def test_summarize_file_success(client):
         mock_clean.assert_called_once_with('Văn bản từ tệp')
         mock_summarize.assert_called_once()
         mock_remove.assert_called_once()
+
+        # Dọn dẹp file test
+        os.remove('test.txt')
 
 
 def test_summarize_file_no_file(client):
@@ -129,19 +155,28 @@ def test_summarize_file_no_file(client):
 
 def test_summarize_file_invalid_extension(client):
     """Kiểm tra tuyến /summarize-file với định dạng tệp không hỗ trợ."""
-    with patch('app.routes.os.path.exists', return_value=True), \
-            patch('os.remove') as mock_remove:
-        response = client.post(
-            '/summarize-file',
-            data={
-                'file': (open(os.devnull, 'rb'), 'test.xyz'),
-                'ratio': '0.2',
-                'language': 'vietnamese'
-            },
-            content_type='multipart/form-data'
-        )
+    # Tạo file test giả lập
+    with open('test.xyz', 'w') as f:
+        f.write('test content')
 
-        assert response.status_code == 400
-        data = response.get_json()
-        assert data['error'] == 'Định dạng tệp không được hỗ trợ'
-        mock_remove.assert_called_once()
+    try:
+        with patch('app.routes.os.path.exists', return_value=True), \
+                patch('os.remove') as mock_remove:
+            response = client.post(
+                '/summarize-file',
+                data={
+                    'file': (open('test.xyz', 'rb'), 'test.xyz'),
+                    'ratio': '0.2',
+                    'language': 'vietnamese'
+                },
+                content_type='multipart/form-data'
+            )
+
+            assert response.status_code == 400
+            data = response.get_json()
+            assert data['error'] == 'Định dạng tệp không được hỗ trợ'
+            mock_remove.assert_called_once()
+    finally:
+        # Đảm bảo dọn dẹp file test
+        if os.path.exists('test.xyz'):
+            os.remove('test.xyz')
