@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `documents` (
   CONSTRAINT `documents_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table summarease.documents: ~1 rows (approximately)
+-- Dumping data for table summarease.documents: ~0 rows (approximately)
 REPLACE INTO `documents` (`id`, `user_id`, `title`, `file_name`, `file_type`, `uploaded_at`, `content`) VALUES
 	(1, 1, 'Bài báo về xử lý ngôn ngữ tự nhiên', 'nlp.pdf', 'pdf', '2025-07-22 00:53:24', 'Xử lý ngôn ngữ tự nhiên là lĩnh vực của trí tuệ nhân tạo...');
 
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `evaluations` (
   CONSTRAINT `evaluations_chk_3` CHECK ((`fluency_score` between 0 and 10))
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table summarease.evaluations: ~1 rows (approximately)
+-- Dumping data for table summarease.evaluations: ~0 rows (approximately)
 REPLACE INTO `evaluations` (`id`, `summary_id`, `evaluator_type`, `clarity_score`, `coverage_score`, `fluency_score`, `comments`, `created_at`) VALUES
 	(1, 1, 'human', 9, 8, 9, 'Bản tóm tắt khá chính xác và mạch lạc', '2025-07-22 00:55:07');
 
@@ -94,6 +94,23 @@ CREATE TABLE IF NOT EXISTS `failed_jobs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table summarease.failed_jobs: ~0 rows (approximately)
+
+-- Dumping structure for table summarease.guest_documents
+CREATE TABLE IF NOT EXISTS `guest_documents` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `guest_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Người upload',
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uploaded_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `content` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Nội dung thuần text',
+  PRIMARY KEY (`id`),
+  KEY `idx_docs_user` (`guest_id`),
+  FULLTEXT KEY `ft_docs_content` (`content`),
+  CONSTRAINT `fk_documents_user` FOREIGN KEY (`guest_id`) REFERENCES `sessions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table summarease.guest_documents: ~0 rows (approximately)
 
 -- Dumping structure for table summarease.jobs
 CREATE TABLE IF NOT EXISTS `jobs` (
@@ -196,13 +213,9 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   KEY `sessions_last_activity_index` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table summarease.sessions: ~5 rows (approximately)
+-- Dumping data for table summarease.sessions: ~1 rows (approximately)
 REPLACE INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-	('6qLEnvdve5cD990PD7Q23jEe5MzUTdvId7H0xWNW', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiWWNicERFWGJJVldUZDJHZmVVelp4VFlvalJPTzVxSmRuNklNcW5HSyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9sb2dpbiI7fX0=', 1753184654),
-	('F74jCrVqMsv2bolkMuyz3FFqEkBD04oCHXoaknZa', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQjFVSHdlbjNlcWhHRjZkWkg4bDdNS01ZdFlqMUhpVlM5bDhoT211QiI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozMToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2Rhc2hib2FyZCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1753191604),
-	('qBRZOrswVqSV9mPyw6j98o2aCyaxbH5algdRcL5F', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiUHJVQlVFZUR1OERYT0FMc0Q5RTBPbHVGbDdCOXYweENsSTNJRnE4TCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1753182951),
-	('qFwnUM4woQqMJhhiEVXWwkFF7vHQ85piHue6MnhR', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTk5PUTFBRmFtZWFDSjFYR0VVbWRLYVpCdzRGMU4yZGU5bmxJNjRDWCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1753182562),
-	('wW5jcTfxSKi5ifil2EvHDN1iqPAXnCeDkLhdfJ9O', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoicU1jaElpVVNPd1RUUUZRdnZmMHkzTGJoQzkxaXdzZWN0ckt0UXkxaiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9hdXRoL3JlZGlyZWN0Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1OiJzdGF0ZSI7czo0MDoiTDQyVmlQdkpySXBmeXpISFlEM0RSUXBiNERrWnJzcHRyazk4OW5PUyI7fQ==', 1753191596);
+	('uy4HjNbxRbMScWzsadcpJjn6PGBYV9ngIfU6cHqn', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'ZXlKcGRpSTZJbEpOV1RkelVWRmlWbEpxYkZCQlpqbHFSMjl0ZG5jOVBTSXNJblpoYkhWbElqb2lhR1ZhVDFSd1FVVnlkbGRKWWpOaFNWUjRiMEZZU1hocU1XaDJWVmt3UlVndk9VVXhVRVkyYkVReGNFVnFNV2xIT1hsak5HdHNaa3BHVUdNNVpFcEdjVkVyTHpGTFUxRlBNelIzWnlzM1lXdzVWRmh0VTIweVEzTkJRVTByUjJOS1JXNHpZVGRYYUZRelVVdEtMMHcyVlc5MVEzbGxWWGxZUVc1Q2JqTjFNelZHTUdoWFNucFlLMlppUTFaMlZuTlFSWEpCVkhJMFduYzVSVGczYTJreFQyZFpiMHA2VjJ4b1owWk1TV2hSZW5vd1pYVlpRazFWTnpGeGVuTmlObkp2UVV4clIzcHBiVVJSVW1FMU0wUjNWaTkzTDFCUlV6aExNVVJLVVZKaEwzTnlkbkJaVHpaV1ZHbERNV2hqU2l0Vk5HTlFUVVpZV2t4NWRYbzJWbXBTVWlJc0ltMWhZeUk2SW1VME9URTVNVGxqWkdGa05HUXdZbVV5Tnpoa01XSTBOV1ExTURreU1qUTVZVGxqTVdFeFpEUTFPRGRqT1ROaU56WmpZakJpTmpjeE9XVmpNREV3WW1NaUxDSjBZV2NpT2lJaWZRPT0=', 1753545981);
 
 -- Dumping structure for table summarease.settings
 CREATE TABLE IF NOT EXISTS `settings` (
@@ -229,7 +242,7 @@ CREATE TABLE IF NOT EXISTS `summaries` (
   CONSTRAINT `summaries_ibfk_1` FOREIGN KEY (`document_id`) REFERENCES `documents` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table summarease.summaries: ~1 rows (approximately)
+-- Dumping data for table summarease.summaries: ~0 rows (approximately)
 REPLACE INTO `summaries` (`id`, `document_id`, `summary_text`, `summary_ratio`, `created_at`) VALUES
 	(1, 1, 'Xử lý ngôn ngữ tự nhiên là một nhánh của AI nhằm hiểu và sinh ngôn ngữ con người...', 0.2, '2025-07-22 00:53:45');
 
@@ -250,6 +263,29 @@ REPLACE INTO `summary_sentences` (`id`, `summary_id`, `sentence_text`, `sentence
 	(1, 1, 'Xử lý ngôn ngữ tự nhiên là một nhánh của AI.', 1, 1),
 	(2, 1, 'Nó giúp máy hiểu và sinh ngôn ngữ con người.', 2, 1);
 
+-- Dumping structure for table summarease.summary_tags
+CREATE TABLE IF NOT EXISTS `summary_tags` (
+  `summary_id` bigint unsigned NOT NULL,
+  `tag_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`summary_id`,`tag_id`),
+  KEY `idx_st_summary` (`summary_id`),
+  KEY `idx_st_tag` (`tag_id`),
+  CONSTRAINT `fk_st_summary` FOREIGN KEY (`summary_id`) REFERENCES `summaries` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_st_tag` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table summarease.summary_tags: ~0 rows (approximately)
+
+-- Dumping structure for table summarease.tags
+CREATE TABLE IF NOT EXISTS `tags` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table summarease.tags: ~0 rows (approximately)
+
 -- Dumping structure for table summarease.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -267,8 +303,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Dumping data for table summarease.users: ~2 rows (approximately)
 REPLACE INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `google_id`) VALUES
-	(1, 'Iris Garret', 'hoangphantom2468@gmail.com', NULL, '$2y$12$GilnfLrbe7q.8a9p8tYOweo9Xzde7div7u2s/JWG914W9tvccmQO2', NULL, '2025-07-21 07:58:31', '2025-07-22 06:39:57', '112000107226043225452'),
-	(2, 'Nguyễn Lê Khánh Hoàng', '2311552947@nttu.edu.vn', NULL, '$2y$12$scyPoE2k4olyFKLAiopeeOsJMhqq2Wpo9TKGngR4D9BQ8lTRCsYxu', NULL, '2025-07-21 17:51:03', '2025-07-21 18:01:58', '105391043900681834156');
+	(1, 'Iris Garret', 'hoangphantom2468@gmail.com', NULL, '$2y$12$38AKgMDT3sqPHmaZwa23XuAbNv9.gdMmrpQQeZPOBN8dQf6kQsWG.', NULL, '2025-07-21 07:58:31', '2025-07-26 08:43:07', '112000107226043225452'),
+	(2, 'Hoàng Nguyễn Lê Khánh', '2311552947@nttu.edu.vn', NULL, '$2y$12$zH/O3Kb9puUUc1UYuxnD5eKE040rLjQCDdIt1O40iG2AFodCF.UbK', NULL, '2025-07-21 17:51:03', '2025-07-26 07:34:53', '105391043900681834156');
 
 -- Dumping structure for table summarease.user_roles
 CREATE TABLE IF NOT EXISTS `user_roles` (
