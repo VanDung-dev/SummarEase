@@ -1,9 +1,18 @@
 import pytest
+import sys
 from unittest.mock import patch, mock_open
+from pathlib import Path
+
+# Thêm thư mục gốc vào PYTHONPATH
+root_dir = Path(__file__).parent.parent
+sys.path.insert(0, str(root_dir))
+
 try:
     from app.utils.summarizer import load_stop_words, textrank_summarize
-except ImportError:
-    raise ImportError("Không thể nhập 'app' từ 'app.main'. Vui lòng kiểm tra app/main.py.")
+except ImportError as e:
+    print(f"Lỗi import: {e}")
+    print(f"Current sys.path: {sys.path}")
+    raise
 
 
 def test_load_stop_words_success():
@@ -59,7 +68,7 @@ def test_textrank_summarize_english():
             stop_words_path="stopwords.txt"
         )
 
-        assert result == "Sentence 1."
+        assert result["summary"] == "Sentence 1."
         mock_parser.from_string.assert_called_once()
         mock_summarizer.assert_called_once()
         mock_summarizer_instance.assert_called_once_with(mock_parser_instance.document, 1)
@@ -83,7 +92,7 @@ def test_textrank_summarize_success_vietnamese():
             stop_words_path="stopwords.txt"
         )
 
-        assert result == "Câu 1. Câu 2."
+        assert result["summary"] == "Câu 1. Câu 2."
         mock_parser.from_string.assert_called_once()
         mock_summarizer.assert_called_once()
         mock_summarizer_instance.assert_called_once_with(mock_parser_instance.document, 1)
