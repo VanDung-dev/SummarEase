@@ -1,0 +1,21 @@
+meta {
+  name: PHP - Web URL
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8000/api/summarize/file
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  file: https://docs.python.org/3/tutorial/appetite.html
+  ratio: 0.25
+  language: english
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,24 @@
+meta {
+  name: PHP - File
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8000/api/summarize/file
+  body: multipartForm
+  auth: none
+}
+
+headers {
+  ~ratio: 
+}
+
+body:multipart-form {
+  file: @file(sample.pdf) @contentType(application/pdf)
+  ratio: 0.25
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,22 @@
+meta {
+  name: Python - Văn bản thuần
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:5001/summarize
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+  "text": "Trong nghiên cứu này, chúng tôi trình bày một phương pháp mới nhằm cải thiện độ chính xác của hệ thống nhận diện thực thể có tên (NER) trong tiếng Việt. Phương pháp đề xuất kết hợp BERT với cơ chế CRF để khai thác tốt hơn ngữ cảnh trong chuỗi văn bản. Thí nghiệm trên bộ dữ liệu VLSP 2018 cho thấy mô hình của chúng tôi vượt trội so với các phương pháp hiện có, đạt F1-score lên đến 93.4%. Ngoài ra, chúng tôi còn thảo luận ảnh hưởng của kích thước embedding và chiều sâu mô hình đến hiệu năng hệ thống.",
+  "ratio": 0.3
+  }
+}
+
+settings {
+  encodeUrl: true
+}
