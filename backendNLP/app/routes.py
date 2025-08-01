@@ -56,12 +56,11 @@ def summarize_text():
 
         return jsonify({
             "status": "success",
-            "summary": result["summary"],
-            "highlighted_summary": result["highlighted_summary"],
-            "keywords": result["keywords"],
+            "language": language,
             "title": generate_title(result["summary"], result["keywords"], language),
+            "keywords": result["keywords"],
             "ratio": ratio,
-            "language": language
+            "summary": result["highlighted_summary"]
         })
 
     except ValueError as ve:
@@ -151,13 +150,11 @@ def summarize_file():
 
         return jsonify({
             "status": "success",
-            "filename": filename,
-            "summary": result["summary"],
-            "highlighted_summary": result["highlighted_summary"],
-            "keywords": result["keywords"],
+            "language": language,
             "title": generate_title(result["summary"], result["keywords"], language),
+            "keywords": result["keywords"],
             "ratio": ratio,
-            "language": language
+            "summary": result["highlighted_summary"]
         })
 
     except ValueError as ve:
