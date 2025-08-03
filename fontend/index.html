@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<!-- Khai báo loại tài liệu HTML5 -->
+<html lang="vi">
+<!-- Đặt ngôn ngữ của trang là tiếng Việt -->
+
+<head>
+  <meta charset="UTF-8" />
+  <!-- Đặt bộ mã ký tự UTF-8 để hỗ trợ tiếng Việt -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Đảm bảo giao diện responsive trên thiết bị di động -->
+  <title>Tóm tắt văn bản học thuật</title>
+  <!-- Tiêu đề của trang web -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- Liên kết đến tệp CSS để định kiểu giao diện -->
+</head>
+
+<body>
+  <!-- LOGIN SECTION -->
+  <div class="login-container" id="loginSection" style="display: none">
+    <!-- Phần đăng nhập, ẩn mặc định -->
+    <div class="login-card">
+      <!-- Thẻ chứa form đăng nhập -->
+      <div class="login-header">
+        <i class="fa-solid fa-circle-user"></i>
+        <!-- Tiêu đề của form đăng nhập -->
+        <h1>Đăng nhập</h1>
+        <!-- Tiêu đề cấp 1 hiển thị "Đăng nhập" -->
+      </div>
+      <form id="loginForm">
+        <!-- Form để nhập thông tin đăng nhập -->
+        <div class="form-group">
+          <!-- Nhóm trường nhập liệu cho email -->
+          <p class="login-description">Truy cập vào công cụ tóm tắt văn bản học thuật</p>
+          <!-- Nhãn cho trường email -->
+          <button class="google-login-btn">
+            <img src="https://www.google.com/favicon.ico" alt="Google logo" class="google-logo">
+            Đăng nhập với Google
+          </button>
+          <!-- Trường nhập email, bắt buộc -->
+        </div>
+    </div>
+    <p class="footer-text">
+      <!-- Văn bản chân trang -->
+      <a href="#" id="registerLink">Điều khoản sử dụng</a><abbr> | </abbr> <a href="#" id="registerLink"> Chính sách
+        riêng tư</a>
+      <!-- Liên kết để chuyển sang đăng ký -->
+    </p>
+  </div>
+  </div>
+
+  <!-- SUMMARY PAGE -->
+  <div class="container-summary" id="summary-page" style="display: none">
+    <!-- Trang chủ, hiển thị mặc định -->
+    <div class="header">
+      <!-- Tiêu đề của trang chủ -->
+      <h1 class="title">Tóm tắt văn bản học thuật</h1>
+      <!-- Tiêu đề chính -->
+      <a href="#" class="in-login" id="showLogin">Đăng nhập</a>
+      <!-- Liên kết để hiển thị form đăng nhập -->
+    </div>
+    <p class="subtitle">
+      Công cụ hỗ trợ tóm tắt nhanh và chính xác các văn bản học thuật
+    </p>
+    <!-- Phụ đề mô tả -->
+    <div class="main">
+      <!-- Phần nội dung chính -->
+      <div class="section upload-section">
+        <!-- Phần tải tệp lên -->
+
+        <label class="textarea-label">Văn bản hay tệp cần tóm tắt (.txt, .docx, pdf)</label>
+        <!-- Nhãn cho textarea -->
+
+        <div class="input-area">
+          <textarea class="text-input" placeholder="Nhập văn bản cần tóm tắt..."></textarea>
+          <div class="file-row">
+            <!-- Hàng chứa các điều khiển tải tệp -->
+            <div class="file-upload-controls">
+              <!-- Điều khiển tải tệp -->
+              <p class="file-note">
+                Lưu ý dung lượng tệp phải nhỏ hơn hoặc bằng 10MB
+              </p>
+              <input type="file" id="fileInput" accept=".txt,.docx,.pdf" class="file-input" style="display: none;">
+              <!-- Nút tải tệp, ẩn input file -->
+              <button class="file-btn" onclick="document.getElementById('fileInput').click()">
+                <i class="fa-solid fa-paperclip"></i> chọn tệp
+              </button>
+            </div>
+
+            <div class="action-btns">
+              <!-- Các nút hành động -->
+              <button class="send-btn"><i class="fa-solid fa-microphone"></i></button>
+              <button class="mic-btn"><i class="fa-solid fa-arrow-up"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section summary-section">
+        <!-- Phần hiển thị nội dung tóm tắt -->
+        <label class="textarea-label">Nội dung được tóm tắt</label>
+        <div class="output-area"></div>
+      </div>
+    </div>
+    <div class="menu-btn">
+      <i class="fa-solid fa-align-right"></i>
+    </div>
+  </div>
+  <!-- menu -->
+  <section id="menu">
+    <div class="new-chat">
+      <i class="fa-regular fa-pen-to-square"></i>
+      <a href="#" class="heading-icon">Đoạn chat mới</a>
+    </div>
+    <div class="history">
+      <i class="fa-solid fa-database"></i>
+      <a href="#" class="heading-icon">Lịch sử chat</a>
+    </div>
+    <ul class="chat-container">
+      <li class="chat-message">Xin chào!</li>
+      <li class="chat-message">Bạn cần giúp gì hôm nay?</li>
+      <li class="chat-message">Tôi muốn học HTML.</li>
+      <li class="chat-message">Câu 4...</li>
+      <li class="chat-message">Câu 5...</li>
+      <li class="chat-message">Câu 6...</li>
+      <li class="chat-message">Câu 7...</li>
+      <li class="chat-message">Câu 8...</li>
+      <li class="chat-message">Câu 9...</li>
+      <li class="chat-message">Câu 10...</li>
+      <li class="chat-message">Xin chào!</li>
+      <li class="chat-message">Bạn cần giúp gì hôm nay?</li>
+      <li class="chat-message">Tôi muốn học HTML.</li>
+      <li class="chat-message">Câu 4...</li>
+      <li class="chat-message">Câu 5...</li>
+      <li class="chat-message">Câu 6...</li>
+      <li class="chat-message">Câu 7...</li>
+      <li class="chat-message">Câu 8...</li>
+      <li class="chat-message">Câu 9...</li>
+      <li class="chat-message">Câu 10...</li>
+      <li class="chat-message">Xin chào!</li>
+      <li class="chat-message">Bạn cần giúp gì hôm nay?</li>
+      <li class="chat-message">Tôi muốn học HTML.</li>
+      <li class="chat-message">Câu 4...</li>
+      <li class="chat-message">Câu 5...</li>
+      <li class="chat-message">Câu 6...</li>
+      <li class="chat-message">Câu 7...</li>
+      <li class="chat-message">Câu 8...</li>
+      <li class="chat-message">Câu 9...</li>
+      <li class="chat-message">Câu 10...</li>
+    </ul>
+  </section>
+
+  <script src="script.js"></script>
+  <script src="https://kit.fontawesome.com/af877c9b83.js" crossorigin="anonymous"></script>
+  <!-- Liên kết đến tệp JavaScript để xử lý logic -->
+</body>
+
+</html>

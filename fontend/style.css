@@ -1,0 +1,474 @@
+/* mới */
+
+/* Định kiểu cho toàn bộ body của trang */
+body {
+  font-family: "Arial", sans-serif; /* Sử dụng phông chữ Arial */
+  background: #e6f0fa; /* Màu nền nhạt giống hình ảnh */
+  margin: 0; /* Xóa lề mặc định */
+  padding: 0; /* Xóa đệm mặc định */
+  height: 100vh; /* Chiều cao 100% viewport */
+  display: flex; /* Sử dụng flexbox */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+/* Định kiểu cho container chứa nội dung */
+.login-container {
+  background: #fff; /* Màu nền trắng */
+  padding: 20px; /* Đệm 20px xung quanh */
+  border-radius: 20px; /* Bo góc 20px giống hình */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Căn giữa nội dung */
+  width: 300px; /* Chiều rộng cố định */
+  display: flex; /* Sử dụng flexbox */
+  flex-direction: column; /* Xếp theo cột */
+  justify-content: space-between; /* Phân bố khoảng cách giữa các phần tử */
+  height: 350px; /* Chiều cao cố định để chứa toàn bộ nội dung */
+}
+
+/* Định kiểu cho văn bản chân trang */
+.footer-text {
+  text-align: center; /* Căn giữa */
+  margin-top: 90px; /* Lề trên 130px */
+  font-size: 0.9rem; /* Kích thước chữ 0.9rem */
+  color: #666; /* Màu xám */
+}
+
+/* Định kiểu cho liên kết trong chân trang */
+.footer-text a {
+  color: #4a6cff; /* Màu xanh dương */
+  text-decoration: none; /* Xóa gạch chân */
+}
+
+/* Định kiểu khi hover liên kết trong chân trang */
+.footer-text a:hover {
+  text-decoration: underline; /* Gạch chân khi hover */
+}
+
+/* Định kiểu cho thẻ chứa form đăng nhập */
+.login-card {
+  padding: 20px; /* Đệm 20px xung quanh */
+}
+
+/* Định kiểu cho tiêu đề */
+.login-header {
+  display: flex; /* Sử dụng flexbox */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  margin-bottom: 10px; /* Lề dưới 10px */
+}
+
+.login-header i {
+  font-size: 40px; /* Kích thước biểu tượng 40px */
+  color: #4a6cff; /* Màu xanh dương */
+  margin-right: 10px; /* Khoảng cách bên phải */
+}
+
+/* Định kiểu cho tiêu đề chính */
+h1 {
+  font-size: 28px; /* Kích thước chữ 28px */
+  color: #1e88e5; /* Màu xanh dương */
+  margin: 0; /* Xóa lề mặc định */
+}
+
+/* Định kiểu cho mô tả */
+.login-description {
+  color: #757575; /* Màu xám nhạt */
+  font-size: 20px; /* Kích thước chữ 14px */
+  margin-top: 5px; /* Lề trên 10px */
+}
+
+/* Định kiểu cho nút đăng nhập với Google */
+.google-login-btn {
+  background: #fff; /* Màu nền trắng */
+  border: 1px solid #030303; /* Viền xám nhạt */
+  border-radius: 5px; /* Bo góc 5px */
+  padding: 10px 20px; /* Đệm: trên/dưới 10px, trái/phải 20px */
+  font-size: 16px; /* Kích thước chữ 16px */
+  cursor: pointer; /* Con trỏ chuột dạng nhấn */
+  width: 100%; /* Chiều rộng 100% */
+  display: flex; /* Sử dụng flexbox */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  gap: 10px; /* Khoảng cách giữa logo và văn bản */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 260px; /* Chiều rộng 18px */
+  height: 45px; /* Chiều cao 18px */
+  margin-top: 50px; /* Lề trên 50px */
+  justify-self: center;
+}
+
+/* Định kiểu khi hover nút đăng nhập với Google */
+.google-login-btn:hover {
+  background: #f5f5f5; /* Màu nền nhạt hơn khi hover */
+}
+
+/* Định kiểu cho logo Google */
+.google-logo {
+  width: 20px; /* Chiều rộng 18px */
+  height: 20px; /* Chiều cao 18px */
+}
+
+/* Định kiểu cho phần liên kết chân trang */
+.footer-links {
+  font-size: 12px; /* Kích thước chữ 12px */
+  color: #757575; /* Màu xám nhạt */
+  margin-top: auto; /* Đẩy xuống dưới cùng */
+}
+
+/* Định kiểu cho liên kết trong chân trang */
+.footer-links a {
+  color: #1e88e5; /* Màu xanh dương */
+  text-decoration: none; /* Xóa gạch chân */
+}
+
+/* Định kiểu khi hover liên kết trong chân trang */
+.footer-links a:hover {
+  text-decoration: underline; /* Gạch chân khi hover */
+}
+
+.container-summary {
+  background: #ffffff;
+  width: 100vw; /* Đảm bảo chiếm toàn bộ chiều ngang */
+  height: 100vh; /* Chiếm đúng chiều cao của màn hình */
+  margin: 0 auto; /* Căn giữa ngang */
+  padding: 40px; /* Đệm đều các phía */
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden; /* ✅ Ẩn thanh cuộn nếu dư */
+  box-sizing: border-box; /* ✅ Đảm bảo padding không làm vượt khung */
+}
+
+/* Định kiểu cho liên kết đăng nhập */
+.in-login {
+  position: absolute; /* Vị trí tuyệt đối so với container cha */
+  left: 8px; /* Cách lề trái 30px */
+  top: 2px; /* Cách lề trên 30px */
+  color: #4a6cff; /* Màu xanh dương */
+  font-weight: bold; /* Chữ in đậm */
+  text-decoration: none; /* Xóa gạch chân */
+  font-size: 25px; /* Kích thước chữ 30px */
+}
+
+/* Định kiểu cho tiêu đề */
+.header {
+  text-align: center; /* Căn giữa nội dung */
+  position: relative; /* Vị trí tương đối để định vị các phần tử con */
+  margin-bottom: 20px; /* Lề dưới 20px */
+  padding-top: 20px; /* Đệm trên 20px */
+}
+
+/* Định kiểu cho phần nội dung chính */
+.main {
+  position: absolute;
+  justify-self: center;
+  margin-top: 30px; /* Lề trên 60px */
+}
+
+/* Định kiểu cho tiêu đề chính */
+.title {
+  font-size: 3rem; /* Kích thước chữ 3rem */
+  font-weight: bold; /* Chữ in đậm */
+  color: #4a6cff; /* Màu xanh dương */
+  margin-top: 10px; /* Lề trên 10px */
+  display: flex; /* Sử dụng flexbox */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  gap: 12px; /* Khoảng cách giữa các phần tử con */
+}
+
+/* Định kiểu cho phụ đề */
+.subtitle {
+  color: #696c71; /* Màu xám */
+  font-size: 1.5rem; /* Kích thước chữ 1.5rem */
+  margin-top: 5px; /* Lề trên 8px */
+  text-align: center; /* Căn giữa nội dung */
+}
+
+/* Định kiểu cho khu vực nhập liệu */
+.input-area,
+.output-area {
+  background: #fff; /* Màu nền trắng */
+  border: 2px solid rgb(0, 0, 0); /* Viền đen 2px */
+  border-radius: 24px; /* Bo góc 24px */
+  padding: 18px 18px 12px 18px; /* Đệm: trên 18px, trái/phải 18px, dưới 12px */
+  margin-top: 10px; /* Lề trên 8px */
+  min-height: 120px; /* Chiều cao tối thiểu 120px */
+  width: 1250px; /* Chiều rộng 1250px */
+  height: 150px; /* Chiều cao 100px */
+  position: relative; /* Vị trí tương đối */
+}
+
+.text-input {
+  width: 1250px;
+  height: 70px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background: transparent;
+  resize: none; /* Không cho phép thay đổi kích thước */
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+/* Định kiểu cho các section */
+.section {
+  margin-bottom: 30px; /* Lề dưới 30px */
+}
+
+/* Định kiểu cho nhãn trong section */
+.section label {
+  font-size: 1.1rem; /* Kích thước chữ 1.1rem */
+  font-weight: 500; /* Độ đậm trung bình */
+  margin-bottom: 8px; /* Lề dưới 8px */
+  display: block; /* Hiển thị dạng khối */
+  color: #333; /* Màu chữ xám đậm */
+}
+
+/* Định kiểu cho hàng chứa điều khiển tải tệp */
+.file-row {
+  display: flex; /* Sử dụng flexbox */
+  align-items: flex-end; /* Căn dưới */
+  flex-wrap: wrap; /* Cho phép xuống dòng */
+  margin-top: 10px; /* Lề trên 10px */
+  gap: 0px; /* Khoảng cách giữa các phần tử là 0px */
+}
+
+/* Định kiểu cho điều khiển tải tệp */
+.file-upload-controls {
+  display: flex; /* Sử dụng flexbox */
+  flex-direction: column; /* Xếp theo cột */
+  align-items: flex-start; /* Căn trái */
+  z-index: 2;
+}
+
+/* Định kiểu cho các nút hành động */
+.action-btns {
+  display: flex; /* Sử dụng flexbox */
+  position: absolute; /* Vị trí tuyệt đối */
+  gap: 8px; /* Khoảng cách giữa các nút 8px */
+  right: 20px; /* Cách lề phải 20px */
+}
+
+/* Định kiểu cho ghi chú về tệp */
+.file-note {
+  font-size: 0.9rem; /* Kích thước chữ 0.9rem */
+  color: #888; /* Màu xám nhạt */
+  margin-bottom: 5px; /* Lề dưới 5px */
+  z-index: 2; /* Đặt z-index để hiển thị trên các phần tử khác */
+}
+
+/* Định kiểu cho nút chọn tệp */
+.file-btn {
+  background: #fcfbfb; /* Màu nền xanh nhạt */
+  color: #020202; /* Màu chữ xanh đậm */
+  border-radius: 13px; /* Bo góc 18px */
+  font-size: 1rem; /* Kích thước chữ 1rem */
+  font-weight: 600; /* Chữ đậm */
+  cursor: pointer; /* Con trỏ chuột dạng nhấn */
+  display: flex; /* Sử dụng flexbox */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  gap: 6px; /* Khoảng cách giữa các phần tử con */
+  box-shadow: 0 2px 6px #0001; /* Bóng nhẹ */
+  transition: background 0.2s; /* Hiệu ứng chuyển màu nền trong 0.2s */
+  width: 120px; /* Chiều rộng 150px */
+  height: 35px; /* Chiều cao 40px */
+  z-index: 2; /* Đặt z-index để đảm bảo nó nằm trên các phần tử khác */
+}
+
+/* Định kiểu khi hover nút chọn tệp */
+.file-btn:hover {
+  background: #7bc0e8; /* Màu nền xanh đậm hơn */
+}
+
+.textarea-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin-top: 5px; /* Lề trên cách đúng 5px */ /* Lề dưới để cách textarea */
+  display: block; /* Để chiếm nguyên dòng, tránh lệch */
+}
+
+/* cũ //////////*/
+
+/* Định kiểu cho mỗi tệp trong danh sách */
+.file {
+  display: flex; /* Sử dụng flexbox */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  background: #f5f5f5; /* Màu nền xám nhạt */
+  border-radius: 8px; /* Bo góc 8px */
+  padding: 3px 10px; /* Đệm: trên/dưới 3px, trái/phải 10px */
+  font-size: 0.98rem; /* Kích thước chữ 0.98rem */
+  margin-right: 2px; /* Lề phải 2px */
+  border: 1px solid #eee; /* Viền xám nhạt */
+  gap: 4px; /* Khoảng cách giữa các phần tử con */
+}
+
+/* Định màu cho biểu tượng tệp docx */
+.file-docx i {
+  color: #3a7bd5;
+} /* Màu xanh dương */
+
+/* Định màu cho biểu tượng tệp txt */
+.file-txt i {
+  color: #888;
+} /* Màu xám */
+
+/* Định màu cho biểu tượng tệp pdf */
+.file-pdf i {
+  color: #e74c3c;
+} /* Màu đỏ */
+
+/* Định kiểu cho biểu tượng xóa tệp */
+.file .fa-xmark {
+  margin-left: 4px; /* Lề trái 4px */
+  cursor: pointer; /* Con trỏ chuột dạng nhấn */
+  color: #aaa; /* Màu xám nhạt */
+  font-size: 0.95em; /* Kích thước chữ 0.95em */
+}
+
+/* Định kiểu cho nút gửi và nút mic */
+.send-btn,
+.mic-btn {
+  background: #4aafff; /* Màu nền xanh dương nhạt */
+  color: #fff; /* Màu chữ trắng */
+  border: none; /* Xóa viền */
+  border-radius: 50%; /* Hình tròn */
+  width: 38px; /* Chiều rộng 38px */
+  height: 38px; /* Chiều cao 38px */
+  display: flex; /* Sử dụng flexbox */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  font-size: 1.2rem; /* Kích thước chữ 1.2rem */
+  box-shadow: 0 2px 6px #0001; /* Bóng nhẹ */
+  cursor: pointer; /* Con trỏ chuột dạng nhấn */
+  transition: background 0.2s; /* Hiệu ứng chuyển màu nền trong 0.2s */
+}
+
+/* Định kiểu khi hover nút gửi và mic */
+.send-btn:hover,
+.mic-btn:hover {
+  background: #3578e5; /* Màu nền xanh dương đậm hơn */
+}
+
+/* Định kiểu cho khu vực hiển thị kết quả */
+.output-area {
+  min-height: 100px; /* Chiều cao tối thiểu 100px */
+  background: #fff; /* Màu nền trắng */
+  border: 2px solid rgb(0, 0, 0); /* Viền đen 2px */
+  border-radius: 24px; /* Bo góc 24px */
+  padding: 18px; /* Đệm 18px */
+  font-size: 1.1rem; /* Kích thước chữ 1.1rem */
+  color: #444; /* Màu chữ xám đậm */
+}
+
+/* Định kiểu cho wrapper của input */
+.input-wrapper {
+  display: flex; /* Sử dụng flexbox */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  border: 1px solid #ccc; /* Viền xám nhạt */
+  border-radius: 8px; /* Bo góc 8px */
+  padding: 8px; /* Đệm 8px */
+}
+
+/* Định kiểu cho input trong wrapper */
+.input-wrapper input {
+  border: none; /* Xóa viền */
+  outline: none; /* Xóa viền khi focus */
+  flex-grow: 1; /* Chiếm toàn bộ không gian còn lại */
+  font-size: 1rem; /* Kích thước chữ 1rem */
+  padding: 5px; /* Đệm 5px */
+}
+
+/* Định kiểu cho biểu tượng mắt */
+.eye-icon {
+  cursor: pointer; /* Con trỏ chuột dạng nhấn */
+  width: 20px; /* Chiều rộng 20px */
+  height: 20px; /* Chiều cao 20px */
+}
+
+/* Định kiểu cho nút chính */
+.btn-primary {
+  background: #4a6cff; /* Màu nền xanh dương */
+  color: #fff; /* Màu chữ trắng */
+  border: none; /* Xóa viền */
+  border-radius: 8px; /* Bo góc 8px */
+  padding: 10px; /* Đệm 10px */
+  font-size: 1rem; /* Kích thước chữ 1rem */
+  cursor: pointer; /* Con trỏ chuột dạng nhấn */
+  transition: background 0.2s; /* Hiệu ứng chuyển màu nền trong 0.2s */
+}
+
+/* Định kiểu khi hover nút chính */
+.btn-primary:hover {
+  background: #3578e5; /* Màu nền xanh dương đậm hơn */
+}
+
+/* menu */
+
+#menu {
+  max-width: 200px;
+  height: 99vh;
+  border: 2.5px solid #000000;
+  border-radius: 20px 0 0 20px;
+  background-color: rgb(222, 238, 253);
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0.4px;
+  right: 0;
+  z-index: 5;
+  transform: translateX(100%);
+  transition: transform 0.5s ease, opacity 0.4s ease-in-out;
+}
+
+#menu.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+#menu .new-chat,
+.history {
+  position: absolute;
+  font-size: 20px;
+  padding-top: 65px;
+}
+
+#menu .history {
+  padding-top: 107px;
+}
+
+.menu-btn {
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: rgb(14, 128, 234);
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 6;
+}
+
+.menu-btn i {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+#menu a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.chat-container {
+  padding: 5px 30px 0 10px;
+  margin-top: 140px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+}
