@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\ApiClient;
 use Illuminate\Http\Request;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class SummaryController extends Controller
 {
@@ -28,7 +29,7 @@ class SummaryController extends Controller
             $request->input('language', 'vietnamese')
         );
 
-        return response()->json($result);
+        return view('dashboard', ['summary' => $result['summary']]);
     }
 
     public function summarizeFile(Request $request)
@@ -45,6 +46,6 @@ class SummaryController extends Controller
             $request->input('language', 'vietnamese')
         );
 
-        return response()->json($result);
+        return view('dashboard', ['summary' => $result['summary']]);
     }
 }
