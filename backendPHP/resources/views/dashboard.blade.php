@@ -14,7 +14,7 @@
         <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
             <form action="/summarize/text" method="POST">
                     @csrf
-                    <textarea name="text" id="text" class="w-full resize-none rounded-xl border border-neutral-200 bg-transparent p-4 text-sm text-neutral-900 outline-none dark:border-neutral-700 dark:text-neutral-100" placeholder="{{ __('Write your text here...') }}" rows="5"></textarea>
+                    <textarea name="text" id="text" class="w-full resize-none rounded-xl border border-neutral-200 bg-transparent p-4 text-sm text-neutral-900 outline-none dark:border-neutral-700 dark:text-neutral-100" placeholder="{{ __('Write your text here...') }}" rows="5" required></textarea>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="0.5" class="mt-4 w-full" /> Note: Adjust the ratio to control the summary length.
                     <button type="submit" class="mt-4 w-full rounded-xl bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">{{ __('Summarize') }}</button>
                 </form>
