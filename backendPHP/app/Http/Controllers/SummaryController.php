@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ApiClient;
 use Illuminate\Http\Request;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use Illuminate\Support\Facades\Auth;
 
 class SummaryController extends Controller
 {
@@ -26,8 +27,19 @@ class SummaryController extends Controller
         $result = $this->apiClient->summarizeText(
             $request->input('text'),
             $request->input('ratio', 0.2),
-            $request->input('language', 'vietnamese')
+            $request->input('language', 'vietnamese'),
+            Auth::id() ?? 1 // Sử dụng ID người dùng hiện tại hoặc mặc định là 1
         );
+
+        // Kiểm tra lỗi trong kết quả
+        if (isset($result['error'])) {
+            return back()->with('error', $result['error'] . ': ' . ($result['details'] ?? ''));
+        }
+
+        // Kiểm tra các key cần thiết
+        if (!isset($result['summary'])) {
+            return back()->with('error', 'Không tìm thấy nội dung tóm tắt trong kết quả');
+        }
 
         return view('dashboard', ['summary' => $result['summary']]);
     }
@@ -43,8 +55,19 @@ class SummaryController extends Controller
         $result = $this->apiClient->summarizeFile(
             $request->input('file'),
             $request->input('ratio', 0.2),
-            $request->input('language', 'vietnamese')
+            $request->input('language', 'vietnamese'),
+            Auth::id() ?? 1 // Sử dụng ID người dùng hiện tại hoặc mặc định là 1
         );
+
+        // Kiểm tra lỗi trong kết quả
+        if (isset($result['error'])) {
+            return back()->with('error', $result['error'] . ': ' . ($result['details'] ?? ''));
+        }
+
+        // Kiểm tra các key cần thiết
+        if (!isset($result['summary'])) {
+            return back()->with('error', 'Không tìm thấy nội dung tóm tắt trong kết quả');
+        }
 
         return view('dashboard', ['summary' => $result['summary']]);
     }

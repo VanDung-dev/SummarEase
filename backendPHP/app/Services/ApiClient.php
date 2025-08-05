@@ -18,18 +18,41 @@ class ApiClient
         ]);
     }
 
-    public function summarizeText($text, $ratio = 0.2, $language = 'vietnamese')
+    public function summarizeText($text, $ratio = 0.2, $language = 'vietnamese', $userId = 1)
     {
         try {
             $response = $this->client->post('/summarize', [
                 'json' => [
                     'text' => $text,
                     'ratio' => $ratio,
-                    'language' => $language
+                    'language' => $language,
+                    'user_id' => $userId
                 ]
             ]);
 
-            return json_decode($response->getBody()->getContents(), true);
+            $result = json_decode($response->getBody()->getContents(), true);
+            
+            // Kiểm tra kết quả trả về
+            if (!is_array($result)) {
+                return [
+                    'error' => 'Kết quả không hợp lệ từ API',
+                    'details' => 'Dữ liệu trả về không phải là mảng'
+                ];
+            }
+            
+            if (isset($result['error'])) {
+                return $result;
+            }
+            
+            // Kiểm tra các key cần thiết
+            if (!isset($result['summary']) || !isset($result['status'])) {
+                return [
+                    'error' => 'Kết quả không đầy đủ từ API',
+                    'details' => 'Thiếu các trường cần thiết trong kết quả'
+                ];
+            }
+
+            return $result;
         } catch (RequestException $e) {
             return [
                 'error' => 'Không thể gọi API tóm tắt văn bản',
@@ -38,7 +61,7 @@ class ApiClient
         }
     }
 
-    public function summarizeFile($source, $ratio = 0.2, $language = 'vietnamese')
+    public function summarizeFile($source, $ratio = 0.2, $language = 'vietnamese', $userId = 1)
     {
         try {
             $response = $this->client->post('/summarize-file', [
@@ -54,11 +77,37 @@ class ApiClient
                     [
                         'name' => 'language',
                         'contents' => $language
+                    ],
+                    [
+                        'name' => 'user_id',
+                        'contents' => $userId
                     ]
                 ]
             ]);
 
-            return json_decode($response->getBody()->getContents(), true);
+            $result = json_decode($response->getBody()->getContents(), true);
+            
+            // Kiểm tra kết quả trả về
+            if (!is_array($result)) {
+                return [
+                    'error' => 'Kết quả không hợp lệ từ API',
+                    'details' => 'Dữ liệu trả về không phải là mảng'
+                ];
+            }
+            
+            if (isset($result['error'])) {
+                return $result;
+            }
+            
+            // Kiểm tra các key cần thiết
+            if (!isset($result['summary']) || !isset($result['status'])) {
+                return [
+                    'error' => 'Kết quả không đầy đủ từ API',
+                    'details' => 'Thiếu các trường cần thiết trong kết quả'
+                ];
+            }
+
+            return $result;
         } catch (RequestException $e) {
             return [
                 'error' => 'Không thể gọi API tóm tắt tệp',
