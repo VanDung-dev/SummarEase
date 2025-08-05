@@ -24,3 +24,4 @@ Route::post('/summarize/text', [SummaryController::class, 'summarizeText']);
 Route::post('/summarize/file', [SummaryController::class, 'summarizeFile']);
 
 require __DIR__.'/auth.php';
+
