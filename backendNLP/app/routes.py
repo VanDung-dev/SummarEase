@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from .utils.text_cleaner import clean_text
 from .utils.summarizer import textrank_summarize, generate_title
 from .utils.file_handler import extract_text
+from .utils.database import save_summary_to_db
 import tempfile
 import os
 import logging
@@ -24,12 +25,13 @@ def summarize_text():
         - text (str): Nội dung văn bản cần tóm tắt (bắt buộc).
         - ratio (float, tùy chọn): Tỷ lệ tóm tắt (mặc định: 0.2, giá trị từ 0.0 đến 1.0).
         - language (str, tùy chọn): Ngôn ngữ của văn bản ("vietnamese" hoặc "english", mặc định: "vietnamese").
+        - user_id (int): ID của người dùng (bắt buộc).
 
     Trả về:
         - JSON chứa trạng thái, nội dung tóm tắt, tỷ lệ tóm tắt và ngôn ngữ.
 
     Ngoại lệ:
-        - 400: Nếu yêu cầu không đúng định dạng JSON, văn bản rỗng hoặc ngôn ngữ không hợp lệ.
+        - 400: Nếu yêu cầu không đúng định dạng JSON, văn bản rỗng, ngôn ngữ không hợp lệ hoặc thiếu user_id.
         - 500: Nếu xảy ra lỗi trong quá trình xử lý.
     """
     try:
@@ -40,6 +42,12 @@ def summarize_text():
         raw_text = data.get("text", "")
         ratio = float(data.get("ratio", 0.2))
         language = data.get("language", "vietnamese")
+        # Lấy user_id từ request - bắt buộc phải có
+        user_id = data.get("user_id")
+        
+        # Kiểm tra user_id có được cung cấp không
+        if user_id is None:
+            return jsonify({"error": "Thiếu user_id trong yêu cầu"}), 400
 
         if not raw_text.strip():
             return jsonify({"error": "Nội dung văn bản không được để trống"}), 400
@@ -54,10 +62,35 @@ def summarize_text():
             stop_words_path=STOP_WORDS_PATH
         )
 
+        # Kiểm tra kết quả trả về
+        if not isinstance(result, dict) or "summary" not in result or "highlighted_summary" not in result or "keywords" not in result:
+            return jsonify({"error": "Lỗi xử lý văn bản: Kết quả không hợp lệ"}), 500
+
+        # Chuẩn bị dữ liệu để lưu vào DB
+        summary_data = {
+            "summary": result["summary"],
+            "highlighted_summary": result["highlighted_summary"],
+            "ratio": ratio,
+            "keywords": result["keywords"]
+        }
+        
+        document_data = {
+            "content": raw_text,
+            "title": result.get("title", "Untitled"),
+            "file_name": None,
+            "file_type": "text",
+            "user_id": user_id  # Sử dụng user_id từ request
+        }
+        
+        # Lưu vào cơ sở dữ liệu
+        save_success = save_summary_to_db(summary_data, document_data)
+        if not save_success:
+            logger.warning("Không thể lưu kết quả tóm tắt vào cơ sở dữ liệu")
+
         return jsonify({
             "status": "success",
             "language": language,
-            "title": generate_title(result["summary"], result["keywords"], language),
+            "title": result.get("title", generate_title(result["summary"], result["keywords"], language)),
             "keywords": result["keywords"],
             "ratio": ratio,
             "summary": result["highlighted_summary"]
@@ -80,17 +113,24 @@ def summarize_file():
         - file: Tệp được tải lên hoặc URL (hỗ trợ: PDF, DOCX, TXT, DOC, RTF, ODT, EPUB, MD, MARKDOWN, hoặc URL).
         - ratio (float, tùy chọn): Tỷ lệ tóm tắt (mặc định: 0.2, giá trị từ 0.0 đến 1.0).
         - language (str, tùy chọn): Ngôn ngữ của văn bản ("vietnamese" hoặc "english", mặc định: "vietnamese").
+        - user_id (int): ID của người dùng (bắt buộc).
 
     Trả về:
         - JSON chứa trạng thái, tên tệp/URL, nội dung tóm tắt, tỷ lệ tóm tắt và ngôn ngữ.
 
     Ngoại lệ:
-        - 400: Nếu không có tệp/URL, tệp/URL rỗng, định dạng không hỗ trợ hoặc ngôn ngữ không hợp lệ.
+        - 400: Nếu không có tệp/URL, tệp/URL rỗng, định dạng không hỗ trợ, ngôn ngữ không hợp lệ hoặc thiếu user_id.
         - 500: Nếu xảy ra lỗi trong quá trình xử lý.
     """
     temp_path = None
     filename = None
     try:
+        # Lấy user_id từ form data - bắt buộc phải có
+        user_id_str = request.form.get('user_id')
+        if user_id_str is None:
+            return jsonify({"error": "Thiếu user_id trong yêu cầu"}), 400
+        user_id = int(user_id_str)
+        
         # Kiểm tra xem dữ liệu gửi lên là URL hay file
         if 'file' in request.form:
             source = request.form['file'].strip()
@@ -148,10 +188,36 @@ def summarize_file():
             stop_words_path=STOP_WORDS_PATH
         )
 
+        # Kiểm tra kết quả trả về
+        if not isinstance(result, dict) or "summary" not in result or "highlighted_summary" not in result or "keywords" not in result:
+            return jsonify({"error": "Lỗi xử lý văn bản: Kết quả không hợp lệ"}), 500
+
+        # Chuẩn bị dữ liệu để lưu vào DB
+        summary_data = {
+            "summary": result["summary"],
+            "highlighted_summary": result["highlighted_summary"],
+            "ratio": ratio,
+            "keywords": result["keywords"]
+        }
+        
+        file_type = filename.rsplit('.', 1)[1].lower() if '.' in filename else 'unknown'
+        document_data = {
+            "content": raw_text,
+            "title": result.get("title", f"Summary of {filename}"),
+            "file_name": filename,
+            "file_type": file_type,
+            "user_id": user_id  # Sử dụng user_id từ form data
+        }
+        
+        # Lưu vào cơ sở dữ liệu
+        save_success = save_summary_to_db(summary_data, document_data)
+        if not save_success:
+            logger.warning("Không thể lưu kết quả tóm tắt vào cơ sở dữ liệu")
+
         return jsonify({
             "status": "success",
             "language": language,
-            "title": generate_title(result["summary"], result["keywords"], language),
+            "title": result.get("title", generate_title(result["summary"], result["keywords"], language)),
             "keywords": result["keywords"],
             "ratio": ratio,
             "summary": result["highlighted_summary"]
