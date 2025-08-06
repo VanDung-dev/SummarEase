@@ -18,7 +18,22 @@
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="0.5" class="mt-4 w-full" /> Note: Adjust the ratio to control the summary length.
                     <button type="submit" class="mt-4 w-full rounded-xl bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">{{ __('Summarize') }}</button>
                 </form>
-                <p>{{ session('summary') ?? '' }}</p>
+                <div class="mt-4 p-4" id="summary-output">
+                    @if(session('summary'))
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const summaryText = @json(session('summary'));
+                                const outputArea = document.getElementById('summary-output');
+                                // Chuyển đổi markdown thành HTML
+                                const html = summaryText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                                outputArea.innerHTML = html;
+                            });
+                        </script>
+                    @endif
+                </div>
         </div>
     </div>
+    
+    <!-- Thêm script để xử lý markdown -->
+    <script src="{{ asset('js/script.js') }}"></script>
 </x-layouts.app>
