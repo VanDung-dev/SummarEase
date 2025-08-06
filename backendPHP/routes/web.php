@@ -12,6 +12,10 @@ Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+Route::post('dashboard', [SummaryController::class, 'summarizeTextOnDashboard'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.summarize');
+
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
@@ -24,4 +28,3 @@ Route::post('/summarize/text', [SummaryController::class, 'summarizeText']);
 Route::post('/summarize/file', [SummaryController::class, 'summarizeFile']);
 
 require __DIR__.'/auth.php';
-
