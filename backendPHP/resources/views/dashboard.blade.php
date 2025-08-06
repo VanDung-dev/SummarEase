@@ -14,26 +14,33 @@
         <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
             <form method="POST">
                     @csrf
-                    <textarea name="text" id="text" class="w-full resize-none rounded-xl border border-neutral-200 bg-transparent p-4 text-sm text-neutral-900 outline-none dark:border-neutral-700 dark:text-neutral-100" placeholder="{{ __('Write your text here...') }}" rows="5" required></textarea>
-                    <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="0.5" class="mt-4 w-full" /> Note: Adjust the ratio to control the summary length.
+                    <textarea name="text" id="text" class="w-full resize-none rounded-xl border border-neutral-200 bg-transparent p-4 text-sm text-neutral-900 outline-none dark:border-neutral-700 dark:text-neutral-100" placeholder="{{ __('Write your text here...') }}" rows="5" required>{{ session('original_text') }}</textarea>
+                    <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="0.5" class="mt-4 w-full" />
+                    <p class="text-sm text-gray-500 mt-1">Note: Adjust the ratio to control the summary length.</p>
                     <button type="submit" class="mt-4 w-full rounded-xl bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">{{ __('Summarize') }}</button>
                 </form>
-                <div class="mt-4 p-4" id="summary-output">
-                    @if(session('summary'))
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                const summaryText = @json(session('summary'));
-                                const outputArea = document.getElementById('summary-output');
-                                // Chuyển đổi markdown thành HTML
-                                const html = summaryText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                                outputArea.innerHTML = html;
-                            });
-                        </script>
-                    @endif
+
+                @if(session('summary'))
+                <div class="mt-6 border-t border-neutral-200 dark:border-neutral-700 pt-4">
+                    <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
+                        <div id="summary-output">{!! nl2br(e(session('summary'))) !!}</div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Xử lý hiển thị markdown cho kết quả tóm tắt
+                            const summaryText = @json(session('summary'));
+                            const outputArea = document.getElementById('summary-output');
+                            // Chuyển đổi markdown thành HTML
+                            const html = summaryText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                            outputArea.innerHTML = html;
+                        });
+                    </script>
                 </div>
+                @endif
         </div>
     </div>
-    
+
     <!-- Thêm script để xử lý markdown -->
     <script src="{{ asset('js/script.js') }}"></script>
 </x-layouts.app>

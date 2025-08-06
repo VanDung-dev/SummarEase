@@ -24,6 +24,9 @@ class SummaryController extends Controller
             'language' => 'in:vietnamese,english'
         ]);
 
+        // Lưu văn bản gốc vào session để hiển thị lại sau khi submit
+        session(['original_text' => $request->input('text')]);
+
         $result = $this->apiClient->summarizeText(
             $request->input('text'),
             $request->input('ratio', 0.2),
@@ -51,6 +54,9 @@ class SummaryController extends Controller
             'ratio' => 'numeric|min:0|max:1',
             'language' => 'in:vietnamese,english'
         ]);
+
+        // Lưu văn bản gốc vào session để hiển thị lại sau khi submit
+        session(['original_text' => $request->input('text')]);
 
         $result = $this->apiClient->summarizeText(
             $request->input('text'),
