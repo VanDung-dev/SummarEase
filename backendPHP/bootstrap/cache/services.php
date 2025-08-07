@@ -38,7 +38,8 @@
     34 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     35 => 'Termwind\\Laravel\\TermwindServiceProvider',
     36 => 'App\\Providers\\AppServiceProvider',
-    37 => 'App\\Providers\\VoltServiceProvider',
+    37 => 'App\\Providers\\EventServiceProvider',
+    38 => 'App\\Providers\\VoltServiceProvider',
   ),
   'eager' => 
   array (
@@ -62,7 +63,8 @@
     17 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     18 => 'Termwind\\Laravel\\TermwindServiceProvider',
     19 => 'App\\Providers\\AppServiceProvider',
-    20 => 'App\\Providers\\VoltServiceProvider',
+    20 => 'App\\Providers\\EventServiceProvider',
+    21 => 'App\\Providers\\VoltServiceProvider',
   ),
   'deferred' => 
   array (
