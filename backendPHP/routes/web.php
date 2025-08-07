@@ -35,3 +35,17 @@ Route::post('/summarize/text', [SummaryController::class, 'summarizeText']);
 Route::post('/summarize/file', [SummaryController::class, 'summarizeFile']);
 
 require __DIR__.'/auth.php';
+
+Route::get('/gemini', function (\Illuminate\Http\Request $request) {
+    $geminiApiKey = env('GEMINI_API_KEY');
+    $userText = $request->query('text', 'What is the meaning of life?'); // Default if not provided
+    $response = Http::post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$geminiApiKey", [
+        'contents' => [
+            'parts' => [
+                'text' => $userText
+            ]
+        ]
+    ]);
+    $summary = $response->json();
+    return $summary['candidates'][0]['content']['parts'][0]['text'] ?? 'No answer found.';
+});
