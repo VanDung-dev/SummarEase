@@ -1,10 +1,20 @@
+@php
+    $user = auth()->user();
+    $isAdmin = $user && $user->isAdmin();
+@endphp
+
 <div class="flex items-start max-md:flex-col">
     <div class="me-10 w-full pb-4 md:w-[220px]">
         <flux:navlist>
-            {{-- Ẩn các tab Profile và Password theo yêu cầu --}}
-            {{-- <flux:navlist.item :href="route('settings.profile')" wire:navigate>{{ __('Profile') }}</flux:navlist.item> --}}
-            {{-- <flux:navlist.item :href="route('settings.password')" wire:navigate>{{ __('Password') }}</flux:navlist.item> --}}
-            <flux:navlist.item :href="route('settings.appearance')" wire:navigate>{{ __('Appearance') }}</flux:navlist.item>
+            @if ($isAdmin)
+                {{-- Hiển thị đầy đủ các tab cho admin --}}
+                <flux:navlist.item :href="route('settings.profile')" wire:navigate>{{ __('Profile') }}</flux:navlist.item>
+                <flux:navlist.item :href="route('settings.password')" wire:navigate>{{ __('Password') }}</flux:navlist.item>
+                <flux:navlist.item :href="route('settings.appearance')" wire:navigate>{{ __('Appearance') }}</flux:navlist.item>
+            @else
+                {{-- Ẩn các tab Profile và Password cho người dùng thông thường --}}
+                <flux:navlist.item :href="route('settings.appearance')" wire:navigate>{{ __('Appearance') }}</flux:navlist.item>
+            @endif
         </flux:navlist>
     </div>
 

@@ -26,10 +26,17 @@ Route::post('dashboard', [SummaryController::class, 'summarizeTextOnDashboard'])
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/appearance');
 
-    // Ẩn hoàn toàn các route profile và password theo yêu cầu
-    // Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
-    // Volt::route('settings/password', 'settings.password')->name('settings.password');
-    Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
+    // Chỉ admin mới có thể truy cập profile và password settings
+    Volt::route('settings/profile', 'settings.profile')
+        ->name('settings.profile')
+        ->middleware('admin');
+        
+    Volt::route('settings/password', 'settings.password')
+        ->name('settings.password')
+        ->middleware('admin');
+        
+    Volt::route('settings/appearance', 'settings.appearance')
+        ->name('settings.appearance');
 });
 
 Route::post('/summarize/text', [SummaryController::class, 'summarizeText']);
