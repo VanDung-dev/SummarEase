@@ -24,10 +24,11 @@ Route::post('dashboard', [SummaryController::class, 'summarizeTextOnDashboard'])
     ->name('dashboard.summarize');
 
 Route::middleware(['auth'])->group(function () {
-    Route::redirect('settings', 'settings/profile');
+    Route::redirect('settings', 'settings/appearance');
 
-    Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
-    Volt::route('settings/password', 'settings.password')->name('settings.password');
+    // Ẩn hoàn toàn các route profile và password theo yêu cầu
+    // Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
+    // Volt::route('settings/password', 'settings.password')->name('settings.password');
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
 
