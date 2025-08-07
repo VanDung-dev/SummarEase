@@ -28,12 +28,13 @@
                     <button type="submit" class="mt-4 w-full rounded-xl bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">{{ __('Summarize') }}</button>
                 </form>
 
-           @if(session('summary'))
+
                 <div class="output-area">
+                     @if(session('summary'))
                     <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
                         <div id="summary-output">{!! nl2br(e(session('summary'))) !!}</div>
                     </div>
-
+          
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             // Xử lý hiển thị markdown cho kết quả tóm tắt
@@ -44,8 +45,9 @@
                             outputArea.innerHTML = html;
                         });
                     </script>
+                     @endif
                 </div>
-                @endif
+
 
     <script src="https://kit.fontawesome.com/af877c9b83.js" crossorigin="anonymous"></script>
         
