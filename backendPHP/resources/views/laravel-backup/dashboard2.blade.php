@@ -1,40 +1,31 @@
- <link href="style.css" rel="stylesheet" />
-
 <x-layouts.app :title="__('Dashboard')">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
         <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-            <!-- <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-            </div>
             <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
                 <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
             </div>
             <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
                 <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-            </div> -->
+            </div>
+            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
+                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+            </div>
         </div>
-        
-        <h1 class="title">Tóm tắt văn bản học thuật</h1>
-
-        <p class="sub">
-        Công cụ hỗ trợ tóm tắt nhanh và chính xác các văn bản học thuật
-        </p>
-
-        <form method="POST">
+        <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
+            <form method="POST">
                     @csrf
-                    <textarea name="text" id="text" class="input-area">{{ session('original_text') }}</textarea>
+                    <textarea name="text" id="text" class="w-full resize-none rounded-xl border border-neutral-200 bg-transparent p-4 text-sm text-neutral-900 outline-none dark:border-neutral-700 dark:text-neutral-100" placeholder="{{ __('Write your text here...') }}" rows="5" required>{{ session('original_text') }}</textarea>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="0.5" class="mt-4 w-full" />
-                    <p class="text-sm text-gray-500 mt-1"></p>
+                    <p class="text-sm text-gray-500 mt-1">Note: Adjust the ratio to control the summary length.</p>
                     <button type="submit" class="mt-4 w-full rounded-xl bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">{{ __('Summarize') }}</button>
                 </form>
 
-
-                <div class="output-area">
-                     @if(session('summary'))
+                @if(session('summary'))
+                <div class="mt-6 border-t border-neutral-200 dark:border-neutral-700 pt-4">
                     <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
                         <div id="summary-output">{!! nl2br(e(session('summary'))) !!}</div>
                     </div>
-          
+
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             // Xử lý hiển thị markdown cho kết quả tóm tắt
@@ -45,14 +36,10 @@
                             outputArea.innerHTML = html;
                         });
                     </script>
-                     @endif
                 </div>
-
-
-    <script src="https://kit.fontawesome.com/af877c9b83.js" crossorigin="anonymous"></script>
-        
-
-    <script src="script.js"></script>
+                @endif
+        </div>
+    </div>
 
     <!-- Thêm script để xử lý markdown -->
     <script src="{{ asset('js/script.js') }}"></script>

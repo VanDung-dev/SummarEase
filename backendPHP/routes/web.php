@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
     return view('welcome');
 })->name('home');
 
@@ -32,17 +35,3 @@ Route::post('/summarize/text', [SummaryController::class, 'summarizeText']);
 Route::post('/summarize/file', [SummaryController::class, 'summarizeFile']);
 
 require __DIR__.'/auth.php';
-
-Route::get('/gemini', function (Request $request) {
-    $geminiApiKey = env('GEMINI_API_KEY');
-    $userText = $request->query('text', '(No text provided)');
-    $response = Http::post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$geminiApiKey", [
-        'contents' => [
-            'parts' => [
-                'text' => $userText
-            ]
-        ]
-    ]);
-    $summary = $response->json();
-    return $summary['candidates'][0]['content']['parts'][0]['text'] ?? 'No answer found.';
-});
