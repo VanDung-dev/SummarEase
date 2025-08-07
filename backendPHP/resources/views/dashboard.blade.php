@@ -20,59 +20,32 @@
         Công cụ hỗ trợ tóm tắt nhanh và chính xác các văn bản học thuật
         </p>
 
-        <div class="main-dasboard">
-        <div class="section upload-section">
-          <label class="textarea-label"
-            >Văn bản hay tệp cần tóm tắt (.txt, .docx, pdf)</label
-          >
-          <div class="input-area">
-            <textarea
-              class="text-input"
-              placeholder="Nhập văn bản cần tóm tắt..."
-            ></textarea>
-            <div class="file-row">
-              <div class="file-upload-controls">
-                <p class="file-note">
-                  Lưu ý dung lượng tệp phải nhỏ hơn hoặc bằng 10MB
-                </p>
-                <input
-                  type="file"
-                  id="fileInput"
-                  multiple
-                  style="display: none"
-                  accept=".pdf,.doc,.docx,.txt"
-                />
-                <div class="file-selection-container">
-                  <button
-                    type="button"
-                    class="file-btn"
-                    onclick="document.getElementById('fileInput').click()"
-                  >
-                    <i class="fa-solid fa-paperclip"></i> chọn tệp
-                  </button>
-                  <div class="file-list-wrapper">
-                    <div id="fileList"></div>
-                  </div>
-                </div>
-                <div class="action-btns">
-                  <button class="send-btn">
-                    <i class="fa-solid fa-microphone"></i>
-                  </button>
-                  <button class="mic-btn">
-                    <i class="fa-solid fa-arrow-up"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+        <form method="POST">
+                    @csrf
+                    <textarea name="text" id="text" class="input-area">{{ session('original_text') }}</textarea>
+                    <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="0.5" class="mt-4 w-full" />
+                    <p class="text-sm text-gray-500 mt-1"></p>
+                    <button type="submit" class="mt-4 w-full rounded-xl bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">{{ __('Summarize') }}</button>
+                </form>
 
-          <div class="section summary-section">
-            <label class="textarea-label">Nội dung được tóm tắt</label>
-            <div class="output-area"></div>
-          </div>
-        </div>
-    </div>
+           @if(session('summary'))
+                <div class="output-area">
+                    <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
+                        <div id="summary-output">{!! nl2br(e(session('summary'))) !!}</div>
+                    </div>
 
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Xử lý hiển thị markdown cho kết quả tóm tắt
+                            const summaryText = @json(session('summary'));
+                            const outputArea = document.getElementById('summary-output');
+                            // Chuyển đổi markdown thành HTML
+                            const html = summaryText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                            outputArea.innerHTML = html;
+                        });
+                    </script>
+                </div>
+                @endif
 
     <script src="https://kit.fontawesome.com/af877c9b83.js" crossorigin="anonymous"></script>
         
