@@ -1,3 +1,6 @@
+
+
+
 <?php
 
 use App\Models\User;
@@ -75,60 +78,36 @@ new #[Layout('components.layouts.auth')] class extends Component {
     }
 }; ?>
 
-<div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
 
-    <!-- Session Status -->
-    <x-auth-session-status class="text-center" :status="session('status')" />
+<link href="{{ asset('style.css') }}" rel="stylesheet">
 
-    <form wire:submit="login" class="flex flex-col gap-6">
-        <!-- Email Address -->
-        <flux:input
-            wire:model="email"
-            :label="__('Email address')"
-            type="email"
-            required
-            autofocus
-            autocomplete="email"
-            placeholder="email@example.com"
-        />
+    
+    <div class="login-container">
+            <div class="login-header">
+                <i class="fa-solid fa-circle-user"></i>
+                <h1>Đăng nhập</h1>
+            </div>
 
-        <!-- Password -->
-        <div class="relative">
-            <flux:input
-                wire:model="password"
-                :label="__('Password')"
-                type="password"
-                required
-                autocomplete="current-password"
-                :placeholder="__('Password')"
-                viewable
-            />
+	        <div class="form-group">
+    	        <flux:link style="text-decoration:none" href="{{ route('google.redirect') }}" navigate="false">
+                    <p class="login-description">
+                        Truy cập vào công cụ tóm tắt văn bản học thuật
+                    </p>
+		            <button class="google-login-btn">
+                        <img
+                        src="https://www.google.com/favicon.ico"
+                        alt="Google logo"
+                        class="google-logo"
+                        />
+                    Đăng nhập với Google
+                    </button>
+	            </flux:link>
+            </div>
 
-            @if (Route::has('password.request'))
-                <flux:link class="absolute end-0 top-0 text-sm" :href="route('password.request')" wire:navigate>
-                    {{ __('Forgot your password?') }}
-                </flux:link>
-            @endif
-        </div>
-
-        <!-- Remember Me -->
-        <flux:checkbox wire:model="remember" :label="__('Remember me')" />
-
-        <div class="flex items-center justify-end">
-            <flux:button variant="primary" type="submit" class="w-full">{{ __('Log in') }}</flux:button>
-        </div>
-    </form>
-
-    @if (Route::has('register'))
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
-            <span>{{ __('Don\'t have an account?') }}</span>
-            <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
-        </div>
-    @endif
-	<div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
-    	    <flux:link href="{{ route('google.redirect') }}" navigate="false">
-		Sign in with Google
-	    </flux:link>
-        </div>
-</div>
+             <p class="footer-text">
+                <a href="#" id="registerLink">Điều khoản sử dụng</a><abbr> | </abbr>
+                <a href="#" id="registerLink"> Chính sách riêng tư</a>
+            </p>
+    </div>
+    
+<script src="https://kit.fontawesome.com/af877c9b83.js" crossorigin="anonymous"></script>

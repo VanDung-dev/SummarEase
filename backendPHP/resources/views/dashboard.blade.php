@@ -1,7 +1,9 @@
+ <link href="style.css" rel="stylesheet" />
+
 <x-layouts.app :title="__('Dashboard')">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
         <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
+            <!-- <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
                 <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
             </div>
             <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
@@ -9,37 +11,73 @@
             </div>
             <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
                 <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-            </div>
+            </div> -->
         </div>
-        <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-            <form method="POST">
-                    @csrf
-                    <textarea name="text" id="text" class="w-full resize-none rounded-xl border border-neutral-200 bg-transparent p-4 text-sm text-neutral-900 outline-none dark:border-neutral-700 dark:text-neutral-100" placeholder="{{ __('Write your text here...') }}" rows="5" required>{{ session('original_text') }}</textarea>
-                    <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="0.5" class="mt-4 w-full" />
-                    <p class="text-sm text-gray-500 mt-1">Note: Adjust the ratio to control the summary length.</p>
-                    <button type="submit" class="mt-4 w-full rounded-xl bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">{{ __('Summarize') }}</button>
-                </form>
+        
+        <h1 class="title">Tóm tắt văn bản học thuật</h1>
 
-                @if(session('summary'))
-                <div class="mt-6 border-t border-neutral-200 dark:border-neutral-700 pt-4">
-                    <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
-                        <div id="summary-output">{!! nl2br(e(session('summary'))) !!}</div>
-                    </div>
+        <p class="sub">
+        Công cụ hỗ trợ tóm tắt nhanh và chính xác các văn bản học thuật
+        </p>
 
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            // Xử lý hiển thị markdown cho kết quả tóm tắt
-                            const summaryText = @json(session('summary'));
-                            const outputArea = document.getElementById('summary-output');
-                            // Chuyển đổi markdown thành HTML
-                            const html = summaryText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                            outputArea.innerHTML = html;
-                        });
-                    </script>
+        <div class="main-dasboard">
+        <div class="section upload-section">
+          <label class="textarea-label"
+            >Văn bản hay tệp cần tóm tắt (.txt, .docx, pdf)</label
+          >
+          <div class="input-area">
+            <textarea
+              class="text-input"
+              placeholder="Nhập văn bản cần tóm tắt..."
+            ></textarea>
+            <div class="file-row">
+              <div class="file-upload-controls">
+                <p class="file-note">
+                  Lưu ý dung lượng tệp phải nhỏ hơn hoặc bằng 10MB
+                </p>
+                <input
+                  type="file"
+                  id="fileInput"
+                  multiple
+                  style="display: none"
+                  accept=".pdf,.doc,.docx,.txt"
+                />
+                <div class="file-selection-container">
+                  <button
+                    type="button"
+                    class="file-btn"
+                    onclick="document.getElementById('fileInput').click()"
+                  >
+                    <i class="fa-solid fa-paperclip"></i> chọn tệp
+                  </button>
+                  <div class="file-list-wrapper">
+                    <div id="fileList"></div>
+                  </div>
                 </div>
-                @endif
+                <div class="action-btns">
+                  <button class="send-btn">
+                    <i class="fa-solid fa-microphone"></i>
+                  </button>
+                  <button class="mic-btn">
+                    <i class="fa-solid fa-arrow-up"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section summary-section">
+            <label class="textarea-label">Nội dung được tóm tắt</label>
+            <div class="output-area"></div>
+          </div>
         </div>
     </div>
+
+
+    <script src="https://kit.fontawesome.com/af877c9b83.js" crossorigin="anonymous"></script>
+        
+
+    <script src="script.js"></script>
 
     <!-- Thêm script để xử lý markdown -->
     <script src="{{ asset('js/script.js') }}"></script>
