@@ -49,6 +49,7 @@ Route::get('/gemini', function (Request $request) {
     $userText = $request->query('textgmn', '(no input)');
     session(['original_text_gmn' => $request->input('textgmn')]);
     $ratio = $request->query('ratiogmn', 0.5);
+    session(['original_ratio_gmn' => $request->input('ratiogmn')]);
     $response = Http::post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$geminiApiKey", [
         'contents' => [
             'parts' => [
