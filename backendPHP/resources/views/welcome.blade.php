@@ -26,7 +26,6 @@
 
       <div class="container-summary" id="summary-page">
       <div class="header">
-        <h1 class="title">Tóm tắt văn bản học thuật</h1>
         <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
             @if (Route::has('login'))
                 <nav class="flex items-center justify-end gap-4">
@@ -49,59 +48,46 @@
             @endif
         </header>
       </div>
-      <p class="sub">
-        Công cụ hỗ trợ tóm tắt nhanh và chính xác các văn bản học thuật
-      </p>
-      <div class="main">
-        <div class="section upload-section">
-          <label class="textarea-label"
-            >Văn bản hay tệp cần tóm tắt (.txt, .docx, pdf)</label
-          >
-          <div class="input-area">
-            <textarea
-              class="text-input"
-              placeholder="Nhập văn bản cần tóm tắt..."
-            ></textarea>
-            <div class="file-row">
-              <div class="file-upload-controls">
-                <p class="file-note">
-                  Lưu ý dung lượng tệp phải nhỏ hơn hoặc bằng 10MB
-                </p>
-                <input
-                  type="file"
-                  id="fileInput"
-                  multiple
-                  style="display: none"
-                  accept=".pdf,.doc,.docx,.txt"
-                />
-                <div class="file-selection-container">
-                  <button
-                    type="button"
-                    class="file-btn"
-                    onclick="document.getElementById('fileInput').click()"
-                  >
-                    <i class="fa-solid fa-paperclip"></i> chọn tệp
-                  </button>
-                  <div class="file-list-wrapper">
-                    <div id="fileList"></div>
-                  </div>
-                </div>
-                <div class="action-btns">
-                  <button class="send-btn">
-                    <i class="fa-solid fa-microphone"></i>
-                  </button>
-                  <button class="mic-btn">
-                    <i class="fa-solid fa-arrow-up"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+       <h1 class="title">Tóm tắt văn bản học thuật</h1>
 
-          <div class="section summary-section">
+        <p class="sub">
+        Công cụ hỗ trợ tóm tắt nhanh và chính xác các văn bản học thuật
+        </p>
+        <label class="textarea-label"
+            >Văn bản hay tệp cần tóm tắt (.txt, .docx, pdf).
+              Lưu ý: dung lượng tệp phải nhỏ hơn hoặc bằng 10MB
+                </label
+          >
+          
+
+           <form method="POST">
+                    @csrf
+                    <textarea name="text" id="text" class="input-areah">{{ session('original_text') }} hãy nhập văn bản cần tóm tắt...
+                    </textarea>
+                    <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="0.5" class="mt-4 w-full" />
+                    <button type="submit" class="mt-4">{{ __('Summarize') }}</button>
+                   
+                </form>
             <label class="textarea-label">Nội dung được tóm tắt</label>
-            <div class="output-area"></div>
-          </div>
+            <div class="output-areah">
+                     @if(session('summary'))
+                    <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
+                        <div id="summary-output">{!! nl2br(e(session('summary'))) !!}</div>
+                    </div>
+          
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Xử lý hiển thị markdown cho kết quả tóm tắt
+                            const summaryText = @json(session('summary'));
+                            const outputArea = document.getElementById('summary-output');
+                            // Chuyển đổi markdown thành HTML
+                            const html = summaryText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                            outputArea.innerHTML = html;
+                        });
+                    </script>
+                     @endif
+                </div>
+
         </div>
       </div>
 

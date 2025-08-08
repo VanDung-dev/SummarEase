@@ -28,11 +28,169 @@
     padding: 1rem;
 }
 
-/* Dark */
-.dark .custom-header {
-    border-bottom: 1px solid #3f3f46; /* zinc-700 */
-    background-color: #18181b; /* zinc-900 */
-    color: white; /* chữ sáng hơn khi dark mode */
+
+
+/* Sửa lỗi viền trắng trong menu khi ở chế độ tối */
+.dark .siba {
+    border: 2px solid #3f3f46; /* Sử dụng màu viền phù hợp với dark mode */
+    background-color: #18181b; /* Nền phù hợp với dark mode */
+}
+
+.dark .nal-list {
+    border: 2px solid #3f3f46; /* Sử dụng màu viền phù hợp với dark mode */
+}
+
+/* Đảm bảo tất cả các thành phần Flux trong dark mode có viền phù hợp */
+.dark [data-flux-sidebar] {
+    border-color: #3f3f46 !important;
+    background-color: #18181b !important;
+}
+
+.dark [data-flux-navlist-item] {
+    border-color: #3f3f46 !important;
+}
+
+.dark [data-flux-dropdown] {
+    border-color: #3f3f46 !important;
+}
+
+.dark [data-flux-menu] {
+    border-color: #3f3f46 !important;
+    background-color: #18181b !important;
+}
+
+.dark [data-flux-menu-separator] div {
+    background-color: #3f3f46 !important;
+}
+
+/* Đảm bảo tất cả các thành phần có viền phù hợp trong dark mode */
+.dark .border,
+.dark .border-t,
+.dark .border-r,
+.dark .border-b,
+.dark .border-l {
+    border-color: #3f3f46 !important;
+}
+
+/* Cập nhật màu nền cho body trong dark mode */
+.dark body {
+    background: #272727; /* Màu nền tối */
+}
+
+
+
+/* Dark mode styles for login page */
+.dark .login-container {
+    background: #18181b;
+    border: 2px solid #3f3f46;
+    color: #fff;
+}
+
+.dark .login-card {
+    background-color: #18181b;
+    border: 2px solid #3f3f46;
+    color: #fff;
+}
+
+.dark .login-header {
+    color: #fff;
+}
+
+.dark h1 {
+    color: #63a0ff;
+}
+
+.dark .login-description {
+    color: #a0a0a0;
+}
+
+.dark .google-login-btn {
+    background: #2d2d2d;
+    border: 1px solid #3f3f46;
+    color: #fff;
+}
+
+.dark .google-login-btn:hover {
+    background: #3f3f46;
+}
+
+.dark .footer-links {
+    color: #a0a0a0;
+}
+
+.dark .footer-links a {
+    color: #63a0ff;
+}
+
+.dark .footer-text {
+    color: #a0a0a0;
+}
+
+.dark .footer-text a {
+    color: #63a0ff;
+}
+
+/* Auth layout dark mode styles */
+.dark body {
+    background: linear-gradient(to bottom, #0a0a0a, #171717);
+}
+
+.dark .bg-background {
+    background-color: transparent;
+}
+
+.dark flux-input,
+.dark [data-flux-input] {
+    background-color: #2d2d2d !important;
+    border-color: #3f3f46 !important;
+    color: #fff !important;
+}
+
+.dark flux-input input,
+.dark [data-flux-input] input {
+    background-color: #2d2d2d !important;
+    color: #fff !important;
+}
+
+.dark flux-input label,
+.dark [data-flux-input] label {
+    color: #d4d4d4 !important;
+}
+
+.dark flux-button,
+.dark [data-flux-button] {
+    background-color: #4a6cff !important;
+    border-color: #4a6cff !important;
+    color: #fff !important;
+}
+
+.dark flux-button:hover,
+.dark [data-flux-button]:hover {
+    background-color: #3578e5 !important;
+    border-color: #3578e5 !important;
+}
+
+.dark flux-checkbox label,
+.dark [data-flux-checkbox] label {
+    color: #d4d4d4 !important;
+}
+
+.dark flux-link,
+.dark [data-flux-link] {
+    color: #63a0ff !important;
+}
+
+.dark flux-link:hover,
+.dark [data-flux-link]:hover {
+    color: #8ab4ff !important;
+}
+
+.dark .text-zinc-600 {
+    color: #a0a0a0 !important;
+}
+
+.dark .text-zinc-400 {
+    color: #d4d4d4 !important;
 }
 
 /* ==========================================================
@@ -40,7 +198,7 @@
   ========================================================== */
 body {
     font-family: "Arial", sans-serif;
-    background: #e6f0fa;
+    background: #ffffff;
     margin: 0;
     padding: 0;
     height: 100vh;
@@ -48,6 +206,12 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.dark body {
+    background:  #272727; /* Màu nền tối */
+}
+
+
 
 .login-container {
     background: #fff;
@@ -129,6 +293,7 @@ h1 {
     height: 45px;
     justify-self: center;
     margin-top: 50px;
+    color: #000000;
 }
 
 .google-login-btn:hover {
@@ -228,6 +393,8 @@ h1 {
     align-items: center;
     justify-content: center;
     gap: 12px;
+    width: 100%;
+    margin-top: 20px;
 }
 
 .sub {
@@ -237,13 +404,16 @@ h1 {
     text-align: center;
 }
 
+
+
+
 /* ==========================================================
   Khu vực nhập liệu, tải tệp và các nút điều khiển
   ========================================================== */
 .input-area,
 .output-area {
     background: #fff;
-    border: 2px solid rgb(0, 0, 0);
+    border: 2px solid rgb(100, 100, 100);
     border-radius: 24px;
     padding: 18px 18px 12px 18px;
     margin-top: 10px;
@@ -252,6 +422,38 @@ h1 {
     width: 1000px;
     height: 165px;
     position: relative;
+}
+
+
+
+.input-areaa ,
+.output-areaa  {
+    background: #ffffff;
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 24px;
+    padding: 18px 18px 12px 18px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    min-height: 120px;
+    width: 100%;
+    height: 165px;
+    position: relative;
+}
+
+
+.dark .input-areaa,
+.dark .output-areaa {
+    background: #2d2d2d;
+    border: 1px solid #555;
+    color: #fff;
+}
+
+
+/* Thêm hiệu ứng focus cho output-areaa trong chế độ tối*/
+.dark .output-areaa.focus,
+.dark .output-areaa:focus {
+    outline: hidden;
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #525252;
 }
 
 .text-input {
@@ -334,9 +536,14 @@ h1 {
 .textarea-label {
     font-size: 16px;
     font-weight: 500;
-    color: #333;
+    color: #3b3b3b;
     margin-top: 5px;
     display: block;
+    margin-left: 130px;
+}
+
+.dark .textarea-label {
+    color: #b9b9b9;
 }
 
 .file-selection-container {
@@ -546,7 +753,7 @@ h1 {
   flex-direction: column;
   gap: 10px;
   padding: 10px;
-  border: #000000 2px solid;
+  border: 1px solid rgb(100, 100, 100);
   margin-top: 50px;  
   height: 40px;
   font-size: 30px;
@@ -584,14 +791,15 @@ h1 {
 
 
 .siba {
-  width: 210px;
+  width: 250px;
   height: 735px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: #000000  2px solid;
+  border: 1px solid rgb(100, 100, 100);
   border-radius: 10px;  
-  margin-bottom: 25px;
+  margin-bottom: 70px;
+  background-color: #f6faff;
 }
 
 
@@ -647,4 +855,50 @@ h1 {
 /* Thêm class 'hidden' để ẩn các phần tử */
 .hidden {
   display: none !important;
+}
+
+
+.dark .container-summary{
+    background-color: #18181b;
+}
+
+.input-areah,
+.output-areah {
+  background: #eeeeee;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 24px;
+  padding: 18px 18px 12px 18px;
+  margin: 10px auto 30px auto; /* căn giữa chính div */
+  min-height: 120px;
+  width: 1200px;
+  height: 165px;
+  display: flex;
+  justify-content: center; /* Căn giữa nội dung ngang */
+  align-items: center;     /* Căn giữa nội dung dọc */
+}
+
+
+.dark .input-areah,
+.dark .output-areah {
+    background: #2d2d2d;
+    border: 1px solid #555;
+    color: #fff;
+}   
+
+.mt-4{
+    background-color: #1e88e5;
+    width: 1150px;
+    height: 40px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 15px;
+
+}
+
+.dark .mt-4 {
+    color: white;
+}
+
+.min{
+    border: #e20404 1px solid;
 }

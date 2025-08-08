@@ -102,3 +102,39 @@ if (subtitle) {
     menu_btn.classList.remove("hidden");
     close_menu_btn.classList.add("hidden");
   });
+
+
+
+
+  // Khôi phục theme đã lưu khi tải trang
+document.addEventListener('DOMContentLoaded', function() {
+    // Kiểm tra theme đã lưu trong localStorage
+    const savedTheme = localStorage.getItem('theme');
+    
+    // Nếu có theme đã lưu, áp dụng nó
+    if (savedTheme) {
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }
+    
+    // Theo dõi sự thay đổi theme
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                // Kiểm tra xem class 'dark' có được thêm hay xóa không
+                const isDark = document.documentElement.classList.contains('dark');
+                // Lưu theme vào localStorage
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            }
+        });
+    });
+    
+    // Bắt đầu theo dõi thay đổi class của phần tử html
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class']
+    });
+});

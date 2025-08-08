@@ -1,7 +1,7 @@
  <link href="style.css" rel="stylesheet" />
 
 <x-layouts.app :title="__('Dashboard')">
-    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
+    <div class="flex h-full w-full flex-1 flex-col gap-4 ">
         <div class="grid auto-rows-min gap-4 md:grid-cols-3">
             <!-- <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
                 <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
@@ -22,14 +22,14 @@
 
         <form method="POST">
                     @csrf
-                    <textarea name="text" id="text" class="input-area">{{ session('original_text') }}</textarea>
+                    <textarea name="text" id="text" class="input-areaa">{{ session('original_text') }}</textarea>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="0.5" class="mt-4 w-full" />
                     <p class="text-sm text-gray-500 mt-1"></p>
-                    <button type="submit" class="mt-4 w-full rounded-xl bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">{{ __('Summarize') }}</button>
+                    <button type="submit" class="mt-4">{{ __('Summarize') }}</button>
                 </form>
 
 
-                <div class="output-area">
+                <div class="output-areaa">
                      @if(session('summary'))
                     <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
                         <div id="summary-output">{!! nl2br(e(session('summary'))) !!}</div>

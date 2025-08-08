@@ -276,3 +276,73 @@
         @endif
     </body>
 </html>
+
+
+
+
+
+<div class="container-summary" id="summary-page">
+      <div class="header">
+        <h1 class="title">Tóm tắt văn bản học thuật</h1>
+        <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
+            @if (Route::has('login'))
+                <nav class="flex items-center justify-end gap-4">
+                    @auth
+                        <a
+                            href="{{ url('/dashboard') }}"
+                            class="login"
+                        >
+                            Quay lại trang chủ
+                        </a>
+                    @else
+                        <a
+                            href="{{ route('login') }}"
+                            class="login"
+                        >
+                            Đăng nhập
+                        </a>
+                    @endauth
+                </nav>
+            @endif
+        </header>
+      </div>
+      <p class="sub">
+        Công cụ hỗ trợ tóm tắt nhanh và chính xác các văn bản học thuật
+      </p>
+      <div class="main">
+        <div class="section upload-section">
+          <label class="textarea-label"
+            >Văn bản hay tệp cần tóm tắt (.txt, .docx, pdf)</label
+          >
+          <div class="input-area">
+            <textarea
+              class="text-input"
+              placeholder="Nhập văn bản cần tóm tắt..."
+            ></textarea>
+            <div class="file-row">
+              <div class="file-upload-controls">
+                <p class="file-note">
+                  Lưu ý dung lượng tệp phải nhỏ hơn hoặc bằng 10MB
+                </p>
+                <input
+                  type="file"
+                  id="fileInput"
+                  multiple
+                  style="display: none"
+                  accept=".pdf,.doc,.docx,.txt"
+                />
+                <div class="file-selection-container">
+                  <button
+                    type="button"
+                    class="file-btn"
+                    onclick="document.getElementById('fileInput').click()"
+                  >
+                    <i class="fa-solid fa-paperclip"></i> chọn tệp
+                  </button>
+                  <div class="file-list-wrapper">
+                    <div id="fileList"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
