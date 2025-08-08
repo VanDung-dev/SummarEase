@@ -46,8 +46,9 @@ require __DIR__.'/auth.php';
 
 Route::get('/gemini', function (Request $request) {
     $geminiApiKey = env('GEMINI_API_KEY');
-    $userText = $request->query('text', '(no input)');
-    $ratio = $request->query('ratio', 0.5);
+    $userText = $request->query('textgmn', '(no input)');
+    session(['original_text_gmn' => $request->input('textgmn')]);
+    $ratio = $request->query('ratiogmn', 0.5);
     $response = Http::post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$geminiApiKey", [
         'contents' => [
             'parts' => [
