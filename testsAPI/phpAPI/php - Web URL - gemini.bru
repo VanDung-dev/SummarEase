@@ -1,17 +1,17 @@
 meta {
-  name: Python - Web URL
+  name: php - Web URL - gemini
   type: http
-  seq: 3
+  seq: 7
 }
 
 post {
-  url: http://localhost:5001/summarize-file
+  url: http://localhost:8000/api/summarize/gemini/url
   body: multipartForm
   auth: none
 }
 
 body:multipart-form {
-  file: https://en.wikipedia.org/wiki/Sheep
+  url: https://en.wikipedia.org/wiki/Sheep
   ratio: 0.25
   language: english
   user_id: 1

@@ -1,22 +1,19 @@
 meta {
-  name: Python - File
+  name: php - File - gemini
   type: http
-  seq: 1
+  seq: 7
 }
 
 post {
-  url: http://localhost:5001/summarize-file
+  url: http://localhost:8000/api/summarize/gemini/file
   body: multipartForm
   auth: none
-}
-
-headers {
-  ~ratio: 
 }
 
 body:multipart-form {
   file: @file(sample.pdf) @contentType(application/pdf)
   ratio: 0.25
+  language: auto
   user_id: 1
 }
 
