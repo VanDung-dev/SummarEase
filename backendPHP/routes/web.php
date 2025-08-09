@@ -30,17 +30,23 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/profile', 'settings.profile')
         ->name('settings.profile')
         ->middleware('admin');
-        
+
     Volt::route('settings/password', 'settings.password')
         ->name('settings.password')
         ->middleware('admin');
-        
+
     Volt::route('settings/appearance', 'settings.appearance')
         ->name('settings.appearance');
 });
 
+// Các route cho chức năng tóm tắt bằng hệ thống cơ bản
 Route::post('/summarize/text', [SummaryController::class, 'summarizeText']);
 Route::post('/summarize/file', [SummaryController::class, 'summarizeFile']);
+
+// Các route cho chức năng tóm tắt bằng Gemini API
+Route::post('/summarize/gemini/text', [SummaryController::class, 'summarizeTextGemini'])->name('summarize.gemini.text');
+Route::post('/summarize/gemini/file', [SummaryController::class, 'summarizeFileGemini'])->name('summarize.gemini.file');
+Route::post('/summarize/gemini/url', [SummaryController::class, 'summarizeUrlGemini'])->name('summarize.gemini.url');
 
 require __DIR__.'/auth.php';
 

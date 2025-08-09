@@ -106,4 +106,113 @@ class SummaryController extends Controller
 
         return view('dashboard', ['summary' => $result['summary']]);
     }
+
+    // Phương thức mới để tóm tắt văn bản sử dụng Gemini API
+    public function summarizeTextGemini(Request $request)
+    {
+        $request->validate([
+            'text' => 'required|string',
+            'ratio' => 'numeric|min:0|max:1',
+            'language' => 'in:vietnamese,english,auto'
+        ]);
+
+        // Lưu văn bản gốc vào session để hiển thị lại sau khi submit
+        session(['original_text' => $request->input('text')]);
+        session(['original_ratio' => $request->input('ratio')]);
+
+        $result = $this->apiClient->summarizeTextGemini(
+            $request->input('text'),
+            $request->input('ratio', 0.2),
+            $request->input('language', 'vietnamese'),
+            Auth::id() ?? 1 // Sử dụng ID người dùng hiện tại hoặc mặc định là 1
+        );
+
+        // Kiểm tra lỗi trong kết quả
+        if (isset($result['error'])) {
+            return back()->with('error', $result['error'] . ': ' . ($result['details'] ?? ''));
+        }
+
+        // Kiểm tra các key cần thiết
+        if (!isset($result['summary'])) {
+            return back()->with('error', 'Không tìm thấy nội dung tóm tắt trong kết quả');
+        }
+
+        // Trả về thêm tiêu đề, từ khóa và ngôn ngữ nếu có
+        return back()->with([
+            'summary' => $result['summary'],
+            'title' => $result['title'] ?? null,
+            'keywords' => $result['keywords'] ?? null,
+            'language' => $result['language'] ?? null
+        ]);
+    }
+
+    // Phương thức mới để tóm tắt file sử dụng Gemini API
+    public function summarizeFileGemini(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file', // Yêu cầu là một file upload
+            'ratio' => 'numeric|min:0|max:1',
+            'language' => 'in:vietnamese,english,auto'
+        ]);
+
+        $result = $this->apiClient->summarizeFileGemini(
+            $request->file('file'),
+            $request->input('ratio', 0.2),
+            $request->input('language', 'vietnamese'),
+            Auth::id() ?? 1 // Sử dụng ID người dùng hiện tại hoặc mặc định là 1
+        );
+
+        // Kiểm tra lỗi trong kết quả
+        if (isset($result['error'])) {
+            return back()->with('error', $result['error'] . ': ' . ($result['details'] ?? ''));
+        }
+
+        // Kiểm tra các key cần thiết
+        if (!isset($result['summary'])) {
+            return back()->with('error', 'Không tìm thấy nội dung tóm tắt trong kết quả');
+        }
+
+        // Trả về thêm tiêu đề, từ khóa và ngôn ngữ nếu có
+        return back()->with([
+            'summary' => $result['summary'],
+            'title' => $result['title'] ?? null,
+            'keywords' => $result['keywords'] ?? null,
+            'language' => $result['language'] ?? null
+        ]);
+    }
+
+    // Phương thức mới để tóm tắt URL sử dụng Gemini API
+    public function summarizeUrlGemini(Request $request)
+    {
+        $request->validate([
+            'url' => 'required|url',
+            'ratio' => 'numeric|min:0|max:1',
+            'language' => 'in:vietnamese,english,auto'
+        ]);
+
+        $result = $this->apiClient->summarizeUrlGemini(
+            $request->input('url'),
+            $request->input('ratio', 0.2),
+            $request->input('language', 'vietnamese'),
+            Auth::id() ?? 1 // Sử dụng ID người dùng hiện tại hoặc mặc định là 1
+        );
+
+        // Kiểm tra lỗi trong kết quả
+        if (isset($result['error'])) {
+            return back()->with('error', $result['error'] . ': ' . ($result['details'] ?? ''));
+        }
+
+        // Kiểm tra các key cần thiết
+        if (!isset($result['summary'])) {
+            return back()->with('error', 'Không tìm thấy nội dung tóm tắt trong kết quả');
+        }
+
+        // Trả về thêm tiêu đề, từ khóa và ngôn ngữ nếu có
+        return back()->with([
+            'summary' => $result['summary'],
+            'title' => $result['title'] ?? null,
+            'keywords' => $result['keywords'] ?? null,
+            'language' => $result['language'] ?? null
+        ]);
+    }
 }
