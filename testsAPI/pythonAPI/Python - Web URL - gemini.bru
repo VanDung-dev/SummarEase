@@ -1,0 +1,22 @@
+meta {
+  name: Python - Web URL - gemini
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://localhost:5001/summarize-url-gemini
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  url: https://en.wikipedia.org/wiki/Sheep
+  ratio: 0.25
+  language: english
+  user_id: 1
+}
+
+settings {
+  encodeUrl: true
+}
