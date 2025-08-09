@@ -3,6 +3,7 @@ from .utils.text_cleaner import clean_text
 from .utils.summarizer import textrank_summarize, generate_title
 from .utils.file_handler import extract_text
 from .utils.database import save_summary_to_db
+from .utils.gemini_summarizer import gemini_summarize
 import tempfile
 import os
 import logging
@@ -236,3 +237,90 @@ def summarize_file():
                 os.remove(temp_path)
             except Exception as e:
                 logger.warning(f"Could not remove temporary file {temp_path}: {str(e)}")
+
+
+@summarize_bp.route("/summarize-gemini", methods=["POST"])
+def summarize_text_gemini():
+    """
+    Tóm tắt văn bản đầu vào sử dụng Gemini API.
+
+    Đầu vào (JSON payload):
+        - text (str): Nội dung văn bản cần tóm tắt (bắt buộc).
+        - ratio (float, tùy chọn): Tỷ lệ tóm tắt (mặc định: 0.2, giá trị từ 0.0 đến 1.0).
+        - language (str, tùy chọn): Ngôn ngữ của văn bản ("vietnamese" hoặc "english", mặc định: "vietnamese").
+        - user_id (int): ID của người dùng (bắt buộc).
+
+    Trả về:
+        - JSON chứa trạng thái, nội dung tóm tắt, tỷ lệ tóm tắt và ngôn ngữ.
+
+    Ngoại lệ:
+        - 400: Nếu yêu cầu không đúng định dạng JSON, văn bản rỗng, ngôn ngữ không hợp lệ hoặc thiếu user_id.
+        - 500: Nếu xảy ra lỗi trong quá trình xử lý với Gemini API.
+    """
+    try:
+        if not request.is_json:
+            return jsonify({"error": "Yêu cầu phải có Content-Type là application/json"}), 400
+
+        data = request.get_json()
+        raw_text = data.get("text", "")
+        ratio = float(data.get("ratio", 0.2))
+        language = data.get("language", "vietnamese")
+        # Lấy user_id từ request - bắt buộc phải có
+        user_id = data.get("user_id")
+        
+        # Kiểm tra user_id có được cung cấp không
+        if user_id is None:
+            return jsonify({"error": "Thiếu user_id trong yêu cầu"}), 400
+
+        if not raw_text.strip():
+            return jsonify({"error": "Nội dung văn bản không được để trống"}), 400
+        if language.lower() not in ["vietnamese", "english"]:
+            return jsonify({"error": f"Ngôn ngữ không được hỗ trợ: {language}"}), 400
+
+        # Gọi Gemini API để tóm tắt văn bản
+        result = gemini_summarize(
+            raw_text,
+            ratio=ratio,
+            language=language
+        )
+
+        # Kiểm tra kết quả trả về
+        if not isinstance(result, dict) or "summary" not in result:
+            return jsonify({"error": "Lỗi xử lý văn bản với Gemini API: Kết quả không hợp lệ"}), 500
+
+        # Chuẩn bị dữ liệu để lưu vào DB
+        summary_data = {
+            "summary": result["summary"],
+            "highlighted_summary": result["highlighted_summary"],
+            "ratio": ratio,
+            "keywords": result["keywords"]
+        }
+        
+        document_data = {
+            "content": raw_text,
+            "title": result.get("title", f"Tóm tắt văn bản bằng Gemini"),
+            "file_name": None,
+            "file_type": "text",
+            "user_id": user_id  # Sử dụng user_id từ request
+        }
+        
+        # Lưu vào cơ sở dữ liệu
+        save_success = save_summary_to_db(summary_data, document_data)
+        if not save_success:
+            logger.warning("Không thể lưu kết quả tóm tắt vào cơ sở dữ liệu")
+
+        return jsonify({
+            "status": "success",
+            "language": language,
+            "title": result.get("title", f"Tóm tắt văn bản bằng Gemini"),
+            "keywords": result["keywords"],
+            "ratio": ratio,
+            "summary": result["summary"]
+        })
+
+    except ValueError as ve:
+        logger.error(f"Lỗi giá trị khi tóm tắt văn bản với Gemini: {str(ve)}")
+        return jsonify({"error": "Lỗi giá trị", "details": str(ve)}), 400
+    except Exception as e:
+        logger.error(f"Lỗi khi tóm tắt văn bản với Gemini: {str(e)}")
+        return jsonify({"error": "Lỗi xử lý văn bản với Gemini API", "details": str(e)}), 500
