@@ -26,15 +26,15 @@
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="0.5" class="mt-4 w-full" />
                     <p class="text-sm text-gray-500 mt-1"></p>
                     <button type="submit" class="mt-4">{{ __('Summarize') }}</button>
-                </form>
-                    <textarea name="text" id="text" class="input-area">{{ session('original_text') }}</textarea>
+        </form>
+                    <!--<textarea name="text" id="text" class="input-area">{{ session('original_text') }}</textarea>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value='{{ session('original_ratio') }}' class="mt-4 w-full" />
                     <p class="text-sm text-gray-500 mt-1"></p>
                     <button type="submit" class="mt-4 w-full rounded-xl bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">{{ __('Summarize with SummarEase') }}</button>
-        </form>
+        </form>-->
 
         <form method="GET" action="/gemini" class="mt-2">
-                    <textarea name="textgmn" class="input-area">{{ session('original_text_gmn') }}</textarea>
+                    <textarea name="textgmn" class="input-areaa">{{ session('original_text_gmn') }}</textarea>
                     <input type="range" name="ratiogmn" min="0" max="1" step="0.1" value='{{ session('original_ratio_gmn') }}' class="mt-4 w-full"/>
                     <button type="submit" class="mt-4 w-full rounded-xl bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                     Summarize with Gemini
