@@ -180,3 +180,52 @@ def gemini_summarize_file(file_path: str, ratio: float = 0.2, language: str = "v
     
     # Sử dụng hàm gemini_summarize hiện tại để xử lý nội dung text
     return gemini_summarize(text, ratio, language)
+
+
+def gemini_summarize_url(url: str, ratio: float = 0.2, language: str = "vietnamese") -> Dict[str, Any]:
+    """
+    Tóm tắt nội dung của một trang web sử dụng Gemini API.
+    
+    Args:
+        url (str): URL của trang web cần tóm tắt
+        ratio (float): Tỷ lệ tóm tắt (0.0 - 1.0)
+        language (str): Ngôn ngữ của văn bản
+        
+    Returns:
+        dict: Kết quả tóm tắt với các trường summary, keywords, title
+    """
+    try:
+        # Lấy nội dung từ URL
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        # Trích xuất văn bản từ nội dung HTML
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # Loại bỏ script và style elements
+        for script in soup(["script", "style"]):
+            script.decompose()
+            
+        # Lấy văn bản từ phần body nếu có, nếu không thì lấy từ toàn bộ soup
+        body = soup.find('body')
+        text = body.get_text() if body else soup.get_text()
+        
+        # Làm sạch văn bản
+        lines = (line.strip() for line in text.splitlines())
+        chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+        text = ' '.join(chunk for chunk in chunks if chunk)
+        
+        # Nếu văn bản rỗng
+        if not text.strip():
+            raise ValueError("Không thể trích xuất nội dung từ URL")
+            
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Lỗi khi tải nội dung từ URL {url}: {str(e)}")
+        raise Exception(f"Lỗi khi tải nội dung từ URL: {str(e)}")
+    except Exception as e:
+        logger.error(f"Lỗi khi xử lý nội dung từ URL {url}: {str(e)}")
+        raise Exception(f"Lỗi khi xử lý nội dung từ URL: {str(e)}")
+    
+    # Sử dụng hàm gemini_summarize hiện tại để xử lý nội dung text
+    return gemini_summarize(text, ratio, language)
