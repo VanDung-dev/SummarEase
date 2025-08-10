@@ -44,7 +44,7 @@ class SummaryController extends Controller
             return back()->with('error', 'Không tìm thấy nội dung tóm tắt trong kết quả');
         }
 
-        return view('dashboard', ['summary' => $result['summary']]);
+        return back()->with('summary', $result['summary']);
     }
 
     public function summarizeTextOnDashboard(Request $request)
@@ -104,7 +104,7 @@ class SummaryController extends Controller
             return back()->with('error', 'Không tìm thấy nội dung tóm tắt trong kết quả');
         }
 
-        return view('dashboard', ['summary' => $result['summary']]);
+        return back()->with('summary', $result['summary']);
     }
 
     // Phương thức mới để tóm tắt văn bản sử dụng Gemini API

@@ -60,14 +60,13 @@
           >
           
 
-           <form method="POST">
+           <form method="POST" action="{{ url('/summarize/text') }}">
                     @csrf
-                    <textarea name="text" id="text" class="input-areah">{{ session('original_text') }} hãy nhập văn bản cần tóm tắt...
-                    </textarea>
+                    <textarea name="text" id="text" class="input-areah">{{ session('original_text') }}Hãy nhập văn bản cần tóm tắt...</textarea>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="0.5" class="mt-4 w-full" />
                     <button type="submit" class="mt-4">{{ __('Summarize') }}</button>
                    
-                </form>
+            </form>
             <label class="textarea-label">Nội dung được tóm tắt</label>
             <div class="output-areah">
                      @if(session('summary'))
