@@ -1,5 +1,3 @@
-
-
 .login {
     position: absolute;
     display: flex;
@@ -23,8 +21,10 @@
 
 /* Sáng */
 .custom-header {
-    border-bottom: 1px solid #e4e4e7; /* zinc-200 */
-    background-color: #fafafa; /* zinc-50 */
+    border-bottom: 1px solid #e4e4e7;
+    /* zinc-200 */
+    background-color: #fafafa;
+    /* zinc-50 */
     padding: 1rem;
 }
 
@@ -32,12 +32,15 @@
 
 /* Sửa lỗi viền trắng trong menu khi ở chế độ tối */
 .dark .siba {
-    border: 2px solid #3f3f46; /* Sử dụng màu viền phù hợp với dark mode */
-    background-color: #18181b; /* Nền phù hợp với dark mode */
+    border: 2px solid #3f3f46;
+    /* Sử dụng màu viền phù hợp với dark mode */
+    background-color: #18181b;
+    /* Nền phù hợp với dark mode */
 }
 
 .dark .nal-list {
-    border: 2px solid #3f3f46; /* Sử dụng màu viền phù hợp với dark mode */
+    border: 2px solid #3f3f46;
+    /* Sử dụng màu viền phù hợp với dark mode */
 }
 
 /* Đảm bảo tất cả các thành phần Flux trong dark mode có viền phù hợp */
@@ -74,7 +77,8 @@
 
 /* Cập nhật màu nền cho body trong dark mode */
 .dark body {
-    background: #272727; /* Màu nền tối */
+    background: #272727;
+    /* Màu nền tối */
 }
 
 
@@ -208,7 +212,8 @@ body {
 }
 
 .dark body {
-    background:  #272727; /* Màu nền tối */
+    background: #272727;
+    /* Màu nền tối */
 }
 
 
@@ -227,7 +232,7 @@ body {
 }
 
 .main-dasboard {
-   margin-left: 100px;
+    margin-left: 100px;
 }
 
 .footer-text {
@@ -236,6 +241,7 @@ body {
     font-size: 1rem;
     color: #666;
 }
+
 .footer-text a {
     color: #4a6cff;
     text-decoration: none;
@@ -333,7 +339,7 @@ h1 {
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
-    
+
 }
 
 .container-summary.menu-show {
@@ -426,8 +432,9 @@ h1 {
 
 
 
-.input-areaa ,
-.output-areaa  {
+.input-areaa,
+.output-areaa {
+    overflow: auto;
     background: #ffffff;
     border: 1px solid rgb(100, 100, 100);
     border-radius: 24px;
@@ -650,93 +657,97 @@ h1 {
     Responsive
 */
 #menu {
-  border: 2.5px solid #000000;
-  border-radius: 0 20px 20px 0;
-  background-color: rgb(222, 238, 253);
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  top: 0.5px;
-  left: 0;
-  z-index: 5;
-  transform: translateX(-100%);
-  transition: transform 0.5s ease, opacity 0.4s ease-in-out;
-  justify-content: space-between;
- 
+    border: 2.5px solid #000000;
+    border-radius: 0 20px 20px 0;
+    background-color: rgb(222, 238, 253);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0.5px;
+    left: 0;
+    z-index: 5;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease, opacity 0.4s ease-in-out;
+    justify-content: space-between;
+
 }
 
 
 
 
 #menu.show {
-  transform: translateX(0);
-  opacity: 1;
-  height: 735px;
-  width: 270px;
+    transform: translateX(0);
+    opacity: 1;
+    height: 735px;
+    width: 270px;
 }
 
 #menu .history {
-  font-size: 20px;
-  padding-top: 65px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+    font-size: 20px;
+    padding-top: 65px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
 #menu .history {
-  padding-top: 40px;
-  display: flex;
-  align-items: center;        /* dọc */
-  justify-content: center;    /* ngang */
+    padding-top: 40px;
+    display: flex;
+    align-items: center;
+    /* dọc */
+    justify-content: center;
+    /* ngang */
 }
 
 .menu-btn {
-  width: 60px;
-  height: 60px;
-  cursor: pointer;
-  border-radius: 50%;
-  background-color: rgb(14, 128, 234);
-  position: fixed;
-  left: 10px;
-  top: 14px;
-  z-index: 6;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: rgb(14, 128, 234);
+    position: fixed;
+    left: 10px;
+    top: 14px;
+    z-index: 6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .menu-btn i {
-  position: static;
-  font-size: 30px;
+    position: static;
+    font-size: 30px;
 }
 
 .close-menu-btn {
-  font-size: 20px;
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 7;
-  color: black; /* Đã xóa dòng display: none; */
+    font-size: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 7;
+    color: black;
+    /* Đã xóa dòng display: none; */
 }
 
 .close-menu-btn:hover {
-  color: #3578e5;
+    color: #3578e5;
 }
 
 #menu a {
-  text-decoration: none;
-  color: black;
-  font-weight: bold;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
 }
 
 .menu-left {
-  display: flex;
-  border: #000000 2px solid;
-  height: auto;
-  width: 100%;
+    display: flex;
+    border: #000000 2px solid;
+    height: auto;
+    width: 100%;
 }
+
 .title-2 {
     font-size: 3rem;
     font-weight: bold;
@@ -749,132 +760,136 @@ h1 {
 }
 
 .nal-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px;
-  border: 1px solid rgb(100, 100, 100);
-  margin-top: 50px;  
-  height: 40px;
-  font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid rgb(100, 100, 100);
+    margin-top: 50px;
+    height: 40px;
+    font-size: 30px;
 }
 
 .headerr {
-  width: 700px;
-  margin-left: 290px;
-  margin-bottom: 550px;
+    width: 700px;
+    margin-left: 290px;
+    margin-bottom: 550px;
 }
 
 .welcome-siba {
-  width: 210px;
-  height: 735px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border: #000000 2px solid;
-  border-radius: 10px;  
-  margin-right: 10px;
-  margin-top: 20px;
+    width: 210px;
+    height: 735px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: #000000 2px solid;
+    border-radius: 10px;
+    margin-right: 10px;
+    margin-top: 20px;
 }
 
 .welcome-some {
-  width: 210px;
-  height: 900px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border: #000000 2px solid;
-  border-radius: 10px;  
-  margin-right: 1318px;
-} 
+    width: 210px;
+    height: 900px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: #000000 2px solid;
+    border-radius: 10px;
+    margin-right: 1318px;
+}
 
 
 
 .siba {
-  width: 250px;
-  height: 735px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border: 1px solid rgb(100, 100, 100);
-  border-radius: 10px;  
-  margin-bottom: 70px;
-  background-color: #f6faff;
+    width: 250px;
+    height: 735px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 10px;
+    margin-bottom: 70px;
+    background-color: #f6faff;
 }
 
 
 
 .sabi {
-  width: 80px;
-  height: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border: #000000 2px solid;
-  border-radius: 15px;
-  margin-left: 1200px;
-  background: #1e88e5;
-  margin-right: 20px;
-  margin-bottom: 5px;
-  margin-top: 10px;
+    width: 80px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: #000000 2px solid;
+    border-radius: 15px;
+    margin-left: 1200px;
+    background: #1e88e5;
+    margin-right: 20px;
+    margin-bottom: 5px;
+    margin-top: 10px;
 }
 
 
 .chat-container {
-  padding: 5px 30px 0 10px;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  overflow-y: auto;
-  flex-grow: 1;
+    padding: 5px 30px 0 10px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+    flex-grow: 1;
 }
 
 .logout {
-  padding: 10px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 20px;
-  font-weight: bold;
-  color: black;
-  transition: background-color 0.2s;
-  border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    transition: background-color 0.2s;
+    border-radius: 10px;
 }
 
 .logout:hover {
-  background-color: #c9dff7;
+    background-color: #c9dff7;
 }
 
 .logout a {
-  text-decoration: none;
-  color: black;
+    text-decoration: none;
+    color: black;
 }
 
 /* Thêm class 'hidden' để ẩn các phần tử */
 .hidden {
-  display: none !important;
+    display: none !important;
 }
 
 
-.dark .container-summary{
+.dark .container-summary {
     background-color: #18181b;
 }
 
 .input-areah,
 .output-areah {
-  background: #eeeeee;
-  border: 1px solid rgb(0, 0, 0);
-  border-radius: 24px;
-  padding: 18px 18px 12px 18px;
-  margin: 10px auto 30px auto; /* căn giữa chính div */
-  min-height: 120px;
-  width: 1200px;
-  height: 165px;
-  display: flex;
-  justify-content: center; /* Căn giữa nội dung ngang */
-  align-items: center;     /* Căn giữa nội dung dọc */
+    overflow: auto;
+    background: #eeeeee;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 24px;
+    padding: 18px 18px 12px 18px;
+    margin: 10px auto 30px auto;
+    /* căn giữa chính div */
+    min-height: 120px;
+    width: 1200px;
+    height: 165px;
+    display: flex;
+    justify-content: center;
+    /* Căn giữa nội dung ngang */
+    /*align-items: center;*/
+    /* Căn giữa nội dung dọc */
 }
 
 
@@ -883,9 +898,9 @@ h1 {
     background: #2d2d2d;
     border: 1px solid #555;
     color: #fff;
-}   
+}
 
-.mt-4{
+.mt-4 {
     background-color: #1e88e5;
     width: 1150px;
     height: 40px;
@@ -899,6 +914,6 @@ h1 {
     color: white;
 }
 
-.min{
+.min {
     border: #e20404 1px solid;
 }
