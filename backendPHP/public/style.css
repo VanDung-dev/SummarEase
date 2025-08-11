@@ -221,8 +221,8 @@ body {
 .login-container {
     background: #fff;
     padding: 20px;
-    border-radius: 20px;
-    border: 2px solid black;
+    border-radius: 5px;
+    border: 1px solid black;
     text-align: center;
     width: 300px;
     display: flex;
@@ -279,7 +279,7 @@ h1 {
 }
 
 .login-description {
-    color: #757575;
+    color: #000000;
     font-size: 20px;
     margin-top: 5px;
 }
@@ -287,14 +287,13 @@ h1 {
 .google-login-btn {
     background: #fff;
     border: 1px solid #030303;
-    border-radius: 5px;
+    border-radius: 2px;
     font-size: 20px;
     cursor: pointer;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     width: 260px;
     height: 45px;
     justify-self: center;
@@ -959,8 +958,4 @@ input[type="range"].w-full {
 
 .dark .mt-4 {
     color: white;
-}
-
-.min {
-    border: #e20404 1px solid;
 }
