@@ -22,7 +22,7 @@
 
         <form method="POST">
                     @csrf
-                    <textarea name="text" id="text" class="input-areaa">{{ session('original_text') }}</textarea>
+                    <textarea name="text" id="text" class="input-areaa" placeholder="Hãy nhập văn bản cần tóm tắt...">{{ session('original_text') }}</textarea>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio')}}" class="mt-4 w-full" />
                     <p class="text-sm text-gray-500 mt-1"></p>
                     <button type="submit" class="mt-4 submit-button">{{ __('Summarize') }}</button>
@@ -34,7 +34,7 @@
         </form>-->
 
         <form method="GET" action="/gemini" class="mt-2">
-                    <textarea name="textgmn" class="input-areaa">{{ session('original_text_gmn') }}</textarea>
+                    <textarea name="textgmn" class="input-areaa" placeholder="Hãy nhập văn bản cần tóm tắt...">{{ session('original_text_gmn') }}</textarea>
                     <input type="range" name="ratiogmn" min="0" max="1" step="0.1" value='{{ session('original_ratio_gmn') }}' class="mt-4 w-full"/>
                     <button type="submit" class="mt-4 submit-button">
                     Summarize with Gemini
