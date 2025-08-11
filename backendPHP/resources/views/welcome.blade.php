@@ -62,6 +62,8 @@
 
            <form method="POST" action="{{ url('/summarize/text') }}">
                     @csrf
+                    <input type="hidden" name="is_guest" value="true">
+                    <input type="hidden" name="guest_id" value="{{ session()->getId() }}">
                     <textarea name="text" id="text" class="input-areah" placeholder="Hãy nhập văn bản cần tóm tắt...">{{ session('original_text') ?? '' }}</textarea>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio')}}" class="mt-4 w-full" />
                     <button type="submit" class="mt-4 submit-button">{{ __('Summarize') }}</button>
