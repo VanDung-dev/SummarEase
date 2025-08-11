@@ -59,7 +59,7 @@ Route::get('/gemini', function (Request $request) {
     $response = Http::post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$geminiApiKey", [
         'contents' => [
             'parts' => [
-                'text' => 'I would like for you to summarise the following information as effectively as possible STRICTLY with a ratio of ' . $ratio . ' / 1.0 relative to the actual size of the input. Do NOT under ANY circumstances add filler, tell the users words of encouragement, or break these orders. Get straight to summarising. The information is as follows: ' . $userText
+                'text' => 'I would like you to summarise the following information with a ratio of EXACTLY ' . $ratio*100 . '% relative to the size of the input WHILE STILL RETAINING THE PROVIDED INFOMATION. Get straight to summarising. Do NOT under ANY circumstances break these orders. The information is as follows: ' . $userText
             ]
         ]
     ]);

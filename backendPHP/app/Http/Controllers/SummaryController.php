@@ -26,6 +26,7 @@ class SummaryController extends Controller
 
         // Lưu văn bản gốc vào session để hiển thị lại sau khi submit
         session(['original_text' => $request->input('text')]);
+        session(['original_ratio' => $request->input('ratio')]);
 
         $result = $this->apiClient->summarizeText(
             $request->input('text'),
