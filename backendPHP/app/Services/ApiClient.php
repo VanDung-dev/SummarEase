@@ -5,6 +5,7 @@ namespace App\Services;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 
 class ApiClient
 {
@@ -19,16 +20,27 @@ class ApiClient
         ]);
     }
 
-    public function summarizeText($text, $ratio = 0.2, $language = 'vietnamese', $userId = 1)
+    public function summarizeText($text, $ratio = 0.2, $language = 'vietnamese', $userId = 3)
     {
         try {
+            // Xác định nếu người dùng là khách
+            $isGuest = !Auth::check();
+            
+            $requestData = [
+                'text' => $text,
+                'ratio' => $ratio,
+                'language' => $language,
+                'user_id' => $userId
+            ];
+            
+            // Thêm thông tin khách nếu cần
+            if ($isGuest) {
+                $requestData['is_guest'] = true;
+                $requestData['guest_id'] = session()->getId();
+            }
+            
             $response = $this->client->post('/summarize', [
-                'json' => [
-                    'text' => $text,
-                    'ratio' => $ratio,
-                    'language' => $language,
-                    'user_id' => $userId
-                ]
+                'json' => $requestData
             ]);
 
             $result = json_decode($response->getBody()->getContents(), true);
@@ -62,28 +74,45 @@ class ApiClient
         }
     }
 
-    public function summarizeFile($source, $ratio = 0.2, $language = 'vietnamese', $userId = 1)
+    public function summarizeFile($source, $ratio = 0.2, $language = 'vietnamese', $userId = 3)
     {
         try {
-            $response = $this->client->post('/summarize-file', [
-                'multipart' => [
-                    [
-                        'name' => 'file',
-                        'contents' => $source
-                    ],
-                    [
-                        'name' => 'ratio',
-                        'contents' => $ratio
-                    ],
-                    [
-                        'name' => 'language',
-                        'contents' => $language
-                    ],
-                    [
-                        'name' => 'user_id',
-                        'contents' => $userId
-                    ]
+            // Xác định nếu người dùng là khách
+            $isGuest = !Auth::check();
+            
+            $multipart = [
+                [
+                    'name' => 'file',
+                    'contents' => $source
+                ],
+                [
+                    'name' => 'ratio',
+                    'contents' => $ratio
+                ],
+                [
+                    'name' => 'language',
+                    'contents' => $language
+                ],
+                [
+                    'name' => 'user_id',
+                    'contents' => $userId
                 ]
+            ];
+            
+            // Thêm thông tin khách nếu cần
+            if ($isGuest) {
+                $multipart[] = [
+                    'name' => 'is_guest',
+                    'contents' => 'true'
+                ];
+                $multipart[] = [
+                    'name' => 'guest_id',
+                    'contents' => session()->getId()
+                ];
+            }
+            
+            $response = $this->client->post('/summarize-file', [
+                'multipart' => $multipart
             ]);
 
             $result = json_decode($response->getBody()->getContents(), true);
@@ -118,16 +147,27 @@ class ApiClient
     }
 
     // Phương thức mới để tóm tắt văn bản sử dụng Gemini API
-    public function summarizeTextGemini($text, $ratio = 0.2, $language = 'vietnamese', $userId = 1)
+    public function summarizeTextGemini($text, $ratio = 0.2, $language = 'vietnamese', $userId = 3)
     {
         try {
+            // Xác định nếu người dùng là khách
+            $isGuest = !Auth::check();
+            
+            $requestData = [
+                'text' => $text,
+                'ratio' => $ratio,
+                'language' => $language,
+                'user_id' => $userId
+            ];
+            
+            // Thêm thông tin khách nếu cần
+            if ($isGuest) {
+                $requestData['is_guest'] = true;
+                $requestData['guest_id'] = session()->getId();
+            }
+            
             $response = $this->client->post('/summarize-gemini', [
-                'json' => [
-                    'text' => $text,
-                    'ratio' => $ratio,
-                    'language' => $language,
-                    'user_id' => $userId
-                ]
+                'json' => $requestData
             ]);
 
             $result = json_decode($response->getBody()->getContents(), true);
@@ -162,9 +202,12 @@ class ApiClient
     }
 
     // Phương thức mới để tóm tắt file sử dụng Gemini API
-    public function summarizeFileGemini(UploadedFile $file, $ratio = 0.2, $language = 'vietnamese', $userId = 1)
+    public function summarizeFileGemini(UploadedFile $file, $ratio = 0.2, $language = 'vietnamese', $userId = 3)
     {
         try {
+            // Xác định nếu người dùng là khách
+            $isGuest = !Auth::check();
+            
             // Chuẩn bị multipart data
             $multipart = [
                 [
@@ -185,6 +228,18 @@ class ApiClient
                     'contents' => $userId
                 ]
             ];
+            
+            // Thêm thông tin khách nếu cần
+            if ($isGuest) {
+                $multipart[] = [
+                    'name' => 'is_guest',
+                    'contents' => 'true'
+                ];
+                $multipart[] = [
+                    'name' => 'guest_id',
+                    'contents' => session()->getId()
+                ];
+            }
 
             $response = $this->client->post('/summarize-file-gemini', [
                 'multipart' => $multipart
@@ -222,28 +277,45 @@ class ApiClient
     }
 
     // Phương thức mới để tóm tắt URL sử dụng Gemini API
-    public function summarizeUrlGemini($url, $ratio = 0.2, $language = 'vietnamese', $userId = 1)
+    public function summarizeUrlGemini($url, $ratio = 0.2, $language = 'vietnamese', $userId = 3)
     {
         try {
-            $response = $this->client->post('/summarize-url-gemini', [
-                'multipart' => [
-                    [
-                        'name' => 'url',
-                        'contents' => $url
-                    ],
-                    [
-                        'name' => 'ratio',
-                        'contents' => $ratio
-                    ],
-                    [
-                        'name' => 'language',
-                        'contents' => $language
-                    ],
-                    [
-                        'name' => 'user_id',
-                        'contents' => $userId
-                    ]
+            // Xác định nếu người dùng là khách
+            $isGuest = !Auth::check();
+            
+            $multipart = [
+                [
+                    'name' => 'url',
+                    'contents' => $url
+                ],
+                [
+                    'name' => 'ratio',
+                    'contents' => $ratio
+                ],
+                [
+                    'name' => 'language',
+                    'contents' => $language
+                ],
+                [
+                    'name' => 'user_id',
+                    'contents' => $userId
                 ]
+            ];
+            
+            // Thêm thông tin khách nếu cần
+            if ($isGuest) {
+                $multipart[] = [
+                    'name' => 'is_guest',
+                    'contents' => 'true'
+                ];
+                $multipart[] = [
+                    'name' => 'guest_id',
+                    'contents' => session()->getId()
+                ];
+            }
+
+            $response = $this->client->post('/summarize-url-gemini', [
+                'multipart' => $multipart
             ]);
 
             $result = json_decode($response->getBody()->getContents(), true);

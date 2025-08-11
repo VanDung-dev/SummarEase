@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Services\ApiClient;
+use App\Models\GuestDocument;
 use Illuminate\Http\Request;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class SummaryController extends Controller
 {
@@ -28,11 +30,13 @@ class SummaryController extends Controller
         session(['original_text' => $request->input('text')]);
         session(['original_ratio' => $request->input('ratio')]);
 
+        $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
+
         $result = $this->apiClient->summarizeText(
             $request->input('text'),
             $request->input('ratio', 0.2),
             $request->input('language', 'vietnamese'),
-            Auth::id() ?? 1 // Sử dụng ID người dùng hiện tại hoặc mặc định là 1
+            $userId
         );
 
         // Kiểm tra lỗi trong kết quả
@@ -43,6 +47,21 @@ class SummaryController extends Controller
         // Kiểm tra các key cần thiết
         if (!isset($result['summary'])) {
             return back()->with('error', 'Không tìm thấy nội dung tóm tắt trong kết quả');
+        }
+
+        // Lưu dữ liệu vào bảng guest_documents nếu là khách
+        if (!Auth::check()) {
+            try {
+                $sessionId = Session::getId();
+                $guestDocument = new GuestDocument();
+                $guestDocument->guest_id = $sessionId;
+                $guestDocument->title = 'Văn bản tóm tắt - ' . now()->format('Y-m-d H:i:s');
+                $guestDocument->content = $request->input('text');
+                $guestDocument->file_type = 'text';
+                $guestDocument->save();
+            } catch (\Exception $e) {
+                \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
+            }
         }
 
         return back()->with('summary', $result['summary']);
@@ -88,11 +107,13 @@ class SummaryController extends Controller
             'language' => 'in:vietnamese,english'
         ]);
 
+        $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
+
         $result = $this->apiClient->summarizeFile(
             $request->input('file'),
             $request->input('ratio', 0.2),
             $request->input('language', 'vietnamese'),
-            Auth::id() ?? 1 // Sử dụng ID người dùng hiện tại hoặc mặc định là 1
+            $userId
         );
 
         // Kiểm tra lỗi trong kết quả
@@ -103,6 +124,21 @@ class SummaryController extends Controller
         // Kiểm tra các key cần thiết
         if (!isset($result['summary'])) {
             return back()->with('error', 'Không tìm thấy nội dung tóm tắt trong kết quả');
+        }
+
+        // Lưu dữ liệu vào bảng guest_documents nếu là khách
+        if (!Auth::check()) {
+            try {
+                $sessionId = Session::getId();
+                $guestDocument = new GuestDocument();
+                $guestDocument->guest_id = $sessionId;
+                $guestDocument->title = 'Tập tin tóm tắt - ' . now()->format('Y-m-d H:i:s');
+                $guestDocument->content = $request->input('file');
+                $guestDocument->file_type = 'file';
+                $guestDocument->save();
+            } catch (\Exception $e) {
+                \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
+            }
         }
 
         return back()->with('summary', $result['summary']);
@@ -121,11 +157,13 @@ class SummaryController extends Controller
         session(['original_text' => $request->input('text')]);
         session(['original_ratio' => $request->input('ratio')]);
 
+        $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
+
         $result = $this->apiClient->summarizeTextGemini(
             $request->input('text'),
             $request->input('ratio', 0.2),
             $request->input('language', 'vietnamese'),
-            Auth::id() ?? 1 // Sử dụng ID người dùng hiện tại hoặc mặc định là 1
+            $userId
         );
 
         // Kiểm tra lỗi trong kết quả
@@ -136,6 +174,21 @@ class SummaryController extends Controller
         // Kiểm tra các key cần thiết
         if (!isset($result['summary'])) {
             return back()->with('error', 'Không tìm thấy nội dung tóm tắt trong kết quả');
+        }
+
+        // Lưu dữ liệu vào bảng guest_documents nếu là khách
+        if (!Auth::check()) {
+            try {
+                $sessionId = Session::getId();
+                $guestDocument = new GuestDocument();
+                $guestDocument->guest_id = $sessionId;
+                $guestDocument->title = 'Văn bản tóm tắt (Gemini) - ' . now()->format('Y-m-d H:i:s');
+                $guestDocument->content = $request->input('text');
+                $guestDocument->file_type = 'text';
+                $guestDocument->save();
+            } catch (\Exception $e) {
+                \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
+            }
         }
 
         // Trả về thêm tiêu đề, từ khóa và ngôn ngữ nếu có
@@ -156,11 +209,13 @@ class SummaryController extends Controller
             'language' => 'in:vietnamese,english,auto'
         ]);
 
+        $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
+
         $result = $this->apiClient->summarizeFileGemini(
             $request->file('file'),
             $request->input('ratio', 0.2),
             $request->input('language', 'vietnamese'),
-            Auth::id() ?? 1 // Sử dụng ID người dùng hiện tại hoặc mặc định là 1
+            $userId
         );
 
         // Kiểm tra lỗi trong kết quả
@@ -171,6 +226,21 @@ class SummaryController extends Controller
         // Kiểm tra các key cần thiết
         if (!isset($result['summary'])) {
             return back()->with('error', 'Không tìm thấy nội dung tóm tắt trong kết quả');
+        }
+
+        // Lưu dữ liệu vào bảng guest_documents nếu là khách
+        if (!Auth::check()) {
+            try {
+                $sessionId = Session::getId();
+                $guestDocument = new GuestDocument();
+                $guestDocument->guest_id = $sessionId;
+                $guestDocument->title = 'Tập tin tóm tắt (Gemini) - ' . now()->format('Y-m-d H:i:s');
+                // Trong thực tế, bạn sẽ lưu nội dung file ở đây
+                $guestDocument->file_type = 'file';
+                $guestDocument->save();
+            } catch (\Exception $e) {
+                \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
+            }
         }
 
         // Trả về thêm tiêu đề, từ khóa và ngôn ngữ nếu có
@@ -191,11 +261,13 @@ class SummaryController extends Controller
             'language' => 'in:vietnamese,english,auto'
         ]);
 
+        $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
+
         $result = $this->apiClient->summarizeUrlGemini(
             $request->input('url'),
             $request->input('ratio', 0.2),
             $request->input('language', 'vietnamese'),
-            Auth::id() ?? 1 // Sử dụng ID người dùng hiện tại hoặc mặc định là 1
+            $userId
         );
 
         // Kiểm tra lỗi trong kết quả
@@ -206,6 +278,21 @@ class SummaryController extends Controller
         // Kiểm tra các key cần thiết
         if (!isset($result['summary'])) {
             return back()->with('error', 'Không tìm thấy nội dung tóm tắt trong kết quả');
+        }
+
+        // Lưu dữ liệu vào bảng guest_documents nếu là khách
+        if (!Auth::check()) {
+            try {
+                $sessionId = Session::getId();
+                $guestDocument = new GuestDocument();
+                $guestDocument->guest_id = $sessionId;
+                $guestDocument->title = 'URL tóm tắt (Gemini) - ' . now()->format('Y-m-d H:i:s');
+                $guestDocument->content = $request->input('url');
+                $guestDocument->file_type = 'url';
+                $guestDocument->save();
+            } catch (\Exception $e) {
+                \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
+            }
         }
 
         // Trả về thêm tiêu đề, từ khóa và ngôn ngữ nếu có
