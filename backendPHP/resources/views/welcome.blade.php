@@ -64,7 +64,7 @@
                     @csrf
                     <textarea name="text" id="text" class="input-areah">{{ session('original_text') ?? "Hãy nhập văn bản cần tóm tắt..." }}</textarea>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio')}}" class="mt-4 w-full" />
-                    <button type="submit" class="mt-4">{{ __('Summarize') }}</button>
+                    <button type="submit" class="mt-4 submit-button">{{ __('Summarize') }}</button>
                    
             </form>
             <label class="textarea-label">Nội dung được tóm tắt</label>

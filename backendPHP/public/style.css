@@ -337,7 +337,7 @@ h1 {
     padding: 40px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
     position: relative;
-    overflow: hidden;
+    /*overflow: hidden;*/
     box-sizing: border-box;
 
 }
@@ -813,7 +813,46 @@ h1 {
     background-color: #f6faff;
 }
 
+input[type="range"].w-full {
+    width: 75rem;
+    min-width: 0;
+    max-width: 100%;
+    display: block;
+    height: 2.5rem;
+    background: transparent;
+    border: none;
+    padding: 0;
+    border-radius: 0.75rem;
+}
 
+.submit-button {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+    background-color: #1e88e5;
+    color: #fff;
+    border: none;
+    margin-top: 1rem;
+    display: block;
+    transition: background 0.2s, color 0.2s;
+}
+
+.submit-button:hover,
+.submit-button:focus {
+    background-color: #1565c0;
+    color: #e3f2fd;
+}
+
+@media (max-width: 600px) {
+    .submit-button {
+        max-width: 100%;
+        font-size: 0.95rem;
+        padding: 0.6rem 1rem;
+    }
+}
 
 .sabi {
     width: 80px;
@@ -873,6 +912,14 @@ h1 {
     background-color: #18181b;
 }
 
+.input-areah {
+    height: 120px;
+}
+
+.output-areah {
+    height: 165px;
+}
+
 .input-areah,
 .output-areah {
     overflow: auto;
@@ -883,10 +930,10 @@ h1 {
     margin: 10px auto 30px auto;
     /* căn giữa chính div */
     min-height: 120px;
-    width: 1200px;
-    height: 165px;
+    width: 100%;
+    max-width: 75rem;
     display: flex;
-    justify-content: center;
+    /*justify-content: center;*/
     /* Căn giữa nội dung ngang */
     /*align-items: center;*/
     /* Căn giữa nội dung dọc */
