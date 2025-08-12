@@ -24,7 +24,12 @@ ENGLISH_WORDS = {
     'then', 'now', 'look', 'only', 'come', 'its', 'over', 'think', 'also',
     'back', 'after', 'use', 'two', 'how', 'our', 'work', 'first', 'well',
     'way', 'even', 'new', 'want', 'because', 'any', 'these', 'give', 'day',
-    'most', 'us'
+    'most', 'us',
+    # Từ mượn tiếng Pháp
+    'résumé', 'café', 'naïve', 'fiancée', 'fiancé', 'exposé', 'touché', 'protégé', 'décor', 'façade', 
+    'rôle', 'élite', 'entrée', 'à la carte', 'déjà vu', 'voilà',
+    # Từ mượn tiếng Tây Ban Nha
+    'jalapeño', 'piñata', 'señor', 'mañana'
 }
 
 def detect_language(text):
