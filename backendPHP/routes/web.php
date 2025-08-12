@@ -89,7 +89,6 @@ Route::get('/history', function () {
     } else {
         $sessionId = Session::getId();
         $history = DB::table('guest_summaries')
-            ->select()
             ->orderBy('guest_summaries.created_at', 'desc')
             ->join('guest_documents', 'guest_documents.id', '=', 'document_id')
             ->join('sessions', 'sessions.id', '=', 'guest_documents.guest_id')
