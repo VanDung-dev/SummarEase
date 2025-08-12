@@ -1,7 +1,7 @@
  <link href="style.css" rel="stylesheet" />
 
 <x-layouts.app :title="__('Dashboard')">
-    <div class="flex h-full w-full flex-1 flex-col gap-4 ">
+    <div class="full container">
         <div class="grid auto-rows-min gap-4 md:grid-cols-3">
             <!-- <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
                 <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
@@ -45,10 +45,7 @@
 
                 <div class="output-areaa">
                      @if(session('summary'))
-                    <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
                         <div id="summary-output">{!! nl2br(e(session('summary'))) !!}</div>
-                    </div>
-          
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             // Xử lý hiển thị markdown cho kết quả tóm tắt
