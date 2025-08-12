@@ -25,6 +25,8 @@
         @empty
             <p>Lịch sử trống</p>
         @endforelse
+        <p>Tổng số lần tóm tắt: {{ $history->total() }}</p>
+        <p>{{ $history->links('pagination::bootstrap-5') }}</p>
     </body>
     
 </html>
