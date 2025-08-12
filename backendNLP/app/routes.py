@@ -507,6 +507,11 @@ def summarize_url_gemini():
         if language.lower() not in ["vietnamese", "english", "auto"]:
             return jsonify({"error": f"Ngôn ngữ không được hỗ trợ: {language}"}), 400
 
+        # Extract text from URL before language detection
+        raw_text = extract_text(url)
+        if not raw_text.strip():
+            return jsonify({"error": "Nội dung từ URL trống"}), 400
+        language = detect_language(raw_text)
         # Gọi Gemini API để tóm tắt nội dung từ URL
         result = gemini_summarize_url(
             url,
