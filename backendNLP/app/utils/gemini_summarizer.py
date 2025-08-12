@@ -3,6 +3,7 @@ import requests
 import json
 from typing import Dict, Any
 import logging
+from .file_handler import extract_text
 
 logger = logging.getLogger(__name__)
 
@@ -135,18 +136,9 @@ def gemini_summarize_file(file_path: str, ratio: float = 0.2, language: str = "v
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"File không tồn tại: {file_path}")
     
-    # Đọc nội dung file
+    # Đọc nội dung file bằng file_handler
     try:
-        # Đọc file dưới dạng bytes để có thể xử lý nhiều loại file
-        with open(file_path, 'rb') as file:
-            file_content = file.read()
-        
-        # Nếu là file text thông thường
-        try:
-            text = file_content.decode('utf-8')
-        except UnicodeDecodeError:
-            # Nếu không phải UTF-8, thử các encoding khác hoặc giữ nguyên là binary
-            text = file_content.decode('utf-8', errors='ignore')
+        text = extract_text(file_path)
             
         # Nếu file rỗng
         if not text.strip():
@@ -173,37 +165,16 @@ def gemini_summarize_url(url: str, ratio: float = 0.2, language: str = "vietname
         dict: Kết quả tóm tắt với các trường summary, keywords, title
     """
     try:
-        # Lấy nội dung từ URL
-        response = requests.get(url)
-        response.raise_for_status()
-        
-        # Trích xuất văn bản từ nội dung HTML
-        from bs4 import BeautifulSoup
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # Loại bỏ script và style elements
-        for script in soup(["script", "style"]):
-            script.decompose()
-            
-        # Lấy văn bản từ phần body nếu có, nếu không thì lấy từ toàn bộ soup
-        body = soup.find('body')
-        text = body.get_text() if body else soup.get_text()
-        
-        # Làm sạch văn bản
-        lines = (line.strip() for line in text.splitlines())
-        chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-        text = ' '.join(chunk for chunk in chunks if chunk)
+        # Lấy nội dung từ URL bằng file_handler
+        text = extract_text(url)
         
         # Nếu văn bản rỗng
         if not text.strip():
             raise ValueError("Không thể trích xuất nội dung từ URL")
             
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
         logger.error(f"Lỗi khi tải nội dung từ URL {url}: {str(e)}")
         raise Exception(f"Lỗi khi tải nội dung từ URL: {str(e)}")
-    except Exception as e:
-        logger.error(f"Lỗi khi xử lý nội dung từ URL {url}: {str(e)}")
-        raise Exception(f"Lỗi khi xử lý nội dung từ URL: {str(e)}")
     
     # Sử dụng hàm gemini_summarize hiện tại để xử lý nội dung text
     return gemini_summarize(text, ratio, language)
