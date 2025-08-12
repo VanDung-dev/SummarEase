@@ -4,10 +4,11 @@ from .utils.summarizer import textrank_summarize, generate_title
 from .utils.file_handler import extract_text
 from .utils.database import save_summary_to_db
 from .utils.gemini_summarizer import gemini_summarize, gemini_summarize_file, gemini_summarize_url
+from .utils.language_detector import detect_language
 import tempfile
 import os
 import logging
-from urllib.parse import urlparse  # Thêm import này để kiểm tra URL
+from urllib.parse import urlparse
 
 # Khởi tạo Blueprint cho các tuyến API tóm tắt văn bản
 summarize_bp = Blueprint("summarize", __name__)
@@ -55,6 +56,7 @@ def summarize_text():
         if language.lower() not in ["vietnamese", "english"]:
             return jsonify({"error": f"Ngôn ngữ không được hỗ trợ: {language}"}), 400
 
+        language = detect_language(raw_text)
         cleaned_text = clean_text(raw_text)
         result = textrank_summarize(
             cleaned_text,
@@ -186,6 +188,7 @@ def summarize_file():
         if not raw_text.strip():
             return jsonify({"error": "Nội dung tệp hoặc URL trống"}), 400
 
+        language = detect_language(raw_text)
         cleaned_text = clean_text(raw_text)
         result = textrank_summarize(
             cleaned_text,
@@ -282,6 +285,7 @@ def summarize_text_gemini():
         if language.lower() not in ["vietnamese", "english"]:
             return jsonify({"error": f"Ngôn ngữ không được hỗ trợ: {language}"}), 400
 
+        language = detect_language(raw_text)
         # Gọi Gemini API để tóm tắt văn bản
         result = gemini_summarize(
             raw_text,
