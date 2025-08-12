@@ -29,6 +29,7 @@
 
 /* Sửa lỗi viền trắng trong menu khi ở chế độ tối */
 .dark .siba {
+    
     border: 2px solid #3f3f46;
     /* Sử dụng màu viền phù hợp với dark mode */
     background-color: #18181b;
@@ -217,11 +218,11 @@ body {
     border-radius: 5px;
     border: 1px solid black;
     text-align: center;
-    width: 300px;
+    width: 400px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 350px;
+    height: 450px;
 }
 
 .main-dasboard {
@@ -238,7 +239,7 @@ body {
 .footer-text a {
     color: #4a6cff;
     text-decoration: none;
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
 .footer-text a:hover {
@@ -266,14 +267,14 @@ body {
 }
 
 h1 {
-    font-size: 30px;
+    font-size: 40px;
     color: #1e88e5;
     margin: 0;
 }
 
 .login-description {
     color: #000000;
-    font-size: 20px;
+    font-size: 30px;
     margin-top: 5px;
 }
 
@@ -281,14 +282,14 @@ h1 {
     background: #fff;
     border: 1px solid #030303;
     border-radius: 40px;
-    font-size: 20px;
+    font-size: 26px;
     cursor: pointer;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 260px;
-    height: 45px;
+    width: 360px;
+    height: 55px;
     justify-self: center;
     margin-top: 50px;
     color: #000000!important;
@@ -301,6 +302,7 @@ h1 {
 .google-logo {
     width: 40px;
     height: 40px;
+    margin-right: 10px;
 }
 
 .footer-links {
@@ -404,19 +406,6 @@ h1 {
 /* ==========================================================
   Khu vực nhập liệu, tải tệp và các nút điều khiển
   ========================================================== */
-.input-area,
-.output-area {
-    background: #fff;
-    border: 2px solid rgb(100, 100, 100);
-    border-radius: 24px;
-    padding: 18px 18px 12px 18px;
-    margin-top: 10px;
-    margin-bottom: 30px;
-    min-height: 120px;
-    width: 1000px;
-    height: 165px;
-    position: relative;
-}
 
 .input-areaa,
 .output-areaa {
@@ -427,7 +416,8 @@ h1 {
     padding: 18px 18px 12px 18px;
     margin-top: 10px;
     margin-bottom: 30px;
-    min-height: 120px;
+    min-height: 250px;
+    max-height: 250px;
     width: 100%;
     height: 165px;
     position: relative;
@@ -766,13 +756,12 @@ h1 {
 
 .siba {
     width: 250px;
-    height: 735px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     border: 1px solid rgb(100, 100, 100);
     border-radius: 10px;
-    margin-bottom: 70px;
     background-color: #f6faff;
 }
 
@@ -874,15 +863,15 @@ input[type="range"].w-full {
 
 .input-areah {
     height: 120px;
-    max-height: 165px;
-    margin-top: 15px;
+    max-height: 200px;
+    margin-top: 50px;
     margin-bottom: 20px;
     display: flex;
     justify-self: center;
 }
 
 .output-areah {
-    height: 165px;
+    height: 200px;
     margin-top: 30px;
     display: flex;
     justify-self: center;
@@ -896,7 +885,7 @@ input[type="range"].w-full {
     border-radius: 24px;
     padding: 18px 18px 12px 18px;
     /* căn giữa chính div */
-    min-height: 165px;
+    min-height: 200px;
     width: 100%;
     max-width: 75rem;
 
