@@ -53,13 +53,7 @@
         <p class="sub">
         Công cụ hỗ trợ tóm tắt nhanh và chính xác các văn bản học thuật
         </p>
-        <label class="textarea-label"
-            >Văn bản hay tệp cần tóm tắt (.txt, .docx, pdf).
-              Lưu ý: dung lượng tệp phải nhỏ hơn hoặc bằng 10MB
-                </label
-          >
-          
-
+        
            <form method="POST" action="{{ url('/summarize/text') }}">
                     @csrf
                     <input type="hidden" name="is_guest" value="true">
@@ -69,13 +63,10 @@
                     <button type="submit" class="mt-4 submit-button">{{ __('Summarize') }}</button>
                    
             </form>
-            <label class="textarea-label">Nội dung được tóm tắt</label>
+
             <div class="output-areah">
                      @if(session('summary'))
-                    <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
                         <div id="summary-output">{!! nl2br(e(session('summary'))) !!}</div>
-                    </div>
-          
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             // Xử lý hiển thị markdown cho kết quả tóm tắt
