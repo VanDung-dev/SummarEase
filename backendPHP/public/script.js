@@ -138,3 +138,91 @@ document.addEventListener('DOMContentLoaded', function() {
         attributeFilter: ['class']
     });
 });
+
+
+
+let users = Array.from({ length: 0 }, (_, i) => ({
+  username: `user${i + 1}`,
+  role: "user",
+}));
+const updateDashboardData = () => {
+  const totalUsers = document.getElementById("total-users");
+  const totalProducts = document.getElementById("total-products"); // Tên biến này có thể là `totalFiles` hoặc tương tự cho rõ ràng hơn
+  const data = {
+    users: users.length, // Dòng này sử dụng `users.length`
+    products: files.length,
+  };
+  if (totalUsers) totalUsers.textContent = data.users;
+  if (totalProducts) totalProducts.textContent = data.products;
+};
+const updateUserTable = (data = users) => {
+  const tbody = document.getElementById("userTableBody");
+  if (!tbody) return;
+  tbody.innerHTML = "";
+  if (data.length === 0) {
+    tbody.innerHTML =
+      '<tr><td colspan="3" style="text-align: center;">Chưa có người dùng nào.</td></tr>';
+    return;
+  }
+  data.forEach((user) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+                <td>${user.username}</td>
+                <td>${user.role}</td>
+                <td class="action-buttons">
+                    <button onclick="changeRole('${user.username}')"><i class="fas fa-edit"></i></button>
+                    <button onclick="deleteUser('${user.username}')"><i class="fas fa-trash-alt"></i></button>
+                </td>
+            `;
+    tbody.appendChild(row);
+  });
+};
+window.addUser = () => {
+  const usernameInput = document.getElementById("newUserInput");
+  const username = usernameInput.value.trim();
+  const role = document.getElementById("roleSelect").value;
+  if (username !== "") {
+    users.unshift({ username, role });
+    updateUserTable();
+    updateDashboardData();
+    usernameInput.value = "";
+  } else {
+    showModal("Lỗi", "Tên người dùng không được để trống.");
+  }
+};
+window.changeRole = (username) => {
+  const newRole = prompt("Nhập quyền mới (admin/user):");
+  if (
+    newRole &&
+    (newRole.trim().toLowerCase() === "admin" ||
+      newRole.trim().toLowerCase() === "user")
+  ) {
+    const user = users.find((u) => u.username === username);
+    if (user) user.role = newRole.trim().toLowerCase();
+    updateUserTable();
+  } else if (newRole !== null) {
+    showModal(
+      "Lỗi",
+      'Quyền không hợp lệ. Vui lòng nhập "admin" hoặc "user".'
+    );
+  }
+};
+window.deleteUser = (username) => {
+  users = users.filter((u) => u.username !== username);
+  updateUserTable();
+  updateDashboardData();
+};
+window.searchUsers = () => {
+  const searchTerm = document
+    .getElementById("userSearchInput")
+    .value.toLowerCase();
+  const filteredUsers = users.filter((user) =>
+    user.username.toLowerCase().includes(searchTerm)
+  );
+  updateUserTable(filteredUsers);
+};
+  case "users-link":
+  document.getElementById("users").classList.remove("hidden");
+  updateUserTable();
+  break;
+updateUserTable(); // Dòng này nằm trong khối `DOMContentLoaded` ở cuối file

@@ -40,26 +40,25 @@ use Livewire\Volt\Component;
 <section class="w-full">
     @include('partials.settings-heading')
 
-    <x-settings.layout :heading="__('File')" :subheading="__('Các file đã tải lên')">
+    <x-settings.layout :heading="__('History')" :subheading="__('Lịch sử tóm tắt')">
         <form wire:submit="updatePassword" class="mt-6 space-y-6">
-            <div id="files" class="section">
+            <div id="history" class="section">
                 <div class="search-bar">
-                    <input type="text" id="fileSearchInput" placeholder="Tìm kiếm tệp..."/>
-                    <button onclick="searchFiles()">Tìm</button>
+                    <input type="text" id="historySearchInput" placeholder="Tìm kiếm lịch sử..."/>
+                    <button onclick="searchHistory()">Tìm</button>
                 </div>
                 <div class="table-container">
-                    <table class="file-table" id="fileTable">
+                    <table class="file-table" id="historyTable">
                         <thead>
                             <tr>
                                 <th>Tên tệp</th>
-                                <th>Ngày tải lên</th>
-                                <th>Trạng thái</th>
-                                <th>Hành động</th>
+                                <th>Ngày tóm tắt</th>
+                                <th>Kết quả</th>
                             </tr>
                         </thead>
-                        <tbody id="fileTableBody"></tbody>
+                        <tbody id="historyTableBody"></tbody>
                     </table>
-                    <button onclick="addFile()">Thêm tệp mới</button>
+                    <button onclick="addHistory()">Thêm lịch sử mẫu</button>
                 </div>
             </div>
         </form>
