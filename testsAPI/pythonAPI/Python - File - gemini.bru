@@ -10,13 +10,9 @@ post {
   auth: none
 }
 
-headers {
-}
-
 body:multipart-form {
   file: @file(sample.pdf) @contentType(application/pdf)
   ratio: 0.25
-  language: auto
   user_id: 1
 }
 
