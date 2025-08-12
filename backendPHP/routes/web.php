@@ -7,6 +7,10 @@ use Brick\Math\BigRational;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -71,3 +75,26 @@ Route::get('/gemini', function (Request $request) {
 Route::post('dashboard', [SummaryController::class, 'formhandle'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard.summarize');
+
+Route::get('/history', function () {
+    if (auth()->check()) {
+        $userId = Auth::id();
+        $history = DB::table('summaries')
+            ->orderBy('summaries.created_at', 'desc')
+            ->join('documents', 'documents.id', '=', 'document_id')
+            ->join('users', 'users.id', '=', 'documents.user_id')
+            ->where('users.id', '=', $userId)
+            ->paginate();
+        return $history;
+    } else {
+        $sessionId = Session::getId();
+        $history = DB::table('guest_summaries')
+            ->select()
+            ->orderBy('guest_summaries.created_at', 'desc')
+            ->join('guest_documents', 'guest_documents.id', '=', 'document_id')
+            ->join('sessions', 'sessions.id', '=', 'guest_documents.guest_id')
+            ->where('sessions.id', '=', $sessionId)
+            ->paginate();
+        return $history;
+    }
+});
