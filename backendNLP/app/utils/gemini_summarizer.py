@@ -28,26 +28,15 @@ def gemini_summarize(text: str, ratio: float = 0.2, language: str = "vietnamese"
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
 
     # Tạo prompt cho Gemini để tóm tắt
-    if language.lower() == "auto":
-        summarize_prompt = f"""
-        Hãy xác định ngôn ngữ của văn bản sau và tóm tắt văn bản đó với độ dài bằng {ratio:.0%} văn bản gốc.
-        Trong văn bản tóm tắt, hãy đánh dấu các từ khóa quan trọng bằng cách bao quanh chúng bằng dấu ** (định dạng markdown).
-        Ví dụ: Đây là **tóm tắt** của văn bản về **machine learning**.
-        Chỉ trả về phần tóm tắt đã được đánh dấu từ khóa, không thêm bất kỳ thông tin nào khác.
-        
-        Văn bản cần tóm tắt:
-        {text}
-        """
-    else:
-        summarize_prompt = f"""
-        Hãy tóm tắt văn bản sau bằng tiếng {language} với độ dài bằng {ratio:.0%} văn bản gốc.
-        Trong văn bản tóm tắt, hãy đánh dấu các từ khóa quan trọng bằng cách bao quanh chúng bằng dấu ** (định dạng markdown).
-        Ví dụ: Đây là **tóm tắt** của văn bản về **machine learning**.
-        Chỉ trả về phần tóm tắt đã được đánh dấu từ khóa, không thêm bất kỳ thông tin nào khác.
-        
-        Văn bản cần tóm tắt:
-        {text}
-        """
+    summarize_prompt = f"""
+    Hãy tóm tắt văn bản sau bằng tiếng {language} với độ dài bằng {ratio:.0%} văn bản gốc.
+    Trong văn bản tóm tắt, hãy đánh dấu các từ khóa quan trọng bằng cách bao quanh chúng bằng dấu ** (định dạng markdown).
+    Ví dụ: Đây là **tóm tắt** của văn bản về **machine learning**.
+    Chỉ trả về phần tóm tắt đã được đánh dấu từ khóa, không thêm bất kỳ thông tin nào khác.
+    
+    Văn bản cần tóm tắt:
+    {text}
+    """
 
     # Dữ liệu gửi đến API để tóm tắt
     summarize_payload = {
@@ -59,26 +48,15 @@ def gemini_summarize(text: str, ratio: float = 0.2, language: str = "vietnamese"
     }
 
     # Tạo prompt cho Gemini để tạo tiêu đề
-    if language.lower() == "auto":
-        title_prompt = f"""
-        Hãy xác định ngôn ngữ của văn bản sau và đề xuất một tiêu đề ngắn gọn, phù hợp bằng ngôn ngữ đó.
-        Tiêu đề không cần đánh dấu từ khóa, chỉ cần trả về tiêu đề rõ ràng, súc tích và không chứa bất kỳ định dạng markdown nào.
-        Ví dụ: Nhận diện thực thể tiếng Việt với BERT và CRF
-        Chỉ trả về tiêu đề, không thêm bất kỳ thông tin nào khác.
-        
-        Văn bản:
-        {text}
-        """
-    else:
-        title_prompt = f"""
-        Dựa vào nội dung văn bản sau, hãy đề xuất một tiêu đề ngắn gọn, phù hợp bằng tiếng {language}.
-        Tiêu đề không cần đánh dấu từ khóa, chỉ cần trả về tiêu đề rõ ràng, súc tích và không chứa bất kỳ định dạng markdown nào.
-        Ví dụ: Nhận diện thực thể tiếng Việt với BERT và CRF
-        Chỉ trả về tiêu đề, không thêm bất kỳ thông tin nào khác.
-        
-        Văn bản:
-        {text}
-        """
+    title_prompt = f"""
+    Dựa vào nội dung văn bản sau, hãy đề xuất một tiêu đề ngắn gọn, phù hợp bằng tiếng {language}.
+    Tiêu đề không cần đánh dấu từ khóa, chỉ cần trả về tiêu đề rõ ràng, súc tích và không chứa bất kỳ định dạng markdown nào.
+    Ví dụ: Nhận diện thực thể tiếng Việt với BERT và CRF
+    Chỉ trả về tiêu đề, không thêm bất kỳ thông tin nào khác.
+    
+    Văn bản:
+    {text}
+    """
 
     # Dữ liệu gửi đến API để tạo tiêu đề
     title_payload = {
