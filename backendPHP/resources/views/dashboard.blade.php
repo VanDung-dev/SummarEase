@@ -45,10 +45,7 @@
 
                 <div class="output-areaa">
                      @if(session('summary'))
-                    <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
                         <div id="summary-output">{!! nl2br(e(session('summary'))) !!}</div>
-                    </div>
-          
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             // Xử lý hiển thị markdown cho kết quả tóm tắt
