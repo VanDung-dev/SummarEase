@@ -394,6 +394,12 @@ def summarize_file_gemini():
         if language.lower() not in ["vietnamese", "english", "auto"]:
             return jsonify({"error": f"Ngôn ngữ không được hỗ trợ: {language}"}), 400
 
+        # Trích xuất văn bản từ tệp trước khi phát hiện ngôn ngữ
+        raw_text = extract_text(temp_path)
+        if not raw_text.strip():
+            return jsonify({"error": "Nội dung tệp hoặc URL trống"}), 400
+
+        language = detect_language(raw_text)
         # Gọi Gemini API để tóm tắt nội dung file
         result = gemini_summarize_file(
             temp_path,
@@ -404,15 +410,6 @@ def summarize_file_gemini():
         # Kiểm tra kết quả trả về
         if not isinstance(result, dict) or "summary" not in result:
             return jsonify({"error": "Lỗi xử lý văn bản với Gemini API: Kết quả không hợp lệ"}), 500
-
-        # Đọc nội dung thô của file để lưu vào DB
-        try:
-            with open(temp_path, 'r', encoding='utf-8') as f:
-                raw_text = f.read()
-        except UnicodeDecodeError:
-            # Nếu không phải UTF-8, thử các encoding khác hoặc giữ nguyên là binary
-            with open(temp_path, 'r', encoding='utf-8', errors='ignore') as f:
-                raw_text = f.read()
 
         # Chuẩn bị dữ liệu để lưu vào DB
         summary_data = {
