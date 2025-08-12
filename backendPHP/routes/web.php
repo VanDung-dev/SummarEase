@@ -44,9 +44,9 @@ Route::post('/summarize/text', [SummaryController::class, 'summarizeText']);
 Route::post('/summarize/file', [SummaryController::class, 'summarizeFile']);
 
 // Các route cho chức năng tóm tắt bằng Gemini API
-// Route::post('/summarize/gemini/text', [SummaryController::class, 'summarizeTextGemini'])->name('summarize.gemini.text');
-// Route::post('/summarize/gemini/file', [SummaryController::class, 'summarizeFileGemini'])->name('summarize.gemini.file');
-// Route::post('/summarize/gemini/url', [SummaryController::class, 'summarizeUrlGemini'])->name('summarize.gemini.url');
+Route::post('/summarize/gemini/text', [SummaryController::class, 'summarizeTextGemini'])->name('summarize.gemini.text');
+Route::post('/summarize/gemini/file', [SummaryController::class, 'summarizeFileGemini'])->name('summarize.gemini.file');
+Route::post('/summarize/gemini/url', [SummaryController::class, 'summarizeUrlGemini'])->name('summarize.gemini.url');
 
 require __DIR__.'/auth.php';
 
@@ -67,3 +67,7 @@ Route::get('/gemini', function (Request $request) {
     // return $summary['candidates'][0]['content']['parts'][0]['text'] ?? 'No answer found.';
     return back()->with('summary', $summary['candidates'][0]['content']['parts'][0]['text'] ?? 'No answer found.');
 });
+
+Route::post('dashboard', [SummaryController::class, 'formhandle'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.summarize');

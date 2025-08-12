@@ -303,4 +303,23 @@ class SummaryController extends Controller
             'language' => $result['language'] ?? null
         ]);
     }
+
+    public function formhandle(Request $request)
+    {
+        $action = $request->input('sum');
+            $request->validate([
+            'text' => 'required|string',
+            'ratio' => 'numeric|min:0|max:1',
+            'language' => 'in:vietnamese,english'
+        ]);
+        session(['original_text' => $request->input('text')]);
+        session(['original_ratio' => $request->input('ratio')]);
+        if ($action === 'summarease') {
+            $this->summarizeText($request);
+            return back();
+        } elseif ($action === 'gemini') {
+            $this->summarizeTextGemini($request);
+            return back();
+        }
+    }
 }
