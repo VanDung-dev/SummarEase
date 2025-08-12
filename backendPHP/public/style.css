@@ -11,7 +11,6 @@
     width: 150px;
     height: 40px;
     color: rgb(62, 126, 228);
-
 }
 
 .login:hover {
@@ -27,8 +26,6 @@
     /* zinc-50 */
     padding: 1rem;
 }
-
-
 
 /* Sửa lỗi viền trắng trong menu khi ở chế độ tối */
 .dark .siba {
@@ -81,8 +78,6 @@
     /* Màu nền tối */
 }
 
-
-
 /* Dark mode styles for login page */
 .dark .login-container {
     background: #18181b;
@@ -109,13 +104,13 @@
 }
 
 .dark .google-login-btn {
-    background: #2d2d2d;
-    border: 1px solid #3f3f46;
+    background: #ffffff;
+    border: 1px solid #000000;
     color: #fff;
 }
 
 .dark .google-login-btn:hover {
-    background: #3f3f46;
+    background: #f5f5f5;
 }
 
 .dark .footer-links {
@@ -216,8 +211,6 @@ body {
     /* Màu nền tối */
 }
 
-
-
 .login-container {
     background: #fff;
     padding: 20px;
@@ -287,7 +280,7 @@ h1 {
 .google-login-btn {
     background: #fff;
     border: 1px solid #030303;
-    border-radius: 2px;
+    border-radius: 40px;
     font-size: 20px;
     cursor: pointer;
     width: 100%;
@@ -298,7 +291,7 @@ h1 {
     height: 45px;
     justify-self: center;
     margin-top: 50px;
-    color: #000000;
+    color: #000000!important;
 }
 
 .google-login-btn:hover {
@@ -338,7 +331,6 @@ h1 {
     position: relative;
     /*overflow: hidden;*/
     box-sizing: border-box;
-
 }
 
 .container-summary.menu-show {
@@ -409,9 +401,6 @@ h1 {
     text-align: center;
 }
 
-
-
-
 /* ==========================================================
   Khu vực nhập liệu, tải tệp và các nút điều khiển
   ========================================================== */
@@ -429,8 +418,6 @@ h1 {
     position: relative;
 }
 
-
-
 .input-areaa,
 .output-areaa {
     overflow: auto;
@@ -446,14 +433,12 @@ h1 {
     position: relative;
 }
 
-
 .dark .input-areaa,
 .dark .output-areaa {
     background: #2d2d2d;
     border: 1px solid #555;
     color: #fff;
 }
-
 
 /* Thêm hiệu ứng focus cho output-areaa trong chế độ tối*/
 .dark .output-areaa.focus,
@@ -537,19 +522,6 @@ h1 {
 
 .file-btn:hover {
     background: #7bc0e8;
-}
-
-.textarea-label {
-    font-size: 16px;
-    font-weight: 500;
-    color: #3b3b3b;
-    margin-top: 5px;
-    display: block;
-    margin-left: 130px;
-}
-
-.dark .textarea-label {
-    color: #b9b9b9;
 }
 
 .file-selection-container {
@@ -650,8 +622,6 @@ h1 {
     background: #3578e5;
 }
 
-
-
 /*
     Responsive
 */
@@ -668,11 +638,7 @@ h1 {
     transform: translateX(-100%);
     transition: transform 0.5s ease, opacity 0.4s ease-in-out;
     justify-content: space-between;
-
 }
-
-
-
 
 #menu.show {
     transform: translateX(0);
@@ -798,8 +764,6 @@ h1 {
     margin-right: 1318px;
 }
 
-
-
 .siba {
     width: 250px;
     height: 735px;
@@ -839,8 +803,7 @@ input[type="range"].w-full {
     transition: background 0.2s, color 0.2s;
 }
 
-.submit-button:hover,
-.submit-button:focus {
+.submit-button:hover{
     background-color: #1565c0;
     color: #e3f2fd;
 }
@@ -867,7 +830,6 @@ input[type="range"].w-full {
     margin-bottom: 5px;
     margin-top: 10px;
 }
-
 
 .chat-container {
     padding: 5px 30px 0 10px;
@@ -906,17 +868,24 @@ input[type="range"].w-full {
     display: none !important;
 }
 
-
 .dark .container-summary {
     background-color: #18181b;
 }
 
 .input-areah {
     height: 120px;
+    max-height: 165px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-self: center;
 }
 
 .output-areah {
     height: 165px;
+    margin-top: 30px;
+    display: flex;
+    justify-self: center;
 }
 
 .input-areah,
@@ -926,18 +895,16 @@ input[type="range"].w-full {
     border: 1px solid rgb(0, 0, 0);
     border-radius: 24px;
     padding: 18px 18px 12px 18px;
-    margin: 10px auto 30px auto;
     /* căn giữa chính div */
-    min-height: 120px;
+    min-height: 165px;
     width: 100%;
     max-width: 75rem;
-    display: flex;
+
     /*justify-content: center;*/
     /* Căn giữa nội dung ngang */
     /*align-items: center;*/
     /* Căn giữa nội dung dọc */
 }
-
 
 .dark .input-areah,
 .dark .output-areah {
@@ -950,10 +917,11 @@ input[type="range"].w-full {
     background-color: #1e88e5;
     width: 1150px;
     height: 40px;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 0 auto;
     border-radius: 15px;
-
 }
 
 .dark .mt-4 {
