@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\ApiClient;
 use App\Models\GuestDocument;
+use App\Models\GuestSummary;
 use Illuminate\Http\Request;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use Illuminate\Support\Facades\Auth;
@@ -59,6 +60,13 @@ class SummaryController extends Controller
                 $guestDocument->content = $request->input('text');
                 $guestDocument->file_type = 'text';
                 $guestDocument->save();
+
+                // Lưu tóm tắt vào bảng guest_summaries
+                $guestSummary = new GuestSummary();
+                $guestSummary->document_id = $guestDocument->id;
+                $guestSummary->summary_text = $result['summary'];
+                $guestSummary->summary_ratio = $request->input('ratio', 0.2);
+                $guestSummary->save();
             } catch (\Exception $e) {
                 \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
             }
@@ -136,6 +144,13 @@ class SummaryController extends Controller
                 $guestDocument->content = $request->input('file');
                 $guestDocument->file_type = 'file';
                 $guestDocument->save();
+
+                // Lưu tóm tắt vào bảng guest_summaries
+                $guestSummary = new GuestSummary();
+                $guestSummary->document_id = $guestDocument->id;
+                $guestSummary->summary_text = $result['summary'];
+                $guestSummary->summary_ratio = $request->input('ratio', 0.2);
+                $guestSummary->save();
             } catch (\Exception $e) {
                 \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
             }
@@ -186,6 +201,13 @@ class SummaryController extends Controller
                 $guestDocument->content = $request->input('text');
                 $guestDocument->file_type = 'text';
                 $guestDocument->save();
+
+                // Lưu tóm tắt vào bảng guest_summaries
+                $guestSummary = new GuestSummary();
+                $guestSummary->document_id = $guestDocument->id;
+                $guestSummary->summary_text = $result['summary'];
+                $guestSummary->summary_ratio = $request->input('ratio', 0.2);
+                $guestSummary->save();
             } catch (\Exception $e) {
                 \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
             }
@@ -238,6 +260,13 @@ class SummaryController extends Controller
                 // Trong thực tế, bạn sẽ lưu nội dung file ở đây
                 $guestDocument->file_type = 'file';
                 $guestDocument->save();
+
+                // Lưu tóm tắt vào bảng guest_summaries
+                $guestSummary = new GuestSummary();
+                $guestSummary->document_id = $guestDocument->id;
+                $guestSummary->summary_text = $result['summary'];
+                $guestSummary->summary_ratio = $request->input('ratio', 0.2);
+                $guestSummary->save();
             } catch (\Exception $e) {
                 \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
             }
@@ -290,6 +319,13 @@ class SummaryController extends Controller
                 $guestDocument->content = $request->input('url');
                 $guestDocument->file_type = 'url';
                 $guestDocument->save();
+
+                // Lưu tóm tắt vào bảng guest_summaries
+                $guestSummary = new GuestSummary();
+                $guestSummary->document_id = $guestDocument->id;
+                $guestSummary->summary_text = $result['summary'];
+                $guestSummary->summary_ratio = $request->input('ratio', 0.2);
+                $guestSummary->save();
             } catch (\Exception $e) {
                 \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
             }
