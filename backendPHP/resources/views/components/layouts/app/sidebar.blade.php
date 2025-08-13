@@ -9,7 +9,9 @@
 
             <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
   
-            <!-- <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('') }}</flux:navlist.item> -->
+            <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Upload Files') }}</flux:navlist.item>
+            
+            <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Link Web') }}</flux:navlist.item>
   
             <flux:spacer />
 
