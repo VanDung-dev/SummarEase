@@ -3,6 +3,7 @@ from sumy.summarizers.text_rank import TextRankSummarizer
 from .tokenizer import VietnameseTokenizer, EnglishTokenizer
 from collections import Counter
 import string
+import re
 
 
 def load_stop_words(file_path: str) -> set:
@@ -68,15 +69,24 @@ def highlight_keywords(text: str, keywords: list) -> str:
     Đánh dấu các từ khóa trong văn bản tóm tắt
 
     Đầu vào:
-        - summary (str): Văn bản tóm tắt
+        - text (str): Văn bản tóm tắt
         - keywords (list): Danh sách từ khóa
 
     Trả về:
         - str: Văn bản với các từ khóa được đánh dấu
     """
-    for keyword in keywords:
-        text = text.replace(keyword, f"**{keyword}**")
-    return text
+    # Tạo bản sao của văn bản để xử lý
+    highlighted_text = text
+
+    # Sắp xếp từ khóa theo độ dài (dài nhất trước) để tránh thay thế một phần
+    sorted_keywords = sorted(keywords, key=len, reverse=True)
+
+    for keyword in sorted_keywords:
+        # Sử dụng ranh giới từ để chỉ khớp từ nguyên vẹn
+        pattern = r'\b' + re.escape(keyword) + r'\b'
+        highlighted_text = re.sub(pattern, f"**{keyword}**", highlighted_text, flags=re.IGNORECASE)
+
+    return highlighted_text
 
 
 def generate_title(text: str, keywords: list, language: str = "vietnamese") -> str:
