@@ -95,7 +95,7 @@ def highlight_keywords(text: str, keywords: list) -> str:
     for keyword in sorted_keywords:
         # Sử dụng ranh giới từ để chỉ khớp từ nguyên vẹn
         pattern = r'\b' + re.escape(keyword) + r'\b'
-        highlighted_text = re.sub(pattern, f"**{keyword}**", highlighted_text, flags=re.IGNORECASE)
+        highlighted_text = re.sub(pattern, r"**\g<0>**", highlighted_text, flags=re.IGNORECASE)
 
     return highlighted_text
 
