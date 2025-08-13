@@ -7,11 +7,11 @@
         <flux:sidebar sticky stashable class="siba">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
-            <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+            <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Tóm tắt văn bản') }}</flux:navlist.item>
   
-            <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Upload Files') }}</flux:navlist.item>
+            <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Tóm tắt file') }}</flux:navlist.item>
             
-            <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Link Web') }}</flux:navlist.item>
+            <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Tóm tắt URL') }}</flux:navlist.item>
   
             <flux:spacer />
 
