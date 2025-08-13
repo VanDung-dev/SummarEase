@@ -48,18 +48,29 @@ def extract_keywords(text: str, language: str = "vietnamese", n_keywords: int = 
 
     # Phân tách câu và từ
     sentences = tokenizer.to_sentences(text)
-    words = []
+    words = [] # Lưu trữ từ được lower
+    original_words = {}  # Lưu trữ từ gốc, key là từ lower, value là từ gốc đầu tiên gặp
+
     for sentence in sentences:
-        words.extend(tokenizer.to_words(sentence))
+        sentence_words = tokenizer.to_words(sentence)
+        for word in sentence_words:
+            if word not in string.punctuation:
+                lower_word = word.lower()
+                words.append(lower_word)
+                # Chỉ lưu từ gốc đầu tiên
+                if lower_word not in original_words:
+                    original_words[lower_word] = word
 
-    # Loại bỏ dấu câu và chuyển đổi thành chữ thường
-    words = [word.lower() for word in words if word not in string.punctuation]
-
-    # Đếm tần suất xuất hiện của từ
+    # Đếm tần suất xuất hiện của từ (dùng dạng chữ thường để thống kê)
     word_counts = Counter(words)
 
-    # Lấy các từ xuất hiện nhiều nhất (trừ stop words)
-    keywords = [word for word, count in word_counts.most_common(n_keywords * 2) if len(word) > 2]
+    # Lấy các từ xuất hiện nhiều nhất, chuyển sang từ gốc
+    keywords = []
+    for word, count in word_counts.most_common():
+        if len(word) > 2 and word in original_words:
+            keywords.append(original_words[word])
+            if len(keywords) >= n_keywords:
+                break
 
     return keywords[:n_keywords]
 
