@@ -74,7 +74,8 @@
                             const outputArea = document.getElementById('summary-output');
                             // Chuyển đổi markdown thành HTML
                             const html = summaryText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                            outputArea.innerHTML = html;
+                            const html_i = html.replace(/\*(.*?)\*/g, '<i>$1</i>');
+                            outputArea.innerHTML = html_i;
                         });
                     </script>
                      @endif
