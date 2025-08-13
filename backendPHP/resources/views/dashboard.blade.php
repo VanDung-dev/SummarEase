@@ -1,6 +1,6 @@
  <link href="style.css" rel="stylesheet" />
 
-<x-layouts.app :title="__('Dashboard')">
+<x-layouts.app :title="__('Tóm tắt văn bản')">
     <div class="full container">
         <div class="grid auto-rows-min gap-4 md:grid-cols-3">
             <!-- <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
