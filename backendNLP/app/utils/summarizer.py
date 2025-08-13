@@ -3,8 +3,6 @@ from sumy.summarizers.text_rank import TextRankSummarizer
 from .tokenizer import VietnameseTokenizer, EnglishTokenizer
 from collections import Counter
 import string
-import math
-import os
 
 
 def load_stop_words(file_path: str) -> set:
@@ -29,7 +27,7 @@ def load_stop_words(file_path: str) -> set:
 
 def extract_keywords(text: str, language: str = "vietnamese", n_keywords: int = 5) -> list:
     """
-    Trích xuất các từ khóa quan trọng từ văn bản sử dụng phương pháp TF-IDF cải tiến.
+    Trích xuất các từ khóa quan trọng từ văn bản.
 
     Đầu vào:
         - text (str): Văn bản cần trích xuất từ khóa
@@ -49,71 +47,20 @@ def extract_keywords(text: str, language: str = "vietnamese", n_keywords: int = 
 
     # Phân tách câu và từ
     sentences = tokenizer.to_sentences(text)
-    if not sentences:
-        return []
-
     words = []
-    sentence_words = []
-
-    # Xử lý từng câu
     for sentence in sentences:
-        sent_words = [word.lower() for word in tokenizer.to_words(sentence)
-                      if word not in string.punctuation and len(word) > 2]
-        sentence_words.append(sent_words)
-        words.extend(sent_words)
+        words.extend(tokenizer.to_words(sentence))
 
-    if not words:
-        return []
-
-    # Tải từ dừng
-    # Xác định đường dẫn tới file stopwords.txt
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    stop_words_path = os.path.join(current_dir, '..', 'stopwords.txt')
-    stop_words = load_stop_words(stop_words_path)
-
-    # Loại bỏ từ dừng
-    words = [word for word in words if word not in stop_words]
-    sentence_words = [[word for word in sent_words if word not in stop_words]
-                      for sent_words in sentence_words]
+    # Loại bỏ dấu câu và chuyển đổi thành chữ thường
+    words = [word.lower() for word in words if word not in string.punctuation]
 
     # Đếm tần suất xuất hiện của từ
     word_counts = Counter(words)
-    total_words = len(words)
 
-    # Tính TF (Term Frequency)
-    tf_scores = {}
-    for word, count in word_counts.items():
-        tf_scores[word] = count / total_words if total_words > 0 else 0
+    # Lấy các từ xuất hiện nhiều nhất (trừ stop words)
+    keywords = [word for word, count in word_counts.most_common(n_keywords * 2) if len(word) > 2]
 
-    # Tính IDF (Inverse Document Frequency) - mô phỏng với từng câu như một "tài liệu"
-    idf_scores = {}
-    total_sentences = len(sentences)
-
-    for word in word_counts.keys():
-        # Đếm số câu chứa từ này
-        containing_sentences = sum(1 for sent_words in sentence_words if word in sent_words)
-        # Tránh chia cho 0 và làm mịn IDF
-        if containing_sentences > 0:
-            idf_scores[word] = math.log(total_sentences / containing_sentences) + 1
-        else:
-            idf_scores[word] = 1
-
-    # Tính TF-IDF score
-    tf_idf_scores = {}
-    for word in word_counts.keys():
-        tf_idf_scores[word] = tf_scores[word] * idf_scores[word]
-
-    # Sắp xếp theo TF-IDF score giảm dần
-    sorted_keywords = sorted(tf_idf_scores.items(), key=lambda x: x[1], reverse=True)
-
-    # Lấy top n từ khóa
-    keywords = [word for word, score in sorted_keywords[:n_keywords] if score > 0]
-
-    # Nếu không có từ khóa nào với TF-IDF > 0, quay lại phương pháp đơn giản
-    if not keywords:
-        keywords = [word for word, count in word_counts.most_common(n_keywords)]
-
-    return keywords
+    return keywords[:n_keywords]
 
 
 def highlight_keywords(text: str, keywords: list) -> str:
@@ -127,18 +74,9 @@ def highlight_keywords(text: str, keywords: list) -> str:
     Trả về:
         - str: Văn bản với các từ khóa được đánh dấu
     """
-    # Sắp xếp các từ khóa theo độ dài giảm dần để tránh thay thế một phần
-    sorted_keywords = sorted(keywords, key=len, reverse=True)
-
-    highlighted_text = text
-    for keyword in sorted_keywords:
-        # Chỉ đánh dấu từ khóa nếu nó không phải là một phần của từ khác
-        # Sử dụng một biểu thức đơn giản để kiểm tra ranh giới từ
-        import re
-        pattern = r'\b' + re.escape(keyword) + r'\b'
-        highlighted_text = re.sub(pattern, f"**{keyword}**", highlighted_text, flags=re.IGNORECASE)
-
-    return highlighted_text
+    for keyword in keywords:
+        text = text.replace(keyword, f"**{keyword}**")
+    return text
 
 
 def generate_title(text: str, keywords: list, language: str = "vietnamese") -> str:
