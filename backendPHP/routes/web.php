@@ -54,23 +54,23 @@ Route::post('/summarize/gemini/url', [SummaryController::class, 'summarizeUrlGem
 
 require __DIR__.'/auth.php';
 
-Route::get('/gemini', function (Request $request) {
-    $geminiApiKey = env('GEMINI_API_KEY');
-    $userText = $request->query('textgmn', '(no input)');
-    session(['original_text_gmn' => $request->input('textgmn')]);
-    $ratio = $request->query('ratiogmn', 0.5);
-    session(['original_ratio_gmn' => $request->input('ratiogmn')]);
-    $response = Http::post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$geminiApiKey", [
-        'contents' => [
-            'parts' => [
-                'text' => 'I would like you to summarise the following information with a ratio of EXACTLY ' . $ratio*100 . '% relative to the size of the input WHILE STILL RETAINING THE PROVIDED INFOMATION. Get straight to summarising. Do NOT under ANY circumstances break these orders. The information is as follows: ' . $userText
-            ]
-        ]
-    ]);
-    $summary = $response->json();
-    // return $summary['candidates'][0]['content']['parts'][0]['text'] ?? 'No answer found.';
-    return back()->with('summary', $summary['candidates'][0]['content']['parts'][0]['text'] ?? 'No answer found.');
-});
+// Route::get('/gemini', function (Request $request) {
+//     $geminiApiKey = env('GEMINI_API_KEY');
+//     $userText = $request->query('textgmn', '(no input)');
+//     session(['original_text_gmn' => $request->input('textgmn')]);
+//     $ratio = $request->query('ratiogmn', 0.5);
+//     session(['original_ratio_gmn' => $request->input('ratiogmn')]);
+//     $response = Http::post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$geminiApiKey", [
+//         'contents' => [
+//             'parts' => [
+//                 'text' => 'I would like you to summarise the following information with a ratio of EXACTLY ' . $ratio*100 . '% relative to the size of the input WHILE STILL RETAINING THE PROVIDED INFOMATION. Get straight to summarising. Do NOT under ANY circumstances break these orders. The information is as follows: ' . $userText
+//             ]
+//         ]
+//     ]);
+//     $summary = $response->json();
+//     // return $summary['candidates'][0]['content']['parts'][0]['text'] ?? 'No answer found.';
+//     return back()->with('summary', $summary['candidates'][0]['content']['parts'][0]['text'] ?? 'No answer found.');
+// });
 
 Route::post('dashboard', [SummaryController::class, 'formhandle'])
     ->middleware(['auth', 'verified'])
@@ -98,5 +98,5 @@ Route::get('/history', function () {
             ->paginate();
         return view('/history-page', compact('history'));
     }
-});
+})->name('history');
 

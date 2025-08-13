@@ -9,9 +9,9 @@
 
             <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Tóm tắt văn bản') }}</flux:navlist.item>
   
-            <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Tóm tắt file') }}</flux:navlist.item>
+            <flux:navlist.item class="nal-list" :href="route('history')" :current="request()->routeIs('history')" wire:navigate>{{ __('Tóm tắt file') }}</flux:navlist.item>
             
-            <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Tóm tắt URL') }}</flux:navlist.item>
+            <flux:navlist.item class="nal-list" :href="route('history')" :current="request()->routeIs('history')" wire:navigate>{{ __('Tóm tắt URL') }}</flux:navlist.item>
   
             <flux:spacer />
 
