@@ -1,3 +1,8 @@
+<?php
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+?>
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
@@ -12,6 +17,30 @@
             <flux:navlist.item class="nal-list" :href="route('history')" :current="request()->routeIs('history')" wire:navigate>{{ __('Tóm tắt file') }}</flux:navlist.item>
             
             <flux:navlist.item class="nal-list" :href="route('history')" :current="request()->routeIs('history')" wire:navigate>{{ __('Tóm tắt URL') }}</flux:navlist.item>
+
+            <div class="overflow-y-auto max-h-64">
+            @if(auth()->check())
+            @php
+                $userId = Auth::id();
+                $history = DB::table('summaries')
+                ->select('summary_text', 'summary_ratio', 'title', 'file_name', 'content as doctext', 'summaries.created_at')
+                ->orderBy('summaries.created_at', 'desc')
+                ->join('documents', 'documents.id', '=', 'document_id')
+                ->join('users', 'users.id', '=', 'documents.user_id')
+                ->where('users.id', '=', $userId)
+                ->paginate();
+            @endphp
+
+            @forelse($history as $item)
+                <p>{{ $item->title }}</p>
+                <p>{{ $item->summary_ratio }}</p>
+            @empty
+                <p>Lịch sử trống</p>
+            @endforelse
+                <p>Tổng số lần tóm tắt: {{ $history->total() }}</p>
+                <p>{{ $history->links('pagination::bootstrap-5') }}</p>
+            @endif
+            </div>
   
             <flux:spacer />
 
