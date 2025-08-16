@@ -1,42 +1,25 @@
-<?php
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
-use Illuminate\Validation\ValidationException;
-use Livewire\Volt\Component;
+    <title>SummarEase</title>
 
-// new class extends Component {
-//     public string $current_password = '';
-//     public string $password = '';
-//     public string $password_confirmation = '';
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-//     /**
-//      * Update the password for the currently authenticated user.
-//      */
-//     public function updatePassword(): void
-//     {
-//         try {
-//             $validated = $this->validate([
-//                 'current_password' => ['required', 'string', 'current_password'],
-//                 'password' => ['required', 'string', Password::defaults(), 'confirmed'],
-//             ]);
-//         } catch (ValidationException $e) {
-//             $this->reset('current_password', 'password', 'password_confirmation');
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    
+    <!-- Liên kết đến file CSS chính -->
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
-//             throw $e;
-//         }
+    @include('partials.head')
 
-//         Auth::user()->update([
-//             'password' => Hash::make($validated['password']),
-//         ]);
-
-//         $this->reset('current_password', 'password', 'password_confirmation');
-
-//         $this->dispatch('password-updated');
-//     }
-// }; ?>
-
+</head>
 <section class="w-full">
     @include('partials.settings-heading')
 
