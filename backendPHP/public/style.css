@@ -191,7 +191,6 @@
     .dark .text-zinc-400 {
         color: #d4d4d4 !important;
     }
-
     /* ==========================================================
     Cấu trúc chung và vị trí toàn bộ trang web
     ========================================================== */
@@ -977,3 +976,36 @@
     border-radius: 5px;
     font-size: 1rem;
 }
+.permissions button {
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 0.8rem;
+}
+.file-table .action-buttons button, .table-container > button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.permissions input, .permissions select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: white;
+}
+.permissions {
+    display: flex; 
+    gap: 10px;  
+    align-items: center; 
+    color: rgb(0, 0, 0);
+}
+

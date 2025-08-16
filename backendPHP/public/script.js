@@ -173,11 +173,7 @@ let users = Array.from({ length: 0 }, (_, i) => ({
   username: `user${i + 1}`,
   role: "user",
 }));
-let history = Array.from({ length: 0 }, (_, i) => ({
-  name: `lịch_sử_${i + 1}.txt`,
-  date: new Date().toLocaleDateString("vi-VN"),
-  result: "Tóm tắt thành công",
-}));
+
 
   /* ==========================================================
        Hàm xử lý Modal
@@ -263,25 +259,6 @@ let history = Array.from({ length: 0 }, (_, i) => ({
     });
   };
 
-  const updateHistoryTable = (data = history) => {
-    const tbody = document.getElementById("historyTableBody");
-    if (!tbody) return;
-    tbody.innerHTML = "";
-    if (data.length === 0) {
-      tbody.innerHTML =
-        '<tr><td colspan="3" style="text-align: center;">Chưa có lịch sử nào.</td></tr>';
-      return;
-    }
-    data.forEach((entry) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-                <td>${entry.name}</td>
-                <td>${entry.date}</td>
-                <td>${entry.result}</td>
-            `;
-      tbody.appendChild(row);
-    });
-  };
 
   /* ==========================================================
        Các hàm xử lý tương tác người dùng
@@ -328,23 +305,6 @@ window.searchFiles = () => {
       showModal("Lỗi", "Tên người dùng không được để trống.");
     }
   };
-  window.changeRole = (username) => {
-    const newRole = prompt("Nhập quyền mới (admin/user):");
-    if (
-      newRole &&
-      (newRole.trim().toLowerCase() === "admin" ||
-        newRole.trim().toLowerCase() === "user")
-    ) {
-      const user = users.find((u) => u.username === username);
-      if (user) user.role = newRole.trim().toLowerCase();
-      updateUserTable();
-    } else if (newRole !== null) {
-      showModal(
-        "Lỗi",
-        'Quyền không hợp lệ. Vui lòng nhập "admin" hoặc "user".'
-      );
-    }
-  };
   window.deleteUser = (username) => {
     users = users.filter((u) => u.username !== username);
     updateUserTable();
@@ -359,84 +319,3 @@ window.searchFiles = () => {
     );
     updateUserTable(filteredUsers);
   };
-  window.addHistory = () => {
-    const name = prompt("Nhập tên tệp:");
-    if (name && name.trim() !== "") {
-      history.unshift({
-        name,
-        date: new Date().toLocaleDateString("vi-VN"),
-        result: "Tóm tắt thành công",
-      });
-      updateHistoryTable();
-      updateDashboardData();
-    } else if (name !== null) {
-      showModal("Lỗi", "Tên tệp không được để trống.");
-    }
-  };
-  window.searchHistory = () => {
-    const searchTerm = document
-      .getElementById("historySearchInput")
-      .value.toLowerCase();
-    const filteredHistory = history.filter((entry) =>
-      entry.name.toLowerCase().includes(searchTerm)
-    );
-    updateHistoryTable(filteredHistory);
-  };
-
-  /* ==========================================================
-       Xử lý sự kiện click cho Sidebar
-       ========================================================== */
-  menuToggle.addEventListener("click", () => {
-    sidebar.classList.toggle("active");
-    if (window.innerWidth > 768) {
-      sidebar.classList.toggle("collapsed");
-    }
-  });
-
-  sidebarLinks.forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      sidebarLinks.forEach((item) => item.classList.remove("active"));
-      link.classList.add("active");
-      document
-        .querySelectorAll(".section")
-        .forEach((section) => section.classList.add("hidden"));
-      if (dashboardGrid) dashboardGrid.classList.add("hidden");
-      if (dashboardChart) dashboardChart.classList.add("hidden");
-      switch (link.id) {
-        case "home-link":
-          if (dashboardGrid) dashboardGrid.classList.remove("hidden");
-          if (dashboardChart) dashboardChart.classList.remove("hidden");
-          updateDashboardData();
-          break;
-        case "users-link":
-          document.getElementById("users").classList.remove("hidden");
-          updateUserTable();
-          break;
-        case "products-link":
-          document.getElementById("files").classList.remove("hidden");
-          updateFileTable();
-          break;
-        case "summary-history-link":
-          document.getElementById("history").classList.remove("hidden");
-          updateHistoryTable();
-          break;
-        case "analysis-link":
-          break;
-        case "settings-link":
-          break;
-        case "logout-link":
-          window.location.href = "index.html";
-          return;
-      }
-    });
-  });
-
-  /* ==========================================================
-       Khởi tạo ban đầu
-       ========================================================== */
-  updateDashboardData();
-  updateFileTable();
-  updateUserTable();
-  updateHistoryTable();
-});
