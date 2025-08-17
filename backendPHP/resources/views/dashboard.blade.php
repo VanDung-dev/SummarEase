@@ -25,9 +25,9 @@
                     <textarea name="text" id="text" class="input-areaa" placeholder="Hãy nhập văn bản cần tóm tắt...">{{ session('original_text') }}</textarea>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio')}}" class="mt-4 w-full" />
                     <p class="text-sm text-gray-500 mt-1"></p>
-                    <button type="submit" name="sum" value="summarease" class="mt-4 submit-button">{{ __('Summarize with SummarEase') }}</button>
+                    <button type="submit" name="sum" value="summarease" class="mt-4 submit-button">{{ __('Tóm tắt với SummarEase') }}</button>
                     <br />
-                    <button type="submit" name="sum" value="gemini" class="mt-4 submit-button">{{ __('Summarize with Gemini') }}</button>
+                    <button type="submit" name="sum" value="gemini" class="mt-4 submit-button">{{ __('Tóm tắt với Gemini') }}</button>
         </form>
                     <!--<textarea name="text" id="text" class="input-area">{{ session('original_text') }}</textarea>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value='{{ session('original_ratio') }}' class="mt-4 w-full" />

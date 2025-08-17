@@ -84,7 +84,7 @@ use Illuminate\Support\Str;
                     <flux:menu.separator />
 
                     <flux:menu.radio.group> 
-                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
+                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Cài đặt') }}</flux:menu.item>
                     </flux:menu.radio.group> 
 
                     <flux:menu.separator />
@@ -92,7 +92,7 @@ use Illuminate\Support\Str;
                     <form method="POST" action="{{ route('logout') }}" class="w-full">
                         @csrf
                         <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
+                            {{ __('Đăng xuất') }}
                         </flux:menu.item>
                     </form>
                 </flux:menu>
@@ -128,7 +128,7 @@ use Illuminate\Support\Str;
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
-                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
+                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Cài đặt') }}</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
@@ -136,7 +136,7 @@ use Illuminate\Support\Str;
                     <form method="POST" action="{{ route('logout') }}" class="w-full">
                         @csrf
                         <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
+                            {{ __('Đăng xuất') }}
                         </flux:menu.item>
                     </form>
                 </flux:menu>
