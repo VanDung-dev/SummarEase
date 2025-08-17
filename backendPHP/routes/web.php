@@ -80,7 +80,7 @@ Route::get('/history', function () {
     if (auth()->check()) {
         $userId = Auth::id();
         $history = DB::table('summaries')
-            ->select('summary_text', 'summary_ratio', 'title', 'file_name', 'content as doctext', 'summaries.created_at')
+            ->select('summaries.id as summaryid', 'summary_text', 'summary_ratio', 'title', 'file_name', 'content as doctext', 'summaries.created_at')
             ->orderBy('summaries.created_at', 'desc')
             ->join('documents', 'documents.id', '=', 'document_id')
             ->join('users', 'users.id', '=', 'documents.user_id')
@@ -90,7 +90,7 @@ Route::get('/history', function () {
     } else {
         $sessionId = Session::getId();
         $history = DB::table('guest_summaries')
-            ->select('summary_text', 'summary_ratio', 'title', 'file_name', 'content as doctext', 'guest_summaries.created_at')
+            ->select('guest_summaries.id as summaryid', 'summary_text', 'summary_ratio', 'title', 'file_name', 'content as doctext', 'guest_summaries.created_at')
             ->orderBy('guest_summaries.created_at', 'desc')
             ->join('guest_documents', 'guest_documents.id', '=', 'document_id')
             ->join('sessions', 'sessions.id', '=', 'guest_documents.guest_id')
@@ -101,8 +101,9 @@ Route::get('/history', function () {
 })->name('history');
 
 Route::get('history-content/{summaryid}', function ($summaryid) {
-    $userId = Auth::id();
-    $history = DB::table('summaries')
+    if (auth()->check()) {
+        $userId = Auth::id();
+        $history = DB::table('summaries')
             ->select('summaries.id', 'summary_text', 'summary_ratio', 'title', 'file_name', 'content as doctext', 'summaries.created_at')
             ->orderBy('summaries.created_at', 'desc')
             ->join('documents', 'documents.id', '=', 'document_id')
@@ -110,5 +111,16 @@ Route::get('history-content/{summaryid}', function ($summaryid) {
             ->where('users.id', '=', $userId)
             ->where('summaries.id', '=', $summaryid)
             ->first();
+    } else {
+        $sessionId = Session::getId();
+        $history = DB::table('guest_summaries')
+            ->select('guest_summaries.id', 'summary_text', 'summary_ratio', 'title', 'file_name', 'content as doctext', 'guest_summaries.created_at')
+            ->orderBy('guest_summaries.created_at', 'desc')
+            ->join('guest_documents', 'guest_documents.id', '=', 'document_id')
+            ->join('sessions', 'sessions.id', '=', 'guest_documents.guest_id')
+            ->where('sessions.id', '=', $sessionId)
+            ->where('guest_summaries.id', '=', $summaryid)
+            ->first();
+    }
     return view('history-content', ['history' => $history]);
-})->middleware(['auth', 'verified'])->name('history-content');
+})->name('history-content');

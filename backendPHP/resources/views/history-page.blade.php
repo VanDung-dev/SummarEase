@@ -20,8 +20,12 @@
     </head>
     <body>
         @forelse($history as $item)
+        <a href="{{ route('history-content', $item->summaryid) }}">
+            <div style="border: 1px solid #696c71; border-radius: 5px; margin-bottom: 10px; padding: 5px;">
             <p>{{ $item->title }}</p>
             <p>{{ $item->summary_ratio }}</p>
+        </div>
+        </a>
         @empty
             <p>Lịch sử trống</p>
         @endforelse
