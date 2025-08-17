@@ -103,7 +103,11 @@ use Livewire\Volt\Component;
                                 <th>Hành động</th>
                             </tr>
                         </thead>
-                        <tbody id="userTableBody"></tbody>
+                        <tbody id="userTableBody">
+                            <tr>
+                                <td colspan="3" style="text-align: center;">Chưa có người dùng nào.</td>
+                            </tr>
+                        </tbody>
                     </table>
                     <div class="permissions">
                         <select id="roleSelect">

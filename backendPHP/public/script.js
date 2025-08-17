@@ -145,16 +145,7 @@ let users = Array.from({ length: 0 }, (_, i) => ({
   username: `user${i + 1}`,
   role: "user",
 }));
-const updateDashboardData = () => {
-  const totalUsers = document.getElementById("total-users");
-  const totalProducts = document.getElementById("total-products"); // Tên biến này có thể là `totalFiles` hoặc tương tự cho rõ ràng hơn
-  const data = {
-    users: users.length, // Dòng này sử dụng `users.length`
-    products: files.length,
-  };
-  if (totalUsers) totalUsers.textContent = data.users;
-  if (totalProducts) totalProducts.textContent = data.products;
-};
+
 const updateUserTable = (data = users) => {
     const tbody = document.getElementById("userTableBody");
     if (!tbody) return;
@@ -184,7 +175,6 @@ window.addUser = () => {
     if (username !== "") {
         users.unshift({ username, role });
         updateUserTable();
-        updateDashboardData();
         usernameInput.value = "";
     } else {
         showModal("Lỗi", "Tên người dùng không được để trống.");
@@ -206,7 +196,6 @@ window.changeRole = (username) => {
 window.deleteUser = (username) => {
     users = users.filter((u) => u.username !== username);
     updateUserTable();
-    updateDashboardData();
 };
 window.searchUsers = () => {
     const searchTerm = document
@@ -218,6 +207,11 @@ window.searchUsers = () => {
     updateUserTable(filteredUsers);
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+let files = Array.from({ length: 0 }, (_, i) => ({
+    name: `tệp_${i + 1}.txt`,
+    date: new Date().toLocaleDateString("vi-VN"),
+    status: "Đã duyệt",
+  }));
 const updateFileTable = (data = files) => {
     const tbody = document.getElementById("fileTableBody");
     if (!tbody) return;
@@ -249,7 +243,6 @@ const updateFileTable = (data = files) => {
             status: "Chưa duyệt",
         });
         updateFileTable();
-        updateDashboardData();
     } else if (name !== null) {
         showModal("Lỗi", "Tên tệp không được để trống.");
     }
@@ -262,7 +255,6 @@ window.approveFile = (name) => {
 window.deleteFile = (name) => {
     files = files.filter((f) => f.name !== name);
     updateFileTable();
-    updateDashboardData();
 }
 window.searchFiles = () => {
     const searchTerm = document
@@ -274,27 +266,26 @@ window.searchFiles = () => {
     updateFileTable(filteredFiles);
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const updateHistoryTable = (data = history) => {
-    const tbody = document.getElementById("historyTableBody");
-    if (!tbody) return;
-    tbody.innerHTML = "";
-    if (data.length === 0) {
-        tbody.innerHTML =
-            '<tr><td colspan="3" style="text-align: center;">Chưa có lịch sử nào.</td></tr>';
-        return;
-    }
-    data.forEach((entry) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${entry.name}</td>
-            <td>${entry.date}</td>
-            <td>${entry.result}</td>
-        `;
-        tbody.appendChild(row);
-    });
-};
+// const updateHistoryTable = (data = history) => {
+//     const tbody = document.getElementById("historyTableBody");
+//     if (!tbody) return;
+//     tbody.innerHTML = "";
+//     if (data.length === 0) {
+//         tbody.innerHTML =
+//             '<tr><td colspan="3" style="text-align: center;">Chưa có lịch sử nào.</td></tr>';
+//         return;
+//     }
+//     data.forEach((entry) => {
+//         const row = document.createElement("tr");
+//         row.innerHTML = `
+//             <td>${entry.name}</td>
+//             <td>${entry.date}</td>
+//             <td>${entry.result}</td>
+//         `;
+//         tbody.appendChild(row);
+//     });
+// };
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-updateDashboardData();
   updateFileTable();
   updateUserTable();
   updateHistoryTable();

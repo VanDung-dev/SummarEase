@@ -924,6 +924,8 @@ input[type="range"].w-full {
 
 .table-container {
     overflow-x: auto;
+    width: 120%; /* Chỉnh độ rộng của bảng */
+    margin: 0 auto; /* Căn giữa bảng */
 }
 
 .file-table {
@@ -938,14 +940,17 @@ input[type="range"].w-full {
     border: 1px solid #000000;
     text-align: left;
 }
-
+.file-table td {
+    background-color: #f9f9f930;
+}
 .file-table th {
     background-color: var(--primary-color);
     color: #fff;
 }
 
-.file-table tbody tr:hover {
-    background-color: #f1f1f1;
+#userTable tbody tr:hover,
+#fileTable tbody tr:hover {
+    background-color: inherit !important;
 }
 
 .file-table .action-buttons button,
@@ -963,38 +968,10 @@ input[type="range"].w-full {
     margin-top: 20px;
 }
 
-.permissions {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.permissions input,
-.permissions select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
-.permissions button {
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.permissions button:hover {
-    background-color: #218838;
-}
 .search-bar button {
     background-color: var(--primary-color);
     color: #fff;
-    border: 2px solid #000000;
+    border: 1px solid #000000;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
@@ -1009,46 +986,6 @@ input[type="range"].w-full {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1rem;
-}
-.table-container {
-    overflow-x: auto;
-}
-
-.file-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.file-table th,
-.file-table td {
-    padding: 12px;
-    border: 1px solid #000000;
-    text-align: left;
-}
-
-.file-table th {
-    background-color: var(--primary-color);
-    color: #fff;
-}
-
-.file-table tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
-.file-table .action-buttons button,
-.table-container > button {
-    background-color: var(--primary-color);
-    color: #fff;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.table-container > button {
-    margin-top: 20px;
 }
 
 .permissions {

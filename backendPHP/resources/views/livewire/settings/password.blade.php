@@ -52,12 +52,16 @@ use Livewire\Volt\Component;
                         <thead>
                             <tr>
                                 <th>Tên tệp</th>
-                                <th>Ngày tải lên</th>
+                                <th>Ngày tải lên</th>   
                                 <th>Trạng thái</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
-                        <tbody id="fileTableBody"></tbody>
+                        <tbody id="fileTableBody">
+                            <tr>
+                                <td colspan="4" style="text-align: center;">Chưa có tệp nào.</td>
+                            </tr>
+                        </tbody>
                     </table>
                     <button type="button" onclick="addFile()">Thêm tệp mới</button>
                 </div>
