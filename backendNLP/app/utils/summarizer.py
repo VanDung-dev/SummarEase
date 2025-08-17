@@ -123,7 +123,7 @@ def generate_title(text: str, keywords: list, language: str = "vietnamese") -> s
 
     first_sentence = sentences[0]
     if keywords:
-        return f"capitalize({keywords[0]}): {first_sentence[:50]}..." if len(first_sentence) > 50 else first_sentence
+        return f"{keywords[0]}: {first_sentence[:50]}...".capitalize() if len(first_sentence) > 50 else first_sentence
     return first_sentence[:70] + "..." if len(first_sentence) > 70 else first_sentence
 
 
