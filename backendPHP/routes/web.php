@@ -100,3 +100,15 @@ Route::get('/history', function () {
     }
 })->name('history');
 
+Route::get('history-content/{summaryid}', function ($summaryid) {
+    $userId = Auth::id();
+    $history = DB::table('summaries')
+            ->select('summaries.id', 'summary_text', 'summary_ratio', 'title', 'file_name', 'content as doctext', 'summaries.created_at')
+            ->orderBy('summaries.created_at', 'desc')
+            ->join('documents', 'documents.id', '=', 'document_id')
+            ->join('users', 'users.id', '=', 'documents.user_id')
+            ->where('users.id', '=', $userId)
+            ->where('summaries.id', '=', $summaryid)
+            ->first();
+    return view('history-content', ['history' => $history]);
+})->middleware(['auth', 'verified'])->name('history-content');

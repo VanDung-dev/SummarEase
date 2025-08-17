@@ -23,7 +23,7 @@ use Illuminate\Support\Str;
             @php
                 $userId = Auth::id();
                 $history = DB::table('summaries')
-                ->select('summary_text', 'summary_ratio', 'title', 'file_name', 'content as doctext', 'summaries.created_at')
+                ->select('summaries.id as summaryid', 'summary_ratio', 'title', 'file_name', 'summaries.created_at')
                 ->orderBy('summaries.created_at', 'desc')
                 ->join('documents', 'documents.id', '=', 'document_id')
                 ->join('users', 'users.id', '=', 'documents.user_id')
@@ -32,12 +32,19 @@ use Illuminate\Support\Str;
             @endphp
 
             @forelse($history as $item)
-                <p>{{ $item->title }}</p>
-                <p>{{ $item->summary_ratio }}</p>
+                <a href="{{ route('history-content', $item->summaryid) }}">
+                <div style="border: 1px solid #696c71; border-radius: 5px; margin-bottom: 10px; padding: 5px;">
+                    <h4 style="font-weight: bold; font-style: italic; text-decoration: underline; text-align: center;">{{ $item->file_name }}</h4>
+                    <p style="text-align: justify;">{{ $item->title }}</p>
+                    <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Ratio: {{ $item->summary_ratio }}</p>
+                    <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Created at: {{ $item->created_at }}</p>
+                </div>
+                </a>
             @empty
-                <p>Lịch sử trống</p>
+                <p style="margin: auto;">Lịch sử trống</p>
             @endforelse
                 <p>Tổng số lần tóm tắt: {{ $history->total() }}</p>
+                <br />
                 <p>{{ $history->links('pagination::bootstrap-5') }}</p>
             @endif
             </div>
