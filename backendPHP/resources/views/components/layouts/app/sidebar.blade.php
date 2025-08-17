@@ -36,8 +36,8 @@ use Illuminate\Support\Str;
                 <div style="border: 1px solid #696c71; border-radius: 5px; margin-bottom: 10px; padding: 5px;">
                     <h4 style="font-weight: bold; font-style: italic; text-decoration: underline; text-align: center;">{{ $item->file_name }}</h4>
                     <p style="text-align: justify;">{{ $item->title }}</p>
-                    <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Ratio: {{ $item->summary_ratio }}</p>
-                    <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Created at: {{ $item->created_at }}</p>
+                    <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Tỉ lệ: {{ $item->summary_ratio }}</p>
+                    <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Ngày tạo: {{ $item->created_at }}</p>
                 </div>
                 </a>
             @empty

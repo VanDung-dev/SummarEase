@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>SummarEase</title>
+        <title>Nội dung lịch sử</title>
 
         <link rel="icon" href="/favicon.ico" sizes="any">
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -21,23 +21,23 @@
     <body>
         @if(isset($history) && $history)
             <h1>{{ $history->title }}</h1>
-            <p>File: {{ $history->file_name }}</p>
-            <p>Ratio: {{ $history->summary_ratio }}</p>
-            <p>Created at: {{ $history->created_at }}</p>
-            
-            <h2>Summary Text:</h2>
-            <div>
-                {{ $history->summary_text }}
-            </div>
-            
+            <p>{{ $history->file_name ?? ''}}</p>
+            <p>Tỉ lệ: {{ $history->summary_ratio }}</p>
+            <p>Ngày tạo: {{ $history->created_at }}</p>
+
             @if(isset($history->doctext))
-            <h2>Original Document:</h2>
+            <h2>Nội dung ban đầu:</h2>
             <div>
                 {{ $history->doctext }}
             </div>
             @endif
+            
+            <h2>Nội dung đã được tóm tắt:</h2>
+            <div>
+                {{ $history->summary_text }}
+            </div>        
         @else
-            <p>Summary not found.</p>
+            <p>Không tìm thấy bản tóm tắt.</p>
         @endif
     </body>
     

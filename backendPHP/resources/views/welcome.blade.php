@@ -46,6 +46,7 @@
                     @endauth
                 </nav>
             @endif
+            <a style="margin-top: 2.5rem" href="{{ route('history') }}" class="login">Xem lịch sử</a>
         </header>
       </div>
        <h1 class="title">Tóm tắt văn bản học thuật</h1>
