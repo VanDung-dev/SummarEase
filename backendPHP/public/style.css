@@ -915,6 +915,17 @@ input[type="range"].w-full {
     color: white;
 }
 
+:root {
+    --primary-color: #4a6cff;
+}
+.search-bar button:hover {
+    background-color: #3b59d8;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
 .file-table {
     width: 100%;
     border-collapse: collapse;
@@ -929,10 +940,145 @@ input[type="range"].w-full {
 }
 
 .file-table th {
-  background-color: var(--primary-color); /* Màu nền tiêu đề bảng */
-  color: #fff; /* Màu chữ tiêu đề bảng */
+    background-color: var(--primary-color);
+    color: #fff;
 }
 
 .file-table tbody tr:hover {
-  background-color: #f1f1f1; /* Màu nền khi di chuột qua hàng */
+    background-color: #f1f1f1;
+}
+
+.file-table .action-buttons button,
+.table-container > button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.table-container > button {
+    margin-top: 20px;
+}
+
+.permissions {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.permissions input,
+.permissions select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.permissions button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.permissions button:hover {
+    background-color: #218838;
+}
+.search-bar button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: 2px solid #000000;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.search-bar button:hover {
+    background-color: #3b59d8;
+}
+.search-bar input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+.table-container {
+    overflow-x: auto;
+}
+
+.file-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.file-table th,
+.file-table td {
+    padding: 12px;
+    border: 1px solid #000000;
+    text-align: left;
+}
+
+.file-table th {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.file-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.file-table .action-buttons button,
+.table-container > button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.table-container > button {
+    margin-top: 20px;
+}
+
+.permissions {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.permissions input,
+.permissions select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #ccc;
+    color: black;
+}
+
+.permissions button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    font-size: 1rem;
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.permissions button:hover {
+    background-color: #218838;
 }

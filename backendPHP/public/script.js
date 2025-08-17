@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 let users = Array.from({ length: 0 }, (_, i) => ({
   username: `user${i + 1}`,
   role: "user",
@@ -156,73 +156,149 @@ const updateDashboardData = () => {
   if (totalProducts) totalProducts.textContent = data.products;
 };
 const updateUserTable = (data = users) => {
-  const tbody = document.getElementById("userTableBody");
-  if (!tbody) return;
-  tbody.innerHTML = "";
-  if (data.length === 0) {
-    tbody.innerHTML =
-      '<tr><td colspan="3" style="text-align: center;">Chưa có người dùng nào.</td></tr>';
-    return;
-  }
+    const tbody = document.getElementById("userTableBody");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+    if (data.length === 0) {
+        tbody.innerHTML =
+            '<tr><td colspan="3" style="text-align: center;">Chưa có người dùng nào.</td></tr>';
+        return;
+    }
   data.forEach((user) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-                <td>${user.username}</td>
-                <td>${user.role}</td>
-                <td class="action-buttons">
-                    <button onclick="changeRole('${user.username}')"><i class="fas fa-edit"></i></button>
-                    <button onclick="deleteUser('${user.username}')"><i class="fas fa-trash-alt"></i></button>
-                </td>
-            `;
-    tbody.appendChild(row);
-  });
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${user.username}</td>
+            <td>${user.role}</td>
+            <td class="action-buttons">
+                <button onclick="changeRole('${user.username}')"><i class="fas fa-edit"></i></button>
+                <button onclick="deleteUser('${user.username}')"><i class="fas fa-trash-alt"></i></button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
 };
 window.addUser = () => {
-  const usernameInput = document.getElementById("newUserInput");
-  const username = usernameInput.value.trim();
-  const role = document.getElementById("roleSelect").value;
-  if (username !== "") {
-    users.unshift({ username, role });
-    updateUserTable();
-    updateDashboardData();
-    usernameInput.value = "";
-  } else {
-    showModal("Lỗi", "Tên người dùng không được để trống.");
-  }
+    const usernameInput = document.getElementById("newUserInput");
+    const username = usernameInput.value.trim();
+    const role = document.getElementById("roleSelect").value;
+    if (username !== "") {
+        users.unshift({ username, role });
+        updateUserTable();
+        updateDashboardData();
+        usernameInput.value = "";
+    } else {
+        showModal("Lỗi", "Tên người dùng không được để trống.");
+    }
 };
 window.changeRole = (username) => {
-  const newRole = prompt("Nhập quyền mới (admin/user):");
-  if (
-    newRole &&
-    (newRole.trim().toLowerCase() === "admin" ||
-      newRole.trim().toLowerCase() === "user")
-  ) {
-    const user = users.find((u) => u.username === username);
-    if (user) user.role = newRole.trim().toLowerCase();
-    updateUserTable();
-  } else if (newRole !== null) {
-    showModal(
-      "Lỗi",
-      'Quyền không hợp lệ. Vui lòng nhập "admin" hoặc "user".'
-    );
-  }
+    const newRole = prompt("Nhập quyền mới (admin/user):");
+    if (newRole && (newRole.trim().toLowerCase() === "admin" || newRole.trim().toLowerCase() === "user")) {
+        const user = users.find((u) => u.username === username);
+        if (user) user.role = newRole.trim().toLowerCase();
+        updateUserTable();
+    } else if (newRole !== null) {
+        showModal(
+            "Lỗi",
+            'Quyền không hợp lệ. Vui lòng nhập "admin" hoặc "user".'
+        );
+    }
 };
 window.deleteUser = (username) => {
-  users = users.filter((u) => u.username !== username);
-  updateUserTable();
-  updateDashboardData();
+    users = users.filter((u) => u.username !== username);
+    updateUserTable();
+    updateDashboardData();
 };
 window.searchUsers = () => {
-  const searchTerm = document
-    .getElementById("userSearchInput")
-    .value.toLowerCase();
-  const filteredUsers = users.filter((user) =>
-    user.username.toLowerCase().includes(searchTerm)
-  );
-  updateUserTable(filteredUsers);
+    const searchTerm = document
+        .getElementById("userSearchInput")
+        .value.toLowerCase();
+    const filteredUsers = users.filter((user) =>
+        user.username.toLowerCase().includes(searchTerm)
+    );
+    updateUserTable(filteredUsers);
 };
-  case "users-link":
-  document.getElementById("users").classList.remove("hidden");
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const updateFileTable = (data = files) => {
+    const tbody = document.getElementById("fileTableBody");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+    if (data.length === 0) {
+        tbody.innerHTML =
+            '<tr><td colspan="4" style="text-align: center;">Chưa có tệp nào.</td></tr>';
+        return;
+    }
+    data.forEach((file) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${file.name}</td>
+            <td>${file.date}</td>
+            <td>${file.status}</td>
+            <td class="action-buttons">
+                <button onclick="approveFile('${file.name}')"><i class="fas fa-check"></i></button>
+                <button onclick="deleteFile('${file.name}')"><i class="fas fa-trash-alt"></i></button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+};window.addFile = () => {
+    const name = prompt("Nhập tên tệp:");
+    if (name && name.trim() !== "") {
+        files.unshift({
+            name,
+            date: new Date().toLocaleDateString("vi-VN"),
+            status: "Chưa duyệt",
+        });
+        updateFileTable();
+        updateDashboardData();
+    } else if (name !== null) {
+        showModal("Lỗi", "Tên tệp không được để trống.");
+    }
+};
+window.approveFile = (name) => {
+    const file = files.find((f) => f.name === name);
+    if (file) file.status = "Đã duyệt";
+    updateFileTable();
+};
+window.deleteFile = (name) => {
+    files = files.filter((f) => f.name !== name);
+    updateFileTable();
+    updateDashboardData();
+}
+window.searchFiles = () => {
+    const searchTerm = document
+        .getElementById("fileSearchInput")
+        .value.toLowerCase();
+    const filteredFiles = files.filter((file) =>
+        file.name.toLowerCase().includes(searchTerm)
+    );
+    updateFileTable(filteredFiles);
+};
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const updateHistoryTable = (data = history) => {
+    const tbody = document.getElementById("historyTableBody");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+    if (data.length === 0) {
+        tbody.innerHTML =
+            '<tr><td colspan="3" style="text-align: center;">Chưa có lịch sử nào.</td></tr>';
+        return;
+    }
+    data.forEach((entry) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${entry.name}</td>
+            <td>${entry.date}</td>
+            <td>${entry.result}</td>
+        `;
+        tbody.appendChild(row);
+    });
+};
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+updateDashboardData();
+  updateFileTable();
   updateUserTable();
-  break;
-updateUserTable(); // Dòng này nằm trong khối `DOMContentLoaded` ở cuối file
+  updateHistoryTable();
+  document.getElementById("users").classList.remove("hidden");
+  document.getElementById("files").classList.remove("hidden");
+  document.getElementById("history").classList.remove("hidden");
+}); 
