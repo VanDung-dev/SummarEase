@@ -58,9 +58,10 @@ use Livewire\Volt\Component;
                         </thead>
                         <tbody id="historyTableBody"></tbody>
                     </table>
-                    <button onclick="addHistory()">Thêm lịch sử mẫu</button>
+                    <button type="button" onclick="addHistory()" class="add-history-btn">Thêm lịch sử mẫu</button>
                 </div>
             </div>
         </form>
     </x-settings.layout>
 </section>
+<script src="script.js"></script>

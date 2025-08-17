@@ -59,9 +59,10 @@ use Livewire\Volt\Component;
                         </thead>
                         <tbody id="fileTableBody"></tbody>
                     </table>
-                    <button onclick="addFile()">Thêm tệp mới</button>
+                    <button type="button" onclick="addFile()">Thêm tệp mới</button>
                 </div>
             </div>
         </form>
     </x-settings.layout>
 </section>
+<script src="script.js"></script>
