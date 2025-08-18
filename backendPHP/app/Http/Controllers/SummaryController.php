@@ -110,15 +110,33 @@ class SummaryController extends Controller
     public function summarizeFile(Request $request)
     {
         $request->validate([
-            'file' => 'required|string', // Có thể thay đổi thành 'file' nếu upload file
+            'file' => 'required|array', // Thay đổi để chấp nhận mảng file
+            'file.*' => 'file|mimes:pdf,docx,txt,md,epub|max:10240', // Xác thực từng file
             'ratio' => 'numeric|min:0|max:1',
             'language' => 'in:vietnamese,english'
         ]);
 
+        // Lưu tên file vào session để hiển thị lại sau khi submit
+        $fileNames = [];
+        if ($request->hasFile('file')) {
+            foreach ($request->file('file') as $file) {
+                $fileNames[] = $file->getClientOriginalName();
+            }
+        }
+        session(['uploaded_files' => $fileNames]);
+        session(['original_ratio' => $request->input('ratio')]);
+
         $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
 
+        // Lấy nội dung của file đầu tiên để tóm tắt (nếu có nhiều file)
+        $fileContent = '';
+        if ($request->hasFile('file') && count($request->file('file')) > 0) {
+            $firstFile = $request->file('file')[0];
+            $fileContent = file_get_contents($firstFile->getPathname());
+        }
+
         $result = $this->apiClient->summarizeFile(
-            $request->input('file'),
+            $fileContent,
             $request->input('ratio', 0.2),
             $request->input('language', 'vietnamese'),
             $userId
@@ -141,7 +159,7 @@ class SummaryController extends Controller
                 $guestDocument = new GuestDocument();
                 $guestDocument->guest_id = $sessionId;
                 $guestDocument->title = 'Tập tin tóm tắt - ' . now()->format('Y-m-d H:i:s');
-                $guestDocument->content = $request->input('file');
+                $guestDocument->content = $fileContent;
                 $guestDocument->file_type = 'file';
                 $guestDocument->save();
 
@@ -226,15 +244,32 @@ class SummaryController extends Controller
     public function summarizeFileGemini(Request $request)
     {
         $request->validate([
-            'file' => 'required|file', // Yêu cầu là một file upload
+            'file' => 'required|array', // Yêu cầu là một mảng file upload
+            'file.*' => 'file|mimes:pdf,doc,docx,txt|max:10240', // Xác thực từng file
             'ratio' => 'numeric|min:0|max:1',
             'language' => 'in:vietnamese,english,auto'
         ]);
 
+        // Lưu tên file vào session để hiển thị lại sau khi submit
+        $fileNames = [];
+        if ($request->hasFile('file')) {
+            foreach ($request->file('file') as $file) {
+                $fileNames[] = $file->getClientOriginalName();
+            }
+        }
+        session(['uploaded_files' => $fileNames]);
+        session(['original_ratio' => $request->input('ratio')]);
+
         $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
 
+        // Lấy file đầu tiên để tóm tắt (nếu có nhiều file)
+        $fileToProcess = null;
+        if ($request->hasFile('file') && count($request->file('file')) > 0) {
+            $fileToProcess = $request->file('file')[0];
+        }
+
         $result = $this->apiClient->summarizeFileGemini(
-            $request->file('file'),
+            $fileToProcess,
             $request->input('ratio', 0.2),
             $request->input('language', 'vietnamese'),
             $userId
@@ -358,6 +393,35 @@ class SummaryController extends Controller
             return back();
         } elseif ($action === 'gemini') {
             $this->summarizeTextGemini($request);
+            return back();
+        }
+    }
+
+    public function formhandle_file(Request $request)
+    {
+        $action = $request->input('sum-file');
+        $request->validate([
+            'file' => 'required|array',
+            'file.*' => 'file|mimes:pdf,doc,docx,txt|max:10240',
+            'ratio' => 'numeric|min:0|max:1',
+            'language' => 'in:vietnamese,english,auto'
+        ]);
+
+        // Lưu tên file vào session để hiển thị lại sau khi submit
+        $fileNames = [];
+        if ($request->hasFile('file')) {
+            foreach ($request->file('file') as $file) {
+                $fileNames[] = $file->getClientOriginalName();
+            }
+        }
+        session(['uploaded_files' => $fileNames]);
+        session(['original_ratio' => $request->input('ratio')]);
+
+        if ($action === 'summarease') {
+            $this->summarizeFile($request);
+            return back();
+        } elseif ($action === 'gemini') {
+            $this->summarizeFileGemini($request);
             return back();
         }
     }
