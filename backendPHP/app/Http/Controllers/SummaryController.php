@@ -290,6 +290,9 @@ class SummaryController extends Controller
             'language' => 'in:vietnamese,english,auto'
         ]);
 
+        session(['original_url' => $request->input('url')]);
+        session(['original_ratio' => $request->input('ratio')]);
+
         $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
 
         $result = $this->apiClient->summarizeUrlGemini(

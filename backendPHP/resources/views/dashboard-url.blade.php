@@ -12,14 +12,11 @@
         Công cụ hỗ trợ tóm tắt nhanh và chính xác các văn bản học thuật
         </p>
 
-        <form method="POST">
+        <form method="POST" action="{{ route('summarize.gemini.url') }}">
                     @csrf
-                    <textarea name="text" id="text" class="input-areaa" placeholder="Hãy nhập URL cần tóm tắt...">{{ session('original_text') }}</textarea>
+                    <input type="url" name="url" id="url" class="input-areaa" placeholder="Hãy nhập URL cần tóm tắt..." value="{{ session('original_url') ?? ''}}"></input>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio')}}" class="mt-4 w-full" />
-                    <p class="text-sm text-gray-500 mt-1"></p>
-                    <button type="submit" name="sum" value="summarease" class="mt-4 submit-button">{{ __('Tóm tắt với SummarEase') }}</button>
-                    <br />
-                    <button type="submit" name="sum" value="gemini" class="mt-4 submit-button">{{ __('Tóm tắt với Gemini') }}</button>
+                    <button type="submit" value="gemini" class="mt-4 submit-button">{{ __('Tóm tắt với Gemini') }}</button>
         </form>
 
                 <div class="output-areaa">
