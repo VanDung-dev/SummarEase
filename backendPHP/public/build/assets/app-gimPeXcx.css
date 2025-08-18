@@ -8847,14 +8847,13 @@ h1 {
     display: flex;
     align-items: center;
     gap: 6px;
-    box-shadow: 0 2px 6px #0001;
     transition: background 0.2s;
     width: 120px;
     height: 35px;
-    z-index: 2;
-    position: absolute;
-    bottom: 5px;
+
 }
+
+
 
 .file-btn:hover {
     background: #7bc0e8;
@@ -8864,7 +8863,7 @@ h1 {
     display: flex;
     align-items: center;
     gap: 10px;
-    width: 100%;
+    margin-bottom:  10px;
     overflow: hidden;
 }
 

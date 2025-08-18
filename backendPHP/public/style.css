@@ -488,37 +488,7 @@ h1 {
     z-index: 2;
 }
 
-.file-btn {
-    background: #fcfbfb;
-    color: #020202;
-    border-radius: 13px;
-    border: 2px solid #050505;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    box-shadow: 0 2px 6px #0001;
-    transition: background 0.2s;
-    width: 120px;
-    height: 35px;
-    z-index: 2;
-    position: absolute;
-    bottom: 5px;
-}
 
-.file-btn:hover {
-    background: #7bc0e8;
-}
-
-.file-selection-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    overflow: hidden;
-}
 
 .file-list-inline {
     display: flex;

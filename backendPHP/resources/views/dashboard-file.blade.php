@@ -12,10 +12,27 @@
         Công cụ hỗ trợ tóm tắt nhanh và chính xác các văn bản học thuật
         </p>
 
-        <form method="POST">
+        <form method="POST"">
                     @csrf
-                    <label for="file">Hãy chọn tệp:</label><br />
-                    <input type="file" name="file" id="file" value="{{ session('original_file') }}"></input>
+                    <input
+                        type="file"
+                        id="fileInput"
+                        multiple
+                        style="display: none"
+                        accept=".pdf,.doc,.docx,.txt"
+                    />
+                    <div class="file-selection-container">
+                        <button
+                            type="button"
+                            class="file-btn"
+                            onclick="document.getElementById('fileInput').click()"
+                        >
+                        <i class="fa-solid fa-paperclip"></i> chọn tệp
+                        </button>
+                        <div class="file-list-wrapper">
+                            <div id="fileList"></div>
+                        </div>
+                    </div>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio')}}" class="mt-4 w-full" />
                     <p class="text-sm text-gray-500 mt-1"></p>
                     <button type="submit" name="sum-file" value="summarease" class="mt-4 submit-button">{{ __('Tóm tắt với SummarEase') }}</button>
