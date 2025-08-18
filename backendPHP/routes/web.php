@@ -23,9 +23,25 @@ Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+Route::view('dashboard-file', 'dashboard-file')
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard-file');
+
+Route::view('dashboard-url', 'dashboard-url')
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard-url');
+
 Route::post('dashboard', [SummaryController::class, 'summarizeTextOnDashboard'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard.summarize');
+
+Route::post('dashboard-file', [SummaryController::class, 'summarizeFile'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard-file.summarize');
+
+Route::post('dashboard-url', [SummaryController::class, 'summarizeUrlGemini'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard-url.summarize');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/appearance');
@@ -75,6 +91,10 @@ require __DIR__.'/auth.php';
 Route::post('dashboard', [SummaryController::class, 'formhandle'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard.summarize');
+
+Route::post('dashboard-file', [SummaryController::class, 'formhandle_file'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard-file.summarize');
 
 Route::get('/history', function () {
     if (auth()->check()) {

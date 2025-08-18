@@ -14,9 +14,9 @@ use Illuminate\Support\Str;
 
             <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Tóm tắt văn bản') }}</flux:navlist.item>
   
-            <flux:navlist.item class="nal-list" :href="route('history')" :current="request()->routeIs('history')" wire:navigate>{{ __('Tóm tắt file') }}</flux:navlist.item>
+            <flux:navlist.item class="nal-list" :href="route('dashboard-file')" :current="request()->routeIs('dashboard-file')" wire:navigate>{{ __('Tóm tắt file') }}</flux:navlist.item>
             
-            <flux:navlist.item class="nal-list" :href="route('history')" :current="request()->routeIs('history')" wire:navigate>{{ __('Tóm tắt URL') }}</flux:navlist.item>
+            <flux:navlist.item class="nal-list" :href="route('dashboard-url')" :current="request()->routeIs('dashboard-url')" wire:navigate>{{ __('Tóm tắt URL') }}</flux:navlist.item>
 
             <div class="overflow-y-auto max-h-64">
             @if(auth()->check())
