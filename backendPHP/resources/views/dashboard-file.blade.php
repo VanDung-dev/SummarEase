@@ -28,17 +28,17 @@
                             class="file-btn"
                             onclick="document.getElementById('fileInput').click()"
                         >
-                        <i class="fa-solid fa-paperclip"></i> chọn tệp
+                        <i class="fa-solid fa-paperclip"></i>Chọn tệp
                         </button>
                         <div class="file-list-wrapper">
                             <div id="fileList">
-                                @if(session('uploaded_files'))
+                                <!-- @if(session('uploaded_files'))
                                     @foreach(session('uploaded_files') as $file)
                                         <div class="file">
                                             <i class="fas fa-file"></i> {{ $file }}
                                         </div>
                                     @endforeach
-                                @endif
+                                @endif -->
                             </div>
                         </div>
                     </div>
@@ -65,7 +65,9 @@
                     </script>
                      @endif
                 </div>
-
+                @if(session('error'))
+                <p style="margin-top: 0; color: red;">{{ session('error') }}</p>
+                @endif
 
     <script src="https://kit.fontawesome.com/af877c9b83.js" crossorigin="anonymous"></script>
         

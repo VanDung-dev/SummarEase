@@ -71,7 +71,6 @@ class SummaryController extends Controller
                 \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
             }
         }
-
         return back()->with('summary', $result['summary']);
     }
 
@@ -111,11 +110,10 @@ class SummaryController extends Controller
     {
         $request->validate([
             'file' => 'required|array', // Thay đổi để chấp nhận mảng file
-            'file.*' => 'file|mimes:pdf,docx,txt,md,epub|max:10240', // Xác thực từng file
+            'file.*' => 'file|mimes:pdf,docx,txt|max:10240', // Xác thực từng file
             'ratio' => 'numeric|min:0|max:1',
             'language' => 'in:vietnamese,english'
         ]);
-
         // Lưu tên file vào session để hiển thị lại sau khi submit
         $fileNames = [];
         if ($request->hasFile('file')) {
@@ -123,17 +121,23 @@ class SummaryController extends Controller
                 $fileNames[] = $file->getClientOriginalName();
             }
         }
-        session(['uploaded_files' => $fileNames]);
+        //session(['uploaded_files' => $fileNames]);
         session(['original_ratio' => $request->input('ratio')]);
 
         $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
 
-        // Lấy nội dung của file đầu tiên để tóm tắt (nếu có nhiều file)
+        //Lấy nội dung của file đầu tiên để tóm tắt (nếu có nhiều file)
         $fileContent = '';
         if ($request->hasFile('file') && count($request->file('file')) > 0) {
             $firstFile = $request->file('file')[0];
-            $fileContent = file_get_contents($firstFile->getPathname());
+            //$fileContent = file_get_contents($firstFile->getPathname());
+            $fileContent = "https://en.wikipedia.org/wiki/Sheep";
         }
+
+        // $fileToProcess = null;
+        // if ($request->hasFile('file') && count($request->file('file')) > 0) {
+        //     $fileToProcess = $request->file('file')[0];
+        // }
 
         $result = $this->apiClient->summarizeFile(
             $fileContent,
@@ -153,27 +157,27 @@ class SummaryController extends Controller
         }
 
         // Lưu dữ liệu vào bảng guest_documents nếu là khách
-        if (!Auth::check()) {
-            try {
-                $sessionId = Session::getId();
-                $guestDocument = new GuestDocument();
-                $guestDocument->guest_id = $sessionId;
-                $guestDocument->title = 'Tập tin tóm tắt - ' . now()->format('Y-m-d H:i:s');
-                $guestDocument->content = $fileContent;
-                $guestDocument->file_type = 'file';
-                $guestDocument->save();
+        // if (!Auth::check()) {
+        //     try {
+        //         $sessionId = Session::getId();
+        //         $guestDocument = new GuestDocument();
+        //         $guestDocument->guest_id = $sessionId;
+        //         $guestDocument->title = 'Tập tin tóm tắt - ' . now()->format('Y-m-d H:i:s');
+        //         $guestDocument->content = $fileContent;
+        //         $guestDocument->file_type = 'file';
+        //         $guestDocument->save();
 
-                // Lưu tóm tắt vào bảng guest_summaries
-                $guestSummary = new GuestSummary();
-                $guestSummary->document_id = $guestDocument->id;
-                $guestSummary->summary_text = $result['summary'];
-                $guestSummary->summary_ratio = $request->input('ratio', 0.2);
-                $guestSummary->save();
-            } catch (\Exception $e) {
-                \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
-            }
-        }
-
+        //         // Lưu tóm tắt vào bảng guest_summaries
+        //         $guestSummary = new GuestSummary();
+        //         $guestSummary->document_id = $guestDocument->id;
+        //         $guestSummary->summary_text = $result['summary'];
+        //         $guestSummary->summary_ratio = $request->input('ratio', 0.2);
+        //         $guestSummary->save();
+        //     } catch (\Exception $e) {
+        //         \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
+        //     }
+        // }
+        
         return back()->with('summary', $result['summary']);
     }
 
@@ -257,7 +261,7 @@ class SummaryController extends Controller
                 $fileNames[] = $file->getClientOriginalName();
             }
         }
-        session(['uploaded_files' => $fileNames]);
+        //session(['uploaded_files' => $fileNames]);
         session(['original_ratio' => $request->input('ratio')]);
 
         $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
@@ -381,7 +385,7 @@ class SummaryController extends Controller
     public function formhandle(Request $request)
     {
         $action = $request->input('sum');
-            $request->validate([
+        $request->validate([
             'text' => 'required|string',
             'ratio' => 'numeric|min:0|max:1',
             'language' => 'in:vietnamese,english'
@@ -402,7 +406,7 @@ class SummaryController extends Controller
         $action = $request->input('sum-file');
         $request->validate([
             'file' => 'required|array',
-            'file.*' => 'file|mimes:pdf,doc,docx,txt|max:10240',
+            'file.*' => 'file|mimes:pdf,docx,txt|max:10240',
             'ratio' => 'numeric|min:0|max:1',
             'language' => 'in:vietnamese,english,auto'
         ]);
@@ -414,7 +418,7 @@ class SummaryController extends Controller
                 $fileNames[] = $file->getClientOriginalName();
             }
         }
-        session(['uploaded_files' => $fileNames]);
+        //session(['uploaded_files' => $fileNames]);
         session(['original_ratio' => $request->input('ratio')]);
 
         if ($action === 'summarease') {

@@ -35,7 +35,9 @@
                     </script>
                      @endif
                 </div>
-
+                @if(session('error'))
+                <p style="margin-top: 0; color: red;">{{ session('error') }}</p>
+                @endif
 
     <script src="https://kit.fontawesome.com/af877c9b83.js" crossorigin="anonymous"></script>
         
