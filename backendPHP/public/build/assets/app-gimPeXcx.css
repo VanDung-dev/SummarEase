@@ -8888,6 +8888,10 @@ h1 {
     gap: 6px;
 }
 
+.dark .file {
+    background-color: #444;
+}
+
 .send-btn,
 .mic-btn {
     background: #4aafff;
@@ -8998,6 +9002,21 @@ h1 {
     /* dọc */
     justify-content: center;
     /* ngang */
+}
+
+.body-history{
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+.h-content{
+    display: flex;
+    margin: 20px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: justify;
 }
 
 .menu-btn {
