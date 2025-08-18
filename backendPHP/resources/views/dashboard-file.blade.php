@@ -12,7 +12,7 @@
         Công cụ hỗ trợ tóm tắt nhanh và chính xác các văn bản học thuật
         </p>
 
-        <form method="POST"">
+        <form method="POST">
                     @csrf
                     <input
                         type="file"
