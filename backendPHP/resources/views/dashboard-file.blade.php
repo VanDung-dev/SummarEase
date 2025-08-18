@@ -12,10 +12,14 @@
         Công cụ hỗ trợ tóm tắt nhanh và chính xác các văn bản học thuật
         </p>
 
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
                     @csrf
-                    <label for="file">Hãy chọn tệp:</label><br />
-                    <input type="file" name="file" id="file" value="{{ session('original_file') }}"></input>
+                    <label for="file">
+                    <div style="width: fit-content; padding: 20px; border: 1px solid white; border-radius: 24px;">
+                    Hãy chọn tệp:<br />
+                    <input type="file" name="file" id="file"></input>
+                    </div>
+                    </label>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio')}}" class="mt-4 w-full" />
                     <p class="text-sm text-gray-500 mt-1"></p>
                     <button type="submit" name="sum-file" value="summarease" class="mt-4 submit-button">{{ __('Tóm tắt với SummarEase') }}</button>
