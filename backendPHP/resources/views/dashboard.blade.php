@@ -14,7 +14,7 @@
 
         <form method="POST">
                     @csrf
-                    <textarea name="text" id="text" class="input-areaa" placeholder="Hãy nhập văn bản cần tóm tắt...">{{ session('original_text') }}</textarea>
+                    <textarea style="text-align: justify;" name="text" id="text" class="input-areaa" placeholder="Hãy nhập văn bản cần tóm tắt...">{{ session('original_text') }}</textarea>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio')}}" class="mt-4 w-full" />
                     <p class="text-sm text-gray-500 mt-1"></p>
                     <button type="submit" name="sum" value="summarease" class="mt-4 submit-button">{{ __('Tóm tắt với SummarEase') }}</button>
@@ -24,7 +24,7 @@
 
                 <div class="output-areaa">
                      @if(session('summary'))
-                        <div id="summary-output">{!! nl2br(e(session('summary'))) !!}</div>
+                        <div id="summary-output" style="text-align: justify;">{!! nl2br(e(session('summary'))) !!}</div>
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             // Xử lý hiển thị markdown cho kết quả tóm tắt

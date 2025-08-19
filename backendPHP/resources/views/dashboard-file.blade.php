@@ -51,7 +51,7 @@
 
                 <div class="output-areaa">
                      @if(session('summary'))
-                        <div id="summary-output">{!! nl2br(e(session('summary'))) !!}</div>
+                        <div id="summary-output" style="text-align: justify;">{!! nl2br(e(session('summary'))) !!}</div>
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             // Xử lý hiển thị markdown cho kết quả tóm tắt
