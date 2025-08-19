@@ -25,6 +25,7 @@
                     <div class="file-selection-container">
                         <button
                             type="button"
+                            style="background-color: #00000000;"
                             class="file-btn"
                             onclick="document.getElementById('fileInput').click()"
                         >

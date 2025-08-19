@@ -7970,7 +7970,7 @@ h1 {
 .file-btn {
     background: #fcfbfb;
     color: #020202;
-    border-radius: 13px;
+    border-radius: 10px;
     border: 2px solid #050505;
     font-size: 1rem;
     font-weight: 600;
@@ -7980,14 +7980,17 @@ h1 {
     gap: 6px;
     transition: background 0.2s;
     width: 120px;
-    height: 35px;
+    height: 40px;
 
 }
 
-
+.dark .file-btn {
+    border: 2px solid #fafafa;
+    color: #fafafa;
+}
 
 .file-btn:hover {
-    background: #7bc0e8;
+    color: #0088ff;
 }
 
 .file-selection-container {
