@@ -17,8 +17,32 @@
 
         @include('partials.head')
 
+        <style>
+            .close-button {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: #f0f0f0;
+                border: 1px solid #ccc;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+                cursor: pointer;
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .close-button:hover {
+                background-color: #e0e0e0;
+            }
+        </style>
     </head>
     <body>
+        <div class="close-button" onclick="window.history.back()" title="Đóng trang">✕</div>
+        
         @forelse($history as $item)
         <a href="{{ route('history-content', $item->summaryid) }}">
         <div style="border: 1px solid #696c71; border-radius: 5px; margin-bottom: 10px; padding: 5px;">
@@ -33,6 +57,15 @@
         @endforelse
         <p>Tổng số lần tóm tắt: {{ $history->total() }}</p>
         <p>{{ $history->links('pagination::bootstrap-5') }}</p>
+        
+        <script>
+            // Hỗ trợ phím Esc để đóng trang
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    window.history.back();
+                }
+            });
+        </script>
     </body>
     
 </html>

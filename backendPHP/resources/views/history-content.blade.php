@@ -16,8 +16,36 @@
 
         @include('partials.head')
 
+        <style>
+            .close-button {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: #f0f0f0;
+                border: 1px solid #ccc;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+                cursor: pointer;
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .close-button:hover {
+                background-color: #e0e0e0;
+            }
+            
+            .h-content {
+                margin-bottom: 15px;
+            }
+        </style>
+
     </head>
     <body>
+        <div class="close-button" onclick="window.history.back()" title="Đóng trang">✕</div>
         <div class="body-history">
         @if(isset($history) && $history)
             <h1 class="h-content">{{ $history->title }}</h1>
