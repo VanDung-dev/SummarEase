@@ -12,11 +12,20 @@ use Illuminate\Support\Str;
         <flux:sidebar sticky stashable class="siba">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
-            <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Tóm tắt văn bản') }}</flux:navlist.item>
-  
-            <flux:navlist.item class="nal-list" :href="route('dashboard-file')" :current="request()->routeIs('dashboard-file')" wire:navigate>{{ __('Tóm tắt file') }}</flux:navlist.item>
-            
-            <flux:navlist.item class="nal-list" :href="route('dashboard-url')" :current="request()->routeIs('dashboard-url')" wire:navigate>{{ __('Tóm tắt URL') }}</flux:navlist.item>
+<flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+    <i class="fa-solid fa-file-lines"></i>
+    <span class="nav-text">{{ __('Tóm tắt văn bản') }}</span>
+</flux:navlist.item>
+
+<flux:navlist.item class="nal-list" :href="route('dashboard-file')" :current="request()->routeIs('dashboard-file')" wire:navigate>
+    <i class="fa-solid fa-file-arrow-up"></i>
+    <span class="nav-text">{{ __('Tóm tắt file') }}</span>
+</flux:navlist.item>
+
+<flux:navlist.item class="nal-list" :href="route('dashboard-url')" :current="request()->routeIs('dashboard-url')" wire:navigate>
+    <i class="fa-solid fa-link"></i>
+    <span class="nav-text">{{ __('Tóm tắt URL') }}</span>
+</flux:navlist.item>
 
             <div class="overflow-y-auto max-h-64">
             @if(auth()->check())
