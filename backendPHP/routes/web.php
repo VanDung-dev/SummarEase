@@ -96,6 +96,10 @@ Route::post('dashboard-file', [SummaryController::class, 'formhandle_file'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard-file.summarize');
 
+Route::post('dashboard-url', [SummaryController::class, 'formhandle_url'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard-url.summarize');
+
 Route::get('/history', function () {
     if (auth()->check()) {
         $userId = Auth::id();

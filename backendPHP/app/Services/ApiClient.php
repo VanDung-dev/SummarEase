@@ -79,26 +79,46 @@ class ApiClient
         try {
             // Xác định nếu người dùng là khách
             $isGuest = !Auth::check();
-            
-            $multipart = [
-                [
-                    'name' => 'file',
-                    'contents' => fopen($source->getPathname(), 'r'),
-                    'filename' => $source->getClientOriginalName()
-                ],
-                [
-                    'name' => 'ratio',
-                    'contents' => $ratio
-                ],
-                [
-                    'name' => 'language',
-                    'contents' => $language
-                ],
-                [
-                    'name' => 'user_id',
-                    'contents' => $userId
-                ]
-            ];
+            if ($source instanceof \Illuminate\Http\UploadedFile) {
+                $multipart = [
+                    [
+                        'name' => 'file',
+                        'contents' => fopen($source->getPathname(), 'r'),
+                        'filename' => $source->getClientOriginalName()
+                    ],
+                    [
+                        'name' => 'ratio',
+                        'contents' => $ratio
+                    ],
+                    [
+                        'name' => 'language',
+                        'contents' => $language
+                    ],
+                    [
+                        'name' => 'user_id',
+                        'contents' => $userId
+                    ]
+                ];
+            } else {
+                $multipart = [
+                    [
+                        'name' => 'file',
+                        'contents' => $source
+                    ],
+                    [
+                        'name' => 'ratio',
+                        'contents' => $ratio
+                    ],
+                    [
+                        'name' => 'language',
+                        'contents' => $language
+                    ],
+                    [
+                        'name' => 'user_id',
+                        'contents' => $userId
+                    ]
+                ];
+            }
             
             // Thêm thông tin khách nếu cần
             if ($isGuest) {

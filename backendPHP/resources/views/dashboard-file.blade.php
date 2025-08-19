@@ -31,7 +31,7 @@
                         <i class="fa-solid fa-paperclip"></i>Chọn tệp
                         </button>
                         <div class="file-list-wrapper">
-                            <div id="fileList">
+                            <div id="fileList" class="file-list-inline">
                                 <!-- @if(session('uploaded_files'))
                                     @foreach(session('uploaded_files') as $file)
                                         <div class="file">
