@@ -25,6 +25,17 @@
                 <div class="output-areaa">
                      @if(session('summary'))
                         <div id="summary-output" style="text-align: justify;">{!! nl2br(e(session('summary'))) !!}</div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Xử lý hiển thị markdown cho kết quả tóm tắt
+                            const summaryText = @json(session('summary'));
+                            const outputArea = document.getElementById('summary-output');
+                            // Chuyển đổi markdown thành HTML
+                            const html = summaryText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                            const html_i = html.replace(/\*(.*?)\*/g, '<i>$1</i>');
+                            outputArea.innerHTML = html_i;
+                        });
+                    </script>
                      @endif
                 </div>
                 @if(session('error'))
