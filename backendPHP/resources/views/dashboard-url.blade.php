@@ -14,7 +14,7 @@
 
         <form method="POST" action="{{ route('summarize.gemini.url') }}">
                     @csrf
-                    <input type="url" name="url" id="url" class="input-areaa" placeholder="Hãy nhập URL cần tóm tắt..." value="{{ session('original_url') ?? ''}}"></input>
+                    <input type="url" name="url" id="url" class="input-area-html" placeholder="Hãy nhập URL cần tóm tắt..." value="{{ session('original_url') ?? ''}}"></input>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio')}}" class="mt-4 w-full" />
                     <button type="submit" value="gemini" class="mt-4 submit-button">{{ __('Tóm tắt với Gemini') }}</button>
         </form>

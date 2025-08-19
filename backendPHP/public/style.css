@@ -417,12 +417,28 @@ h1 {
     min-height: 150px;
     max-height: 150px;
     width: 100%;
-    height: 165px;
+    height: 150px;
+    position: relative;
+}
+
+.input-area-html {
+    overflow: auto;
+    background: #ffffff;
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 24px;
+    padding: 18px 18px 12px 18px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    min-height: 50px;
+    max-height: 50px;
+    width: 100%;
+    height: 50px;
     position: relative;
 }
 
 .dark .input-areaa,
-.dark .output-areaa {
+.dark .output-areaa,
+.dark .input-area-html {
     background: #2d2d2d;
     border: 1px solid #555;
     color: #fff;
@@ -888,14 +904,17 @@ input[type="range"].w-full {
 :root {
     --primary-color: #4a6cff;
 }
+
 .search-bar button:hover {
     background-color: #3b59d8;
 }
 
 .table-container {
     overflow-x: auto;
-    width: 120%; /* Chỉnh độ rộng của bảng */
-    margin: 0 auto; /* Căn giữa bảng */
+    width: 120%;
+    /* Chỉnh độ rộng của bảng */
+    margin: 0 auto;
+    /* Căn giữa bảng */
 }
 
 .file-table {
@@ -910,9 +929,11 @@ input[type="range"].w-full {
     border: 1px solid #000000;
     text-align: left;
 }
+
 .file-table td {
     background-color: #f9f9f930;
 }
+
 .file-table th {
     background-color: var(--primary-color);
     color: #fff;
@@ -924,7 +945,7 @@ input[type="range"].w-full {
 }
 
 .file-table .action-buttons button,
-.table-container > button {
+.table-container>button {
     background-color: var(--primary-color);
     color: #fff;
     border: none;
@@ -934,7 +955,7 @@ input[type="range"].w-full {
     transition: background-color 0.2s;
 }
 
-.table-container > button {
+.table-container>button {
     margin-top: 20px;
 }
 
@@ -947,9 +968,11 @@ input[type="range"].w-full {
     cursor: pointer;
     transition: background-color 0.2s;
 }
+
 .search-bar button:hover {
     background-color: #3b59d8;
 }
+
 .search-bar input {
     flex-grow: 1;
     padding: 10px;
