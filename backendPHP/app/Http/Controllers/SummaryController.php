@@ -129,22 +129,20 @@ class SummaryController extends Controller
         $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
 
         //Lấy nội dung của file đầu tiên để tóm tắt (nếu có nhiều file)
-        $fileContent = '';
+        $finishedContent = "";
+
         if ($request->hasFile('file') && count($request->file('file')) > 0) {
-            $firstFile = $request->file('file')[0];
+            foreach ($request->file('file') as $index => $file) {
+                // $CurrentFile = $request->file('file')[$index];
+                $result = $this->apiClient->summarizeFile(
+                $file,
+                $request->input('ratio', 0.2),
+                $request->input('language', 'vietnamese'),
+                $userId
+                );
+                $finishedContent .= $result['summary'] . ' ';
+            }
         }
-
-        // $fileToProcess = null;
-        // if ($request->hasFile('file') && count($request->file('file')) > 0) {
-        //     $fileToProcess = $request->file('file')[0];
-        // }
-
-        $result = $this->apiClient->summarizeFile(
-            $firstFile,
-            $request->input('ratio', 0.2),
-            $request->input('language', 'vietnamese'),
-            $userId
-        );
 
         // Kiểm tra lỗi trong kết quả
         if (isset($result['error'])) {
@@ -177,7 +175,7 @@ class SummaryController extends Controller
         //         \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
         //     }
         // }
-        return back()->with('summary', $result['summary']);
+        return back()->with('summary', $finishedContent);
     }
 
     public function summarizeUrl(Request $request)
@@ -320,17 +318,33 @@ class SummaryController extends Controller
         $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
 
         // Lấy file đầu tiên để tóm tắt (nếu có nhiều file)
-        $fileToProcess = null;
+        // $fileToProcess = null;
+        // if ($request->hasFile('file') && count($request->file('file')) > 0) {
+        //     $fileToProcess = $request->file('file')[0];
+        // }
+
+        $finishedContent = '';
+        $result = '';
+
         if ($request->hasFile('file') && count($request->file('file')) > 0) {
-            $fileToProcess = $request->file('file')[0];
+            foreach ($request->file('file') as $index => $file) {
+                // $CurrentFile = $request->file('file')[$index];
+                $result = $this->apiClient->summarizeFileGemini(
+                $file,
+                $request->input('ratio', 0.2),
+                $request->input('language', 'vietnamese'),
+                $userId
+                );
+                $finishedContent .= $result['summary'] . ' ';
+            }
         }
 
-        $result = $this->apiClient->summarizeFileGemini(
-            $fileToProcess,
-            $request->input('ratio', 0.2),
-            $request->input('language', 'vietnamese'),
-            $userId
-        );
+        // $result = $this->apiClient->summarizeFileGemini(
+        //     $fileToProcess,
+        //     $request->input('ratio', 0.2),
+        //     $request->input('language', 'vietnamese'),
+        //     $userId
+        // );
 
         // Kiểm tra lỗi trong kết quả
         if (isset($result['error'])) {
@@ -343,30 +357,30 @@ class SummaryController extends Controller
         }
 
         // Lưu dữ liệu vào bảng guest_documents nếu là khách
-        if (!Auth::check()) {
-            try {
-                $sessionId = Session::getId();
-                $guestDocument = new GuestDocument();
-                $guestDocument->guest_id = $sessionId;
-                $guestDocument->title = 'Tập tin tóm tắt (Gemini) - ' . now()->format('Y-m-d H:i:s');
-                // Trong thực tế, bạn sẽ lưu nội dung file ở đây
-                $guestDocument->file_type = 'file';
-                $guestDocument->save();
+        // if (!Auth::check()) {
+        //     try {
+        //         $sessionId = Session::getId();
+        //         $guestDocument = new GuestDocument();
+        //         $guestDocument->guest_id = $sessionId;
+        //         $guestDocument->title = 'Tập tin tóm tắt (Gemini) - ' . now()->format('Y-m-d H:i:s');
+        //         // Trong thực tế, bạn sẽ lưu nội dung file ở đây
+        //         $guestDocument->file_type = 'file';
+        //         $guestDocument->save();
 
-                // Lưu tóm tắt vào bảng guest_summaries
-                $guestSummary = new GuestSummary();
-                $guestSummary->document_id = $guestDocument->id;
-                $guestSummary->summary_text = $result['summary'];
-                $guestSummary->summary_ratio = $request->input('ratio', 0.2);
-                $guestSummary->save();
-            } catch (\Exception $e) {
-                \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
-            }
-        }
+        //         // Lưu tóm tắt vào bảng guest_summaries
+        //         $guestSummary = new GuestSummary();
+        //         $guestSummary->document_id = $guestDocument->id;
+        //         $guestSummary->summary_text = $result['summary'];
+        //         $guestSummary->summary_ratio = $request->input('ratio', 0.2);
+        //         $guestSummary->save();
+        //     } catch (\Exception $e) {
+        //         \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
+        //     }
+        // }
 
         // Trả về thêm tiêu đề, từ khóa và ngôn ngữ nếu có
         return back()->with([
-            'summary' => $result['summary'],
+            'summary' => $finishedContent,
             'title' => $result['title'] ?? null,
             'keywords' => $result['keywords'] ?? null,
             'language' => $result['language'] ?? null
