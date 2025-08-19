@@ -29,7 +29,7 @@
 
 /* Sửa lỗi viền trắng trong menu khi ở chế độ tối */
 .dark .siba {
-    width: 80px;
+    /* width: 80px; */
     border: 2px solid #3f3f46;
     /* Sử dụng màu viền phù hợp với dark mode */
     background-color: #18181b;
@@ -740,7 +740,7 @@ h1 {
 }
 
 .siba {
-    width: 80px;
+    width: 250px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -752,7 +752,7 @@ h1 {
     overflow: hidden;
 }
 
-.siba .nav-text,
+/* .siba .nav-text,
 .siba .overflow-y-auto {
     display: none;
 }
@@ -779,7 +779,7 @@ h1 {
 
 .siba:hover flux-navlist-item {
     justify-content: flex-start;
-}
+} */
 
 input[type="range"].w-full {
     width: 75rem;
