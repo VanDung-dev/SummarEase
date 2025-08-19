@@ -34,7 +34,20 @@
             
             <h2 class="h-content">Nội dung đã được tóm tắt:</h2>
             <div class="h-content">
-                {{ $history->summary_text }}
+                <?php
+                    $markdown = $history->summary_text;
+                    // Xử lý in đậm
+                    $markdown = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $markdown);
+                    // Xử lý in nghiêng
+                    $markdown = preg_replace('/\*(.*?)\*/', '<em>$1</em>', $markdown);
+                    // Xử lý đoạn văn
+                    $markdown = preg_replace('/(\r\n|\r|\n){2,}/', '</p><p>', $markdown);
+                    // Xử lý ngắt dòng
+                    $markdown = preg_replace('/(\r\n|\r|\n)/', '<br>', $markdown);
+                    // Bọc nội dung trong thẻ p
+                    $markdown = '<p>' . $markdown . '</p>';
+                ?>
+                {!! $markdown !!}
             </div>        
         @else
             <p class="h-content">Không tìm thấy bản tóm tắt.</p>
