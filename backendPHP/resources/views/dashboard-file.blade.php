@@ -20,7 +20,7 @@
                         name="file[]"
                         multiple
                         style="display: none"
-                        accept=".pdf,.doc,.docx,.txt"
+                        accept=".pdf,.doc,.docx,.txt,.md,.markdown,.epub"
                     />
                     <div class="file-selection-container">
                         <button

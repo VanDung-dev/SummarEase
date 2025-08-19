@@ -110,18 +110,20 @@ class SummaryController extends Controller
     {
         $request->validate([
             'file' => 'required|array', // Thay đổi để chấp nhận mảng file
-            'file.*' => 'file|mimes:pdf,docx,txt|max:10240', // Xác thực từng file
+            'file.*' => 'file|mimes:pdf,docx,txt,.md,.markdown,.epub|max:10240', // Xác thực từng file
             'ratio' => 'numeric|min:0|max:1',
             'language' => 'in:vietnamese,english'
         ]);
+
+
         // Lưu tên file vào session để hiển thị lại sau khi submit
-        $fileNames = [];
-        if ($request->hasFile('file')) {
-            foreach ($request->file('file') as $file) {
-                $fileNames[] = $file->getClientOriginalName();
-            }
-        }
-        //session(['uploaded_files' => $fileNames]);
+        // $fileNames = [];
+        // if ($request->hasFile('file')) {
+        //     foreach ($request->file('file') as $file) {
+        //         $fileNames[] = $file->getClientOriginalName();
+        //     }
+        // }
+        // session(['uploaded_files' => $fileNames]);
         session(['original_ratio' => $request->input('ratio')]);
 
         $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
@@ -130,8 +132,6 @@ class SummaryController extends Controller
         $fileContent = '';
         if ($request->hasFile('file') && count($request->file('file')) > 0) {
             $firstFile = $request->file('file')[0];
-            //$fileContent = file_get_contents($firstFile->getPathname());
-            $fileContent = "https://en.wikipedia.org/wiki/Sheep";
         }
 
         // $fileToProcess = null;
@@ -140,7 +140,7 @@ class SummaryController extends Controller
         // }
 
         $result = $this->apiClient->summarizeFile(
-            $fileContent,
+            $firstFile,
             $request->input('ratio', 0.2),
             $request->input('language', 'vietnamese'),
             $userId
@@ -177,7 +177,6 @@ class SummaryController extends Controller
         //         \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
         //     }
         // }
-        
         return back()->with('summary', $result['summary']);
     }
 
@@ -249,7 +248,7 @@ class SummaryController extends Controller
     {
         $request->validate([
             'file' => 'required|array', // Yêu cầu là một mảng file upload
-            'file.*' => 'file|mimes:pdf,doc,docx,txt|max:10240', // Xác thực từng file
+            'file.*' => 'file|mimes:pdf,doc,docx,txt,.md,.markdown,.epub|max:10240', // Xác thực từng file
             'ratio' => 'numeric|min:0|max:1',
             'language' => 'in:vietnamese,english,auto'
         ]);

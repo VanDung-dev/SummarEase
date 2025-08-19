@@ -83,7 +83,8 @@ class ApiClient
             $multipart = [
                 [
                     'name' => 'file',
-                    'contents' => $source
+                    'contents' => fopen($source->getPathname(), 'r'),
+                    'filename' => $source->getClientOriginalName()
                 ],
                 [
                     'name' => 'ratio',
