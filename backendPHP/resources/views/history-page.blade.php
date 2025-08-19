@@ -34,9 +34,17 @@
                 align-items: center;
                 justify-content: center;
             }
+
+            .dark .close-button {
+                background-color: #333;
+            }
             
             .close-button:hover {
                 background-color: #e0e0e0;
+            }
+
+            .dark .close-button:hover {
+                background-color: #555;
             }
         </style>
     </head>
