@@ -107,8 +107,141 @@ def summarize_text():
         return jsonify({"error": "Lỗi xử lý văn bản", "details": str(e)}), 500
 
 
-@summarize_bp.route("/summarize-file", methods=["POST"])
-def summarize_file():
+@summarize_bp.route("/summarize-files", methods=["POST"])
+def summarize_files():
+    """
+    Tóm tắt nội dung từ nhiều tệp được tải lên sử dụng thuật toán TextRank.
+
+    Đầu vào (form data):
+        - files: Danh sách các tệp được tải lên (hỗ trợ: PDF, DOCX, TXT, EPUB, MD, MARKDOWN).
+        - ratio (float, tùy chọn): Tỷ lệ tóm tắt (mặc định: 0.2, giá trị từ 0.0 đến 1.0).
+        - language (str, tùy chọn): Ngôn ngữ của văn bản ("vietnamese" hoặc "english", mặc định: "vietnamese").
+        - user_id (int): ID của người dùng (bắt buộc).
+
+    Trả về:
+        - JSON chứa trạng thái, nội dung tóm tắt, tỷ lệ tóm tắt và ngôn ngữ.
+
+    Ngoại lệ:
+        - 400: Nếu không có tệp, tệp rỗng, định dạng không hỗ trợ, ngôn ngữ không hợp lệ hoặc thiếu user_id.
+        - 500: Nếu xảy ra lỗi trong quá trình xử lý.
+    """
+    temp_paths = []
+    filenames = []
+    try:
+        # Lấy user_id từ form data - bắt buộc phải có
+        user_id_str = request.form.get('user_id') or request.form.get('user_id')
+        if not user_id_str:
+            return jsonify({"error": "Thiếu user_id trong yêu cầu"}), 400
+
+        try:
+            user_id = int(user_id_str)
+        except ValueError:
+            return jsonify({"error": "user_id phải là một số nguyên"}), 400
+
+        # Kiểm tra xem có file được tải lên không
+        if 'files' not in request.files:
+            return jsonify({"error": "Không tìm thấy tệp trong yêu cầu"}), 400
+
+        files = request.files.getlist('files')
+        if not files or all(f.filename == '' for f in files):
+            return jsonify({"error": "Tệp chưa được chọn"}), 400
+
+        # Xử lý từng file
+        extracted_texts = []
+        for file in files:
+            filename = file.filename
+            filenames.append(filename)
+            allowed_extensions = {'pdf', 'docx', 'txt', 'epub', 'md', 'markdown'}
+            file_ext = filename.rsplit('.', 1)[1].lower() if '.' in filename else ''
+
+            # Lưu tệp trước khi kiểm tra tiện ích mở rộng
+            temp_path = os.path.join(tempfile.gettempdir(), filename)
+            file.save(temp_path)
+            temp_paths.append(temp_path)
+
+            # Kiểm tra xem tiện ích mở rộng có được phép không
+            if file_ext not in allowed_extensions:
+                return jsonify({"error": f"Định dạng tệp không được hỗ trợ: {filename}"}), 400
+
+            # Trích xuất văn bản từ tệp
+            raw_text = extract_text(temp_path)
+            if not raw_text.strip():
+                return jsonify({"error": f"Nội dung tệp trống: {filename}"}), 400
+
+            extracted_texts.append(raw_text)
+
+        # Gộp nội dung tất cả các file
+        combined_text = "\n\n".join(extracted_texts)
+
+        # Lấy tỷ lệ tóm tắt và ngôn ngữ từ biểu mẫu
+        ratio = float(request.form.get('ratio', 0.2))
+        language = request.form.get('language', 'vietnamese')
+
+        # Kiểm tra ngôn ngữ hợp lệ
+        if language.lower() not in ["vietnamese", "english"]:
+            return jsonify({"error": f"Ngôn ngữ không được hỗ trợ: {language}"}), 400
+
+        language = detect_language(combined_text)
+        cleaned_text = clean_text(combined_text)
+        result = textrank_summarize(
+            cleaned_text,
+            ratio=ratio,
+            language=language,
+            stop_words_path=STOP_WORDS_PATH
+        )
+
+        # Kiểm tra kết quả trả về
+        if not isinstance(result,
+                          dict) or "summary" not in result or "highlighted_summary" not in result or "keywords" not in result:
+            return jsonify({"error": "Lỗi xử lý văn bản: Kết quả không hợp lệ"}), 500
+
+        # Chuẩn bị dữ liệu để lưu vào DB
+        summary_data = {
+            "summary": result["summary"],
+            "highlighted_summary": result["highlighted_summary"],
+            "ratio": ratio,
+            "keywords": result["keywords"]
+        }
+
+        document_data = {
+            "content": combined_text,
+            "title": result.get("title", f"Tóm tắt {len(files)} tệp"),
+            "file_name": ", ".join(filenames),
+            "file_type": "multiple_files",
+            "user_id": user_id  # Sử dụng user_id từ form data
+        }
+
+        # Lưu vào cơ sở dữ liệu
+        save_success = save_summary_to_db(summary_data, document_data)
+        if not save_success:
+            logger.warning("Không thể lưu kết quả tóm tắt vào cơ sở dữ liệu")
+
+        return jsonify({
+            "status": "success",
+            "language": language,
+            "title": result.get("title", f"Tóm tắt {len(files)} tệp"),
+            "keywords": result["keywords"],
+            "ratio": ratio,
+            "summary": result["highlighted_summary"]
+        })
+
+    except ValueError as ve:
+        logger.error(f"Lỗi giá trị khi tóm tắt các tệp: {str(ve)}")
+        return jsonify({"error": "Lỗi giá trị", "details": str(ve)}), 400
+    except Exception as e:
+        logger.error(f"Lỗi khi tóm tắt các tệp: {str(e)}")
+        return jsonify({"error": "Lỗi xử lý các tệp", "details": str(e)}), 500
+    finally:
+        # Đảm bảo dọn dẹp xảy ra trong mọi trường hợp
+        for temp_path in temp_paths:
+            if temp_path and os.path.exists(temp_path):
+                try:
+                    os.remove(temp_path)
+                except Exception as e:
+                    logger.warning(f"Could not remove temporary file {temp_path}: {str(e)}")
+
+@summarize_bp.route("/summarize-url", methods=["POST"])
+def summarize_url():
     """
     Tóm tắt văn bản trích xuất từ tệp được tải lên hoặc URL.
 
@@ -683,139 +816,6 @@ def summarize_files_gemini():
     except Exception as e:
         logger.error(f"Lỗi khi tóm tắt các tệp với Gemini: {str(e)}")
         return jsonify({"error": "Lỗi xử lý các tệp với Gemini API", "details": str(e)}), 500
-    finally:
-        # Đảm bảo dọn dẹp xảy ra trong mọi trường hợp
-        for temp_path in temp_paths:
-            if temp_path and os.path.exists(temp_path):
-                try:
-                    os.remove(temp_path)
-                except Exception as e:
-                    logger.warning(f"Could not remove temporary file {temp_path}: {str(e)}")
-
-
-@summarize_bp.route("/summarize-files", methods=["POST"])
-def summarize_files():
-    """
-    Tóm tắt nội dung từ nhiều tệp được tải lên sử dụng thuật toán TextRank.
-
-    Đầu vào (form data):
-        - files: Danh sách các tệp được tải lên (hỗ trợ: PDF, DOCX, TXT, EPUB, MD, MARKDOWN).
-        - ratio (float, tùy chọn): Tỷ lệ tóm tắt (mặc định: 0.2, giá trị từ 0.0 đến 1.0).
-        - language (str, tùy chọn): Ngôn ngữ của văn bản ("vietnamese" hoặc "english", mặc định: "vietnamese").
-        - user_id (int): ID của người dùng (bắt buộc).
-
-    Trả về:
-        - JSON chứa trạng thái, nội dung tóm tắt, tỷ lệ tóm tắt và ngôn ngữ.
-
-    Ngoại lệ:
-        - 400: Nếu không có tệp, tệp rỗng, định dạng không hỗ trợ, ngôn ngữ không hợp lệ hoặc thiếu user_id.
-        - 500: Nếu xảy ra lỗi trong quá trình xử lý.
-    """
-    temp_paths = []
-    filenames = []
-    try:
-        # Lấy user_id từ form data - bắt buộc phải có
-        user_id_str = request.form.get('user_id') or request.form.get('user_id')
-        if not user_id_str:
-            return jsonify({"error": "Thiếu user_id trong yêu cầu"}), 400
-        
-        try:
-            user_id = int(user_id_str)
-        except ValueError:
-            return jsonify({"error": "user_id phải là một số nguyên"}), 400
-
-        # Kiểm tra xem có file được tải lên không
-        if 'files' not in request.files:
-            return jsonify({"error": "Không tìm thấy tệp trong yêu cầu"}), 400
-
-        files = request.files.getlist('files')
-        if not files or all(f.filename == '' for f in files):
-            return jsonify({"error": "Tệp chưa được chọn"}), 400
-
-        # Xử lý từng file
-        extracted_texts = []
-        for file in files:
-            filename = file.filename
-            filenames.append(filename)
-            allowed_extensions = {'pdf', 'docx', 'txt', 'epub', 'md', 'markdown'}
-            file_ext = filename.rsplit('.', 1)[1].lower() if '.' in filename else ''
-
-            # Lưu tệp trước khi kiểm tra tiện ích mở rộng
-            temp_path = os.path.join(tempfile.gettempdir(), filename)
-            file.save(temp_path)
-            temp_paths.append(temp_path)
-
-            # Kiểm tra xem tiện ích mở rộng có được phép không
-            if file_ext not in allowed_extensions:
-                return jsonify({"error": f"Định dạng tệp không được hỗ trợ: {filename}"}), 400
-
-            # Trích xuất văn bản từ tệp
-            raw_text = extract_text(temp_path)
-            if not raw_text.strip():
-                return jsonify({"error": f"Nội dung tệp trống: {filename}"}), 400
-            
-            extracted_texts.append(raw_text)
-
-        # Gộp nội dung tất cả các file
-        combined_text = "\n\n".join(extracted_texts)
-
-        # Lấy tỷ lệ tóm tắt và ngôn ngữ từ biểu mẫu
-        ratio = float(request.form.get('ratio', 0.2))
-        language = request.form.get('language', 'vietnamese')
-
-        # Kiểm tra ngôn ngữ hợp lệ
-        if language.lower() not in ["vietnamese", "english"]:
-            return jsonify({"error": f"Ngôn ngữ không được hỗ trợ: {language}"}), 400
-
-        language = detect_language(combined_text)
-        cleaned_text = clean_text(combined_text)
-        result = textrank_summarize(
-            cleaned_text,
-            ratio=ratio,
-            language=language,
-            stop_words_path=STOP_WORDS_PATH
-        )
-
-        # Kiểm tra kết quả trả về
-        if not isinstance(result, dict) or "summary" not in result or "highlighted_summary" not in result or "keywords" not in result:
-            return jsonify({"error": "Lỗi xử lý văn bản: Kết quả không hợp lệ"}), 500
-
-        # Chuẩn bị dữ liệu để lưu vào DB
-        summary_data = {
-            "summary": result["summary"],
-            "highlighted_summary": result["highlighted_summary"],
-            "ratio": ratio,
-            "keywords": result["keywords"]
-        }
-        
-        document_data = {
-            "content": combined_text,
-            "title": result.get("title", f"Tóm tắt {len(files)} tệp"),
-            "file_name": ", ".join(filenames),
-            "file_type": "multiple_files",
-            "user_id": user_id  # Sử dụng user_id từ form data
-        }
-        
-        # Lưu vào cơ sở dữ liệu
-        save_success = save_summary_to_db(summary_data, document_data)
-        if not save_success:
-            logger.warning("Không thể lưu kết quả tóm tắt vào cơ sở dữ liệu")
-
-        return jsonify({
-            "status": "success",
-            "language": language,
-            "title": result.get("title", f"Tóm tắt {len(files)} tệp"),
-            "keywords": result["keywords"],
-            "ratio": ratio,
-            "summary": result["highlighted_summary"]
-        })
-
-    except ValueError as ve:
-        logger.error(f"Lỗi giá trị khi tóm tắt các tệp: {str(ve)}")
-        return jsonify({"error": "Lỗi giá trị", "details": str(ve)}), 400
-    except Exception as e:
-        logger.error(f"Lỗi khi tóm tắt các tệp: {str(e)}")
-        return jsonify({"error": "Lỗi xử lý các tệp", "details": str(e)}), 500
     finally:
         # Đảm bảo dọn dẹp xảy ra trong mọi trường hợp
         for temp_path in temp_paths:
