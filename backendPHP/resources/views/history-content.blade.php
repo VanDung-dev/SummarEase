@@ -63,13 +63,13 @@
 
             @if(isset($history->doctext))
             <h2 class="h-content">Nội dung ban đầu:</h2>
-            <div class="h-content">
+            <div class="output-areaa">
                 {{ $history->doctext }}
             </div>
             @endif
             
             <h2 class="h-content">Nội dung đã được tóm tắt:</h2>
-            <div class="h-content">
+            <div class="output-areaa">
                 <?php
                     $markdown = $history->summary_text;
                     // Xử lý in đậm
