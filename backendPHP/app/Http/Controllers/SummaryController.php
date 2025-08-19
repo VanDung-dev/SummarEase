@@ -110,18 +110,20 @@ class SummaryController extends Controller
     {
         $request->validate([
             'file' => 'required|array', // Thay đổi để chấp nhận mảng file
-            'file.*' => 'file|mimes:pdf,docx,txt|max:10240', // Xác thực từng file
+            'file.*' => 'file|mimes:pdf,docx,txt,.md,.markdown,.epub|max:10240', // Xác thực từng file
             'ratio' => 'numeric|min:0|max:1',
             'language' => 'in:vietnamese,english'
         ]);
+
+
         // Lưu tên file vào session để hiển thị lại sau khi submit
-        $fileNames = [];
-        if ($request->hasFile('file')) {
-            foreach ($request->file('file') as $file) {
-                $fileNames[] = $file->getClientOriginalName();
-            }
-        }
-        //session(['uploaded_files' => $fileNames]);
+        // $fileNames = [];
+        // if ($request->hasFile('file')) {
+        //     foreach ($request->file('file') as $file) {
+        //         $fileNames[] = $file->getClientOriginalName();
+        //     }
+        // }
+        // session(['uploaded_files' => $fileNames]);
         session(['original_ratio' => $request->input('ratio')]);
 
         $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
@@ -130,8 +132,6 @@ class SummaryController extends Controller
         $fileContent = '';
         if ($request->hasFile('file') && count($request->file('file')) > 0) {
             $firstFile = $request->file('file')[0];
-            //$fileContent = file_get_contents($firstFile->getPathname());
-            $fileContent = "https://en.wikipedia.org/wiki/Sheep";
         }
 
         // $fileToProcess = null;
@@ -140,7 +140,7 @@ class SummaryController extends Controller
         // }
 
         $result = $this->apiClient->summarizeFile(
-            $fileContent,
+            $firstFile,
             $request->input('ratio', 0.2),
             $request->input('language', 'vietnamese'),
             $userId
@@ -177,7 +177,60 @@ class SummaryController extends Controller
         //         \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
         //     }
         // }
+        return back()->with('summary', $result['summary']);
+    }
+
+    public function summarizeUrl(Request $request)
+    {
+        $request->validate([
+            'url' => 'required|url',
+            'ratio' => 'numeric|min:0|max:1',
+            'language' => 'in:vietnamese,english'
+        ]);
         
+        session(['original_url' => $request->input('url')]);
+        session(['original_ratio' => $request->input('ratio')]);
+
+        $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
+
+        $result = $this->apiClient->summarizeFile(
+            $request->input('url'),
+            $request->input('ratio', 0.2),
+            $request->input('language', 'vietnamese'),
+            $userId
+        );
+
+        // Kiểm tra lỗi trong kết quả
+        if (isset($result['error'])) {
+            return back()->with('error', $result['error'] . ': ' . ($result['details'] ?? ''));
+        }
+
+        // Kiểm tra các key cần thiết
+        if (!isset($result['summary'])) {
+            return back()->with('error', 'Không tìm thấy nội dung tóm tắt trong kết quả');
+        }
+
+        // Lưu dữ liệu vào bảng guest_documents nếu là khách
+        // if (!Auth::check()) {
+        //     try {
+        //         $sessionId = Session::getId();
+        //         $guestDocument = new GuestDocument();
+        //         $guestDocument->guest_id = $sessionId;
+        //         $guestDocument->title = 'Tập tin tóm tắt - ' . now()->format('Y-m-d H:i:s');
+        //         $guestDocument->content = $fileContent;
+        //         $guestDocument->file_type = 'file';
+        //         $guestDocument->save();
+
+        //         // Lưu tóm tắt vào bảng guest_summaries
+        //         $guestSummary = new GuestSummary();
+        //         $guestSummary->document_id = $guestDocument->id;
+        //         $guestSummary->summary_text = $result['summary'];
+        //         $guestSummary->summary_ratio = $request->input('ratio', 0.2);
+        //         $guestSummary->save();
+        //     } catch (\Exception $e) {
+        //         \Log::error('Lỗi khi lưu dữ liệu khách: ' . $e->getMessage());
+        //     }
+        // }
         return back()->with('summary', $result['summary']);
     }
 
@@ -249,7 +302,7 @@ class SummaryController extends Controller
     {
         $request->validate([
             'file' => 'required|array', // Yêu cầu là một mảng file upload
-            'file.*' => 'file|mimes:pdf,doc,docx,txt|max:10240', // Xác thực từng file
+            'file.*' => 'file|mimes:pdf,doc,docx,txt,.md,.markdown,.epub|max:10240', // Xác thực từng file
             'ratio' => 'numeric|min:0|max:1',
             'language' => 'in:vietnamese,english,auto'
         ]);
@@ -429,5 +482,23 @@ class SummaryController extends Controller
             return back();
         }
     }
-}
 
+    public function formhandle_url(Request $request)
+    {
+        $action = $request->input('sum-url');
+        $request->validate([
+            'url' => 'required|url',
+            'ratio' => 'numeric|min:0|max:1',
+            'language' => 'in:vietnamese,english'
+        ]);
+        session(['original_url' => $request->input('url')]);
+        session(['original_ratio' => $request->input('ratio')]);
+        if ($action === 'summarease') {
+            $this->summarizeUrl($request);
+            return back();
+        } elseif ($action === 'gemini') {
+            $this->summarizeUrlGemini($request);
+            return back();
+        }
+    }
+}
