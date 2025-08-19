@@ -12,17 +12,17 @@ use Illuminate\Support\Str;
         <flux:sidebar sticky stashable class="siba">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
-<flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+<flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')">
     <i class="fa-solid fa-file-lines"></i>
     <span class="nav-text">{{ __('Tóm tắt văn bản') }}</span>
 </flux:navlist.item>
 
-<flux:navlist.item class="nal-list" :href="route('dashboard-file')" :current="request()->routeIs('dashboard-file')" wire:navigate>
+<flux:navlist.item class="nal-list" :href="route('dashboard-file')" :current="request()->routeIs('dashboard-file')">
     <i class="fa-solid fa-file-arrow-up"></i>
     <span class="nav-text">{{ __('Tóm tắt file') }}</span>
 </flux:navlist.item>
 
-<flux:navlist.item class="nal-list" :href="route('dashboard-url')" :current="request()->routeIs('dashboard-url')" wire:navigate>
+<flux:navlist.item class="nal-list" :href="route('dashboard-url')" :current="request()->routeIs('dashboard-url')">
     <i class="fa-solid fa-link"></i>
     <span class="nav-text">{{ __('Tóm tắt URL') }}</span>
 </flux:navlist.item>

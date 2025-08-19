@@ -16,8 +16,36 @@
 
         @include('partials.head')
 
+        <style>
+            .close-button {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: #f0f0f0;
+                border: 1px solid #ccc;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+                cursor: pointer;
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .close-button:hover {
+                background-color: #e0e0e0;
+            }
+            
+            .h-content {
+                margin-bottom: 15px;
+            }
+        </style>
+
     </head>
     <body>
+        <div class="close-button" onclick="window.history.back()" title="Đóng trang">✕</div>
         <div class="body-history">
         @if(isset($history) && $history)
             <h1 class="h-content">{{ $history->title }}</h1>
@@ -34,7 +62,20 @@
             
             <h2 class="h-content">Nội dung đã được tóm tắt:</h2>
             <div class="h-content">
-                {{ $history->summary_text }}
+                <?php
+                    $markdown = $history->summary_text;
+                    // Xử lý in đậm
+                    $markdown = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $markdown);
+                    // Xử lý in nghiêng
+                    $markdown = preg_replace('/\*(.*?)\*/', '<em>$1</em>', $markdown);
+                    // Xử lý đoạn văn
+                    $markdown = preg_replace('/(\r\n|\r|\n){2,}/', '</p><p>', $markdown);
+                    // Xử lý ngắt dòng
+                    $markdown = preg_replace('/(\r\n|\r|\n)/', '<br>', $markdown);
+                    // Bọc nội dung trong thẻ p
+                    $markdown = '<p>' . $markdown . '</p>';
+                ?>
+                {!! $markdown !!}
             </div>        
         @else
             <p class="h-content">Không tìm thấy bản tóm tắt.</p>
