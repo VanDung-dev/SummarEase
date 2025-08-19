@@ -209,7 +209,10 @@ def summarize_file():
             "keywords": result["keywords"]
         }
         
-        file_type = filename.rsplit('.', 1)[1].lower() if '.' in filename else 'unknown'
+        if 'file' in request.files:
+            file_type = filename.rsplit('.', 1)[1].lower() if '.' in filename else 'unknown'
+        else:
+            file_type = 'url'
         document_data = {
             "content": raw_text,
             "title": result.get("title", f"Summary of {filename}"),
