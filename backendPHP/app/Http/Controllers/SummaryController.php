@@ -106,7 +106,7 @@ class SummaryController extends Controller
         return back()->with('summary', $result['summary']);
     }
 
-    public function summarizeFile(Request $request)
+    public function summarizeFiles(Request $request)
     {
         $request->validate([
             'file' => 'required|array', // Thay đổi để chấp nhận mảng file
@@ -121,7 +121,7 @@ class SummaryController extends Controller
 
         // Gửi tất cả file để tóm tắt cùng lúc thay vì tóm tắt từng file
         $files = $request->file('file');
-        $result = $this->apiClient->summarizeFile(
+        $result = $this->apiClient->summarizeFiles(
             $files,
             $request->input('ratio', 0.2),
             $request->input('language', 'vietnamese'),
@@ -154,7 +154,7 @@ class SummaryController extends Controller
 
         $userId = Auth::id() ?? 3; // Sử dụng ID người dùng hiện tại hoặc mặc định là 3
 
-        $result = $this->apiClient->summarizeFile(
+        $result = $this->apiClient->summarizeUrl(
             $request->input('url'),
             $request->input('ratio', 0.2),
             $request->input('language', 'vietnamese'),
@@ -403,11 +403,9 @@ class SummaryController extends Controller
         session(['original_text' => $request->input('text')]);
         session(['original_ratio' => $request->input('ratio')]);
         if ($action === 'summarease') {
-            $this->summarizeText($request);
-            return back();
+            return $this->summarizeText($request);
         } elseif ($action === 'gemini') {
-            $this->summarizeTextGemini($request);
-            return back();
+            return $this->summarizeTextGemini($request);
         }
     }
 
@@ -432,11 +430,9 @@ class SummaryController extends Controller
         session(['original_ratio' => $request->input('ratio')]);
 
         if ($action === 'summarease') {
-            $this->summarizeFile($request);
-            return back();
+            return $this->summarizeFiles($request);
         } elseif ($action === 'gemini') {
-            $this->summarizeFileGemini($request);
-            return back();
+            return $this->summarizeFileGemini($request);
         }
     }
 
@@ -451,11 +447,9 @@ class SummaryController extends Controller
         session(['original_url' => $request->input('url')]);
         session(['original_ratio' => $request->input('ratio')]);
         if ($action === 'summarease') {
-            $this->summarizeUrl($request);
-            return back();
+            return $this->summarizeUrl($request);
         } elseif ($action === 'gemini') {
-            $this->summarizeUrlGemini($request);
-            return back();
+            return $this->summarizeUrlGemini($request);
         }
     }
 }
