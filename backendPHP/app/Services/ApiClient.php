@@ -74,50 +74,47 @@ class ApiClient
         }
     }
 
-    public function summarizeFile($source, $ratio = 0.2, $language = 'vietnamese', $userId = 3)
+    public function summarizeFile($sources, $ratio = 0.2, $language = 'vietnamese', $userId = 3)
     {
         try {
+            // Xử lý cả trường hợp một file hoặc nhiều file
+            if (!is_array($sources)) {
+                $sources = [$sources];
+            }
+            
             // Xác định nếu người dùng là khách
             $isGuest = !Auth::check();
-            if ($source instanceof \Illuminate\Http\UploadedFile) {
-                $multipart = [
-                    [
-                        'name' => 'file',
+            
+            // Chuẩn bị multipart data
+            $multipart = [
+                [
+                    'name' => 'ratio',
+                    'contents' => $ratio
+                ],
+                [
+                    'name' => 'language',
+                    'contents' => $language
+                ],
+                [
+                    'name' => 'user_id',
+                    'contents' => $userId
+                ]
+            ];
+            
+            // Thêm từng file vào multipart data
+            foreach ($sources as $index => $source) {
+                if ($source instanceof \Illuminate\Http\UploadedFile) {
+                    $multipart[] = [
+                        'name' => 'files',
                         'contents' => fopen($source->getPathname(), 'r'),
                         'filename' => $source->getClientOriginalName()
-                    ],
-                    [
-                        'name' => 'ratio',
-                        'contents' => $ratio
-                    ],
-                    [
-                        'name' => 'language',
-                        'contents' => $language
-                    ],
-                    [
-                        'name' => 'user_id',
-                        'contents' => $userId
-                    ]
-                ];
-            } else {
-                $multipart = [
-                    [
-                        'name' => 'file',
+                    ];
+                } else {
+                    $multipart[] = [
+                        'name' => 'files',
                         'contents' => $source
-                    ],
-                    [
-                        'name' => 'ratio',
-                        'contents' => $ratio
-                    ],
-                    [
-                        'name' => 'language',
-                        'contents' => $language
-                    ],
-                    [
-                        'name' => 'user_id',
-                        'contents' => $userId
-                    ]
-                ];
+                    ];
+                }
             }
             
             // Thêm thông tin khách nếu cần
@@ -132,7 +129,7 @@ class ApiClient
                 ];
             }
             
-            $response = $this->client->post('/summarize-file', [
+            $response = $this->client->post('/summarize-files', [
                 'multipart' => $multipart
             ]);
 
