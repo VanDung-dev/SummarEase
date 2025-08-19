@@ -3,9 +3,9 @@
 <x-layouts.app :title="__('Tóm tắt văn bản')">
     <div class="full container">
         <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-            
+
         </div>
-        
+
         <h1 class="title">Tóm tắt văn bản học thuật</h1>
 
         <p class="sub">
@@ -25,6 +25,7 @@
                     <div class="file-selection-container">
                         <button
                             type="button"
+                            style="background-color: #00000000;"
                             class="file-btn"
                             onclick="document.getElementById('fileInput').click()"
                         >
@@ -51,7 +52,7 @@
 
                 <div class="output-areaa">
                      @if(session('summary'))
-                        <div id="summary-output">{!! nl2br(e(session('summary'))) !!}</div>
+                        <div id="summary-output" style="text-align: justify;">{!! nl2br(e(session('summary'))) !!}</div>
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             // Xử lý hiển thị markdown cho kết quả tóm tắt
@@ -70,7 +71,22 @@
                 @endif
 
     <script src="https://kit.fontawesome.com/af877c9b83.js" crossorigin="anonymous"></script>
-        
+
+    <script>
+        // Force Page Refresh khi điều hướng giữa các phương pháp tóm tắt
+        document.addEventListener('DOMContentLoaded', function() {
+            const navItems = document.querySelectorAll('.nal-list');
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && !window.location.href.includes(href.split('/').pop())) {
+                        e.preventDefault();
+                        window.location.href = href;
+                    }
+                });
+            });
+        });
+    </script>
 
     <script src="script.js"></script>
 

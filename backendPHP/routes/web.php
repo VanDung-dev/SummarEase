@@ -111,18 +111,19 @@ Route::get('/history', function () {
             ->where('users.id', '=', $userId)
             ->paginate();
         return view('/history-page', compact('history'));
-    } else {
-        $sessionId = Session::getId();
-        $history = DB::table('guest_summaries')
-            ->select('guest_summaries.id as summaryid', 'summary_text', 'summary_ratio', 'title', 'file_name', 'content as doctext', 'guest_summaries.created_at')
-            ->orderBy('guest_summaries.created_at', 'desc')
-            ->join('guest_documents', 'guest_documents.id', '=', 'document_id')
-            ->join('sessions', 'sessions.id', '=', 'guest_documents.guest_id')
-            ->where('sessions.id', '=', $sessionId)
-            ->paginate();
-        return view('/history-page', compact('history'));
     }
-})->name('history');
+    // else {
+    //     $sessionId = Session::getId();
+    //     $history = DB::table('guest_summaries')
+    //         ->select('guest_summaries.id as summaryid', 'summary_text', 'summary_ratio', 'title', 'file_name', 'content as doctext', 'guest_summaries.created_at')
+    //         ->orderBy('guest_summaries.created_at', 'desc')
+    //         ->join('guest_documents', 'guest_documents.id', '=', 'document_id')
+    //         ->join('sessions', 'sessions.id', '=', 'guest_documents.guest_id')
+    //         ->where('sessions.id', '=', $sessionId)
+    //         ->paginate();
+    //     return view('/history-page', compact('history'));
+    // }
+})->middleware(['auth', 'verified'])->name('history');
 
 Route::get('history-content/{summaryid}', function ($summaryid) {
     if (auth()->check()) {
@@ -135,16 +136,17 @@ Route::get('history-content/{summaryid}', function ($summaryid) {
             ->where('users.id', '=', $userId)
             ->where('summaries.id', '=', $summaryid)
             ->first();
-    } else {
-        $sessionId = Session::getId();
-        $history = DB::table('guest_summaries')
-            ->select('guest_summaries.id', 'summary_text', 'summary_ratio', 'title', 'file_name', 'content as doctext', 'guest_summaries.created_at')
-            ->orderBy('guest_summaries.created_at', 'desc')
-            ->join('guest_documents', 'guest_documents.id', '=', 'document_id')
-            ->join('sessions', 'sessions.id', '=', 'guest_documents.guest_id')
-            ->where('sessions.id', '=', $sessionId)
-            ->where('guest_summaries.id', '=', $summaryid)
-            ->first();
     }
+    // else {
+    //     $sessionId = Session::getId();
+    //     $history = DB::table('guest_summaries')
+    //         ->select('guest_summaries.id', 'summary_text', 'summary_ratio', 'title', 'file_name', 'content as doctext', 'guest_summaries.created_at')
+    //         ->orderBy('guest_summaries.created_at', 'desc')
+    //         ->join('guest_documents', 'guest_documents.id', '=', 'document_id')
+    //         ->join('sessions', 'sessions.id', '=', 'guest_documents.guest_id')
+    //         ->where('sessions.id', '=', $sessionId)
+    //         ->where('guest_summaries.id', '=', $summaryid)
+    //         ->first();
+    // }
     return view('history-content', ['history' => $history]);
-})->name('history-content');
+})->middleware(['auth', 'verified'])->name('history-content');

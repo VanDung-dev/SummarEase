@@ -223,19 +223,19 @@ class ApiClient
     }
 
     // Phương thức mới để tóm tắt file sử dụng Gemini API
-    public function summarizeFileGemini(UploadedFile $file, $ratio = 0.2, $language = 'vietnamese', $userId = 3)
+    public function summarizeFileGemini($files, $ratio = 0.2, $language = 'vietnamese', $userId = 3)
     {
         try {
+            // Xử lý cả trường hợp một file hoặc nhiều file
+            if (!is_array($files)) {
+                $files = [$files];
+            }
+            
             // Xác định nếu người dùng là khách
             $isGuest = !Auth::check();
             
             // Chuẩn bị multipart data
             $multipart = [
-                [
-                    'name' => 'file',
-                    'contents' => fopen($file->getPathname(), 'r'),
-                    'filename' => $file->getClientOriginalName()
-                ],
                 [
                     'name' => 'ratio',
                     'contents' => $ratio
@@ -250,6 +250,15 @@ class ApiClient
                 ]
             ];
             
+            // Thêm từng file vào multipart data
+            foreach ($files as $index => $file) {
+                $multipart[] = [
+                    'name' => 'files',
+                    'contents' => fopen($file->getPathname(), 'r'),
+                    'filename' => $file->getClientOriginalName()
+                ];
+            }
+            
             // Thêm thông tin khách nếu cần
             if ($isGuest) {
                 $multipart[] = [
@@ -262,7 +271,7 @@ class ApiClient
                 ];
             }
 
-            $response = $this->client->post('/summarize-file-gemini', [
+            $response = $this->client->post('/summarize-files-gemini', [
                 'multipart' => $multipart
             ]);
 
