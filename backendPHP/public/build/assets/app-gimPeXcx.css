@@ -8423,33 +8423,21 @@ input[type="range"].w-full {
     color: white;
 }
 
-.file-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.file-table th,
-.file-table td {
-    padding: 12px;
-    border: 1px solid #000000;
-    text-align: left;
-}
 
 :root {
     --primary-color: #4a6cff;
 }
 
-.file-table th {
-    background-color: var(--primary-color);
-    /* Màu nền tiêu đề bảng */
-    color: #fff;
-    /* Màu chữ tiêu đề bảng */
+.search-bar button:hover {
+    background-color: #3b59d8;
 }
 
-.file-table tbody tr:hover {
-    background-color: #f1f1f1;
-    /* Màu nền khi di chuột qua hàng */
+.table-container {
+    overflow-x: auto;
+    width: 120%;
+    /* Chỉnh độ rộng của bảng */
+    margin: 0 auto;
+    /* Căn giữa bảng */
 }
 
 .file-table {
