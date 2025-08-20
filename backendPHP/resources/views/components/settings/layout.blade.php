@@ -8,12 +8,12 @@
         <flux:navlist>
             @if ($isAdmin)
                 {{-- Hiển thị đầy đủ các tab cho admin --}}
-                <flux:navlist.item :href="route('settings.profile')" wire:navigate>{{ __('Users') }}</flux:navlist.item>
-                <flux:navlist.item :href="route('settings.password')" wire:navigate>{{ __('File') }}</flux:navlist.item>
-                <flux:navlist.item :href="route('settings.appearance')" wire:navigate>{{ __('Appearance') }}</flux:navlist.item>
+                <flux:navlist.item :href="route('settings.profile')" wire:navigate>{{ __('Người dùng') }}</flux:navlist.item>
+                <flux:navlist.item :href="route('settings.password')" wire:navigate>{{ __('Tài liệu') }}</flux:navlist.item>
+                <flux:navlist.item :href="route('settings.appearance')" wire:navigate>{{ __('Giao diện') }}</flux:navlist.item>
             @else
                 {{-- Ẩn các tab Profile và Password cho người dùng thông thường --}}
-                <flux:navlist.item :href="route('settings.appearance')" wire:navigate>{{ __('Appearance') }}</flux:navlist.item>
+                <flux:navlist.item :href="route('settings.appearance')" wire:navigate>{{ __('Giao diện') }}</flux:navlist.item>
             @endif
         </flux:navlist>
     </div>

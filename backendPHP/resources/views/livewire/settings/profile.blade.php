@@ -87,7 +87,7 @@ new class extends Component {
 <section class="w-full">
     @include('partials.settings-heading')
 
-    <x-settings.layout :heading="__('Users')" :subheading="__('Danh sách người dùng')">
+    <x-settings.layout :heading="__('Người dùng')" :subheading="__('Danh sách người dùng')">
         <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
             <div id="users" class="section">
                 <div class="search-bar">
