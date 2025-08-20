@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
-        <flux:sidebar sticky stashable class="siba">
+        <flux:sidebar sticky stashable class="siba" tabindex="0">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
 <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')">
