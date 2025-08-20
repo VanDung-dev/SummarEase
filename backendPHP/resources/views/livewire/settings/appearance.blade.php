@@ -11,7 +11,7 @@ new class extends Component {
 <section class="w-full">
     @include('partials.settings-heading')
 
-    <x-settings.layout :heading="__('Appearance')" :subheading=" __('Update the appearance settings for your account')">
+    <x-settings.layout :heading="__('Tùy chọn chung')" :subheading=" __('Quản lý tùy chọn giao diện và việc xóa tài khoản.')">
         <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
             <flux:radio value="light" icon="sun">{{ __('Sáng') }}</flux:radio>
             <flux:radio value="dark" icon="moon">{{ __('Tối') }}</flux:radio>
@@ -31,7 +31,7 @@ new class extends Component {
             </flux:button>
         </flux:modal.trigger>
 
-        
+        <livewire:settings.delete-user-form />
     </x-settings.layout>
 
 

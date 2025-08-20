@@ -6,68 +6,68 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Livewire\Volt\Component;
 
-// new class extends Component {
-//     public string $name = '';
-//     public string $email = '';
+new class extends Component {
+    public string $name = '';
+    public string $email = '';
 
-//     /**
-//      * Mount the component.
-//      */
-//     public function mount(): void
-//     {
-//         $this->name = Auth::user()->name;
-//         $this->email = Auth::user()->email;
-//     }
+    /**
+     * Mount the component.
+     */
+    public function mount(): void
+    {
+        $this->name = Auth::user()->name;
+        $this->email = Auth::user()->email;
+    }
 
-//     /**
-//      * Update the profile information for the currently authenticated user.
-//      */
-//     public function updateProfileInformation(): void
-//     {
-//         $user = Auth::user();
+    /**
+     * Update the profile information for the currently authenticated user.
+     */
+    public function updateProfileInformation(): void
+    {
+        $user = Auth::user();
 
-//         $validated = $this->validate([
-//             'name' => ['required', 'string', 'max:255'],
+        $validated = $this->validate([
+            'name' => ['required', 'string', 'max:255'],
 
-//             'email' => [
-//                 'required',
-//                 'string',
-//                 'lowercase',
-//                 'email',
-//                 'max:255',
-//                 Rule::unique(User::class)->ignore($user->id)
-//             ],
-//         ]);
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+                Rule::unique(User::class)->ignore($user->id)
+            ],
+        ]);
 
-//         $user->fill($validated);
+        $user->fill($validated);
 
-//         if ($user->isDirty('email')) {
-//             $user->email_verified_at = null;
-//         }
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
 
-//         $user->save();
+        $user->save();
 
-//         $this->dispatch('profile-updated', name: $user->name);
-//     }
+        $this->dispatch('profile-updated', name: $user->name);
+    }
 
-//     /**
-//      * Send an email verification notification to the current user.
-//      */
-//     public function resendVerificationNotification(): void
-//     {
-//         $user = Auth::user();
+    /**
+     * Send an email verification notification to the current user.
+     */
+    public function resendVerificationNotification(): void
+    {
+        $user = Auth::user();
 
-//         if ($user->hasVerifiedEmail()) {
-//             $this->redirectIntended(default: route('dashboard', absolute: false));
+        if ($user->hasVerifiedEmail()) {
+            $this->redirectIntended(default: route('dashboard', absolute: false));
 
-//             return;
-//         }
+            return;
+        }
 
-//         $user->sendEmailVerificationNotification();
+        $user->sendEmailVerificationNotification();
 
-//         Session::flash('status', 'verification-link-sent');
-//     }
-// }; ?>
+        Session::flash('status', 'verification-link-sent');
+    }
+}; ?>
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -94,8 +94,16 @@ use Livewire\Volt\Component;
                     <input type="text" id="userSearchInput" placeholder="Tìm kiếm người dùng..."/>
                     <button onclick="searchUsers()">Tìm</button>
                 </div>
-                <div class="table-container">
+                <div class="table-container" style="max-height: 400px; overflow-y: auto;">
                     <table class="file-table" id="userTable">
+                        @php
+                            $usrs = DB::table('users')
+                            ->select('users.id as uid', 'users.name as username', 'roles.name as rolename')
+                            ->orderBy('users.created_at', 'desc')
+                            ->join('user_roles', 'users.id', '=', 'user_id')
+                            ->join('roles', 'roles.id', '=', 'role_id')
+                            ->paginate();
+                        @endphp
                         <thead>
                             <tr>
                                 <th>Tên người dùng</th>
@@ -103,12 +111,29 @@ use Livewire\Volt\Component;
                                 <th>Hành động</th>
                             </tr>
                         </thead>
-                        <tbody id="userTableBody">
-                            <tr>
-                                <td colspan="3" style="text-align: center;">Chưa có người dùng nào.</td>
-                            </tr>
+                        <tbody id="userTableBody" style="max-height: 300px; overflow-y: auto;">
+                            @forelse($usrs as $item)
+                                <tr>
+                                    <td>{{ $item->username }}</td>
+                                    <td>{{ $item->rolename }}</td>
+                                    <td>
+                                        @if ($item->uid != Auth::id())
+                                            Xóa
+                                        @else
+                                        <span>Không thể xóa chính mình</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3">Không có người dùng</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
+                    <p>Tổng số người dùng: {{ $usrs->total() }}</p>
+                    <br />
+                    <p>{{ $usrs->links('pagination::bootstrap-5') }}</p>
                     <div class="permissions">
                         <select id="roleSelect">
                             <option value="admin">Admin</option>

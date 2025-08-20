@@ -50,7 +50,7 @@ use Illuminate\Support\Str;
                 </div>
                 </a>
             @empty
-                <p style="margin: auto;">Lịch sử trống</p>
+                <p style="text-align: center;">Lịch sử trống</p>
             @endforelse
                 <p>Tổng số lần tóm tắt: {{ $history->total() }}</p>
                 <br />

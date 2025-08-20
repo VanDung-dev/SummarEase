@@ -40,30 +40,50 @@ use Livewire\Volt\Component;
 <section class="w-full">
     @include('partials.settings-heading')
 
-    <x-settings.layout :heading="__('File')" :subheading="__('Các file đã tải lên')">
+    <x-settings.layout :heading="__('Tài liệu')" :subheading="__('Các tài liệu đã tải lên')">
         <form wire:submit="updatePassword" class="mt-6 space-y-6">
             <div id="files" class="section">
                 <div class="search-bar">
-                    <input type="text" id="fileSearchInput" placeholder="Tìm kiếm tệp..."/>
+                    <input type="text" id="fileSearchInput" placeholder="Tìm kiếm tài liệu..."/>
                     <button onclick="searchFiles()">Tìm</button>
                 </div>
-                <div class="table-container">
+                <div class="table-container" style="max-height: 400px; overflow-y: auto;">
                     <table class="file-table" id="fileTable">
+                        @php
+                            $docs = DB::table('documents')
+                            ->select('documents.id as docid', 'documents.file_name as docname', 'documents.uploaded_at as uploadtime')
+                            ->orderBy('documents.uploaded_at', 'desc')
+                            ->where('file_type', '!=', 'url')
+                            ->where('file_type', '!=', 'text')
+                            ->paginate();
+                        @endphp
                         <thead>
                             <tr>
-                                <th>Tên tệp</th>
-                                <th>Ngày tải lên</th>   
-                                <th>Trạng thái</th>
+                                <th>Tên tài liệu</th>
+                                <th>Ngày tải lên</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody id="fileTableBody">
-                            <tr>
-                                <td colspan="4" style="text-align: center;">Chưa có tệp nào.</td>
-                            </tr>
+                            @forelse($docs as $item)
+                                <tr>
+                                    <td>{{ $item->docname }}</td>
+                                    <td>{{ $item->uploadtime }}</td>
+                                    <td>
+                                        Xóa
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4">Không có tài liệu.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
-                    <button type="button" onclick="addFile()">Thêm tệp mới</button>
+                    <p>Tổng số tập tin: {{ $docs->total() }}</p>
+                    <br />
+                    <p>{{ $docs->links('pagination::bootstrap-5') }}</p>
+                    <button type="button" onclick="addFile()">Thêm tài liệu mới</button>
                 </div>
             </div>
         </form>
