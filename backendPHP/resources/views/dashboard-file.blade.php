@@ -43,7 +43,7 @@
                             </div>
                         </div>
                     </div>
-                    <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio', 0.2) }}" class="mt-4 w-full" />
+                    <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio', 0.5) }}" class="mt-4 w-full" />
                     <p class="text-sm text-gray-500 mt-1"></p>
                     <button type="submit" name="sum-file" value="summarease" class="mt-4 submit-button">{{ __('Tóm tắt với SummarEase') }}</button>
                     <br />
