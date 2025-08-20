@@ -41,7 +41,7 @@ RUN add-apt-repository ppa:deadsnakes/ppa -y && \
 WORKDIR /app
 
 # Mở các cổng dịch vụ phổ biến
-EXPOSE 3000 5000 8080
+EXPOSE 8080 5001
 
 # Khởi động bằng bash
 CMD ["bash"]

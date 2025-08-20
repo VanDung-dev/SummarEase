@@ -4,8 +4,8 @@ services:
 
   backend-php:
     build:
-      context: ..
-      dockerfile: docker/Dockerfile-php
+      context: ../backendPHP
+      dockerfile: ../docker/Dockerfile-php
     ports:
       - "8080:80"
     volumes:
@@ -14,8 +14,8 @@ services:
 
   backend-nlp:
     build:
-      context: ..
-      dockerfile: docker/Dockerfile-python
+      context: ../backendNLP
+      dockerfile: ../docker/Dockerfile-python
     ports:
       - "5001:5001"
     volumes:
