@@ -3,7 +3,7 @@ FROM ubuntu:24.04
 LABEL \
     name="SummarEase Dev Environment" \
     version="1.0" \
-    description="Multi-language dev setup: Node.js 22 + PHP 8.2 + Python 3.12" \
+    description="Multi-language dev setup: PHP 8.2 + Python 3.12" \
     maintainer="Nguyen Le Van Dung <dungnguyen2661@gmail.com>" \
     authors="Nguyen Le Van Dung" \
     license="MIT" \
@@ -27,10 +27,6 @@ RUN apt-get install -y \
     lsb-release \
     ca-certificates
 
-# --- Node.js 22 ---
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
-    apt-get install -y nodejs
-
 # --- PHP 8.2 ---
 RUN add-apt-repository ppa:ondrej/php -y && \
     apt-get update && \
@@ -45,7 +41,7 @@ RUN add-apt-repository ppa:deadsnakes/ppa -y && \
 WORKDIR /app
 
 # Mở các cổng dịch vụ phổ biến
-EXPOSE 3000 5000 8080
+EXPOSE 8080 5001
 
 # Khởi động bằng bash
 CMD ["bash"]

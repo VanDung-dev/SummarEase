@@ -3,7 +3,9 @@ import requests
 import json
 from typing import Dict, Any
 import logging
+import re
 from .file_handler import extract_text
+from .summarizer import extract_keywords, generate_title
 
 logger = logging.getLogger(__name__)
 
@@ -48,45 +50,11 @@ def gemini_summarize(text: str, ratio: float = 0.2, language: str = "vietnamese"
         }]
     }
 
-    # Tạo prompt cho Gemini để tạo tiêu đề
-    title_prompt = f"""
-    Dựa vào nội dung văn bản sau, hãy đề xuất một tiêu đề ngắn gọn, phù hợp bằng tiếng {language}.
-    Tiêu đề không cần đánh dấu từ khóa, chỉ cần trả về tiêu đề rõ ràng, súc tích và không chứa bất kỳ định dạng markdown nào.
-    Ví dụ: Nhận diện thực thể tiếng Việt với BERT và CRF
-    Chỉ trả về tiêu đề, không thêm bất kỳ thông tin nào khác.
-    
-    Văn bản:
-    {text}
-    """
-
-    # Dữ liệu gửi đến API để tạo tiêu đề
-    title_payload = {
-        "contents": [{
-            "parts": [{
-                "text": title_prompt
-            }]
-        }]
-    }
-
     headers = {
         "Content-Type": "application/json"
     }
 
     try:
-        # Gửi yêu cầu đến Gemini API để tạo tiêu đề
-        title_response = requests.post(url, headers=headers, data=json.dumps(title_payload))
-        title_response.raise_for_status()
-        title_result = title_response.json()
-        
-        if "candidates" not in title_result or not title_result["candidates"]:
-            title_text = f"Tóm tắt văn bản - {language}"
-        else:
-            candidate = title_result["candidates"][0]
-            if "content" not in candidate or "parts" not in candidate["content"]:
-                title_text = f"Tóm tắt văn bản - {language}"
-            else:
-                title_text = candidate["content"]["parts"][0]["text"].strip()
-
         # Gửi yêu cầu đến Gemini API để tóm tắt văn bản
         summary_response = requests.post(url, headers=headers, data=json.dumps(summarize_payload))
         summary_response.raise_for_status()
@@ -101,11 +69,20 @@ def gemini_summarize(text: str, ratio: float = 0.2, language: str = "vietnamese"
         
         summary_text = candidate["content"]["parts"][0]["text"]
         
+        # Trích xuất từ khóa từ văn bản gốc
+        keywords = extract_keywords(text, language)
+        
+        # Tạo tiêu đề từ văn bản tóm tắt và từ khóa
+        title_text = generate_title(summary_text, keywords, language)
+        
+        # Loại bỏ các ký tự ** từ tiêu đề (nếu có)
+        title_text = re.sub(r'\*\*', '', title_text)
+
         # Trả về kết quả theo định dạng giống như textrank_summarize
         return {
             "summary": summary_text.strip(),
             "highlighted_summary": summary_text.strip(),
-            "keywords": [],  # Gemini không trả về từ khóa riêng biệt
+            "keywords": keywords,
             "title": title_text
         }
 

@@ -1,12 +1,22 @@
 FROM php:8.2-apache
 
-RUN apt-get update && apt-get install -y libzip-dev unzip git && \
+# Install required system packages and PHP extensions
+RUN apt-get update && \
+    apt-get install -y libzip-dev unzip git && \
+    rm -rf /var/lib/apt/lists/* && \
     docker-php-ext-install pdo_mysql zip
 
+# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Set working directory
 WORKDIR /var/www/html
+
+# Copy application files
 COPY ./backend-php /var/www/html
 
+# Set proper permissions
 RUN chown -R www-data:www-data /var/www/html
+
+# Expose port for web access
 EXPOSE 80

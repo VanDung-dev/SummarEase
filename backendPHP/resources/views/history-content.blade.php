@@ -33,10 +33,12 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                transition: all 0.3s ease;
             }
 
             .dark .close-button {
                 background-color: #333;
+                border-color: #555;
             }
             
             .close-button:hover {
