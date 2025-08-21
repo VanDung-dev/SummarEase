@@ -61,7 +61,7 @@ use Livewire\Volt\Component;
                             ->when($query, function ($q) use ($query) {
                                 return $q->where('documents.file_name', 'like', '%' . $query . '%');
                             })
-                            ->paginate();
+                            ->get();
                         @endphp
                         <thead>
                             <tr>

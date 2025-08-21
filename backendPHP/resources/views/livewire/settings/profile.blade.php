@@ -109,7 +109,7 @@ new class extends Component {
                             ->when($query, function ($q) use ($query) {
                                 return $q->where('users.name', 'like', '%' . $query . '%');
                             })
-                            ->paginate();
+                            ->get();
                         @endphp
                         <thead>
                             <tr>
