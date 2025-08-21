@@ -96,9 +96,6 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('form');
-        form.id = 'summary-form';
-
         // Thêm event listener cho nút sao chép
         const copyButton = document.getElementById('copy-button');
         if (copyButton) {
