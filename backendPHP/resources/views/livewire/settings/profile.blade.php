@@ -107,7 +107,7 @@ new class extends Component {
                             ->join('roles', 'roles.id', '=', 'role_id')
                             ->where('users.name', 'like', '%' . $query . '%')
                             ->when($query, function ($q) use ($query) {
-                                return $q->where('users.name', 'like', '%' . $query . '%');
+                                return $q->where('users.name', 'like', '%' . $query . '%')->orWhere('roles.name', 'like', '%' . $query . '%');
                             })
                             ->get();
                         @endphp
