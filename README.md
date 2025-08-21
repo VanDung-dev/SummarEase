@@ -52,10 +52,10 @@ SummarEase là một Ứng dụng tóm tắt tài liệu đơn giản, giúp ng�
 ## Công nghệ sử dụng
 
 ### Backend PHP (Laravel)
-- **Framework**: Laravel 10+
+- **Framework**: Laravel 12+
 - **Ngôn ngữ**: PHP 8.2
 - **Database**: MySQL 8.0
-- **Authentication**: Laravel Sanctum
+- **Authentication**: Laravel Socialite
 - **Frontend**: Blade Templates, CSS
 
 ### Backend NLP (Python)
