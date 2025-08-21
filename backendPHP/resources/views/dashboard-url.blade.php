@@ -23,21 +23,26 @@
         </form>
 
                 <div class="output-areaa">
-                     @if(session('summary'))
+                    @if(session('summary'))
                         <div id="summary-output" style="text-align: justify;">{!! nl2br(e(session('summary'))) !!}</div>
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            // Xử lý hiển thị markdown cho kết quả tóm tắt
-                            const summaryText = @json(session('summary'));
-                            const outputArea = document.getElementById('summary-output');
-                            // Chuyển đổi markdown thành HTML
-                            const html = summaryText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                            const html_i = html.replace(/\*(.*?)\*/g, '<i>$1</i>');
-                            outputArea.innerHTML = html_i;
-                        });
-                    </script>
-                     @endif
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                // Xử lý hiển thị markdown cho kết quả tóm tắt
+                                const summaryText = @json(session('summary'));
+                                const outputArea = document.getElementById('summary-output');
+                                // Chuyển đổi markdown thành HTML
+                                const html = summaryText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                                const html_i = html.replace(/\*(.*?)\*/g, '<i>$1</i>');
+                                outputArea.innerHTML = html_i;
+                            });
+                        </script>
+                    @else
+                        <div style="position: relative; padding-top: 2rem; min-height: 3rem;">
+                            <div id="summary-output" style="text-align: justify;"></div>
+                        </div>
+                    @endif
                 </div>
+                <button id="copy-button" class="mt-4 submit-button" style="display: block; width: 100%; text-align: center; display: flex; align-items: center; justify-content: center;">Sao chép</button>
                 @if(session('error'))
                 <p style="margin-top: 0; color: red;">{{ session('error') }}</p>
                 @endif
@@ -64,5 +69,28 @@
 
     <!-- Thêm script để xử lý markdown -->
     <script src="{{ asset('js/script.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Thêm event listener cho nút sao chép
+            const copyButton = document.getElementById('copy-button');
+            if (copyButton) {
+                copyButton.addEventListener('click', function() {
+                    const summaryText = @json(session('summary') ?? '');
+                    if (summaryText) {
+                        navigator.clipboard.writeText(summaryText).then(function() {
+                            const originalText = copyButton.textContent;
+                            copyButton.textContent = 'Đã sao chép!';
+                            setTimeout(function() {
+                                copyButton.textContent = originalText;
+                            }, 2000);
+                        });
+                    } else {
+                        alert('Không có văn bản nào để sao chép!');
+                    }
+                });
+            }
+        });
+    </script>
 </div>
 </x-layouts.app>

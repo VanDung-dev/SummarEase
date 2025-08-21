@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -54,7 +51,7 @@
         <p class="sub">
         Công cụ hỗ trợ tóm tắt nhanh và chính xác các văn bản học thuật
         </p>
-        
+
            <form method="POST" action="{{ url('/summarize/text') }}">
                     @csrf
                     <input type="hidden" name="is_guest" value="true">
@@ -62,46 +59,67 @@
                     <textarea style="text-align: justify;" name="text" id="text" class="input-areah" placeholder="Hãy nhập văn bản cần tóm tắt...">{{ session('original_text') ?? '' }}</textarea>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio')}}" class="mt-4 w-full" />
                     <button type="submit" class="mt-4 submit-button">{{ __('Tóm tắt') }}</button>
-                   
+
             </form>
 
-            <div class="output-areah">
-                     @if(session('summary'))
-                        <div id="summary-output" style="text-align: justify;">{!! nl2br(e(session('summary'))) !!}</div>
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            // Xử lý hiển thị markdown cho kết quả tóm tắt
-                            const summaryText = @json(session('summary'));
-                            const outputArea = document.getElementById('summary-output');
-                            // Chuyển đổi markdown thành HTML
-                            const html = summaryText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                            const html_i = html.replace(/\*(.*?)\*/g, '<i>$1</i>');
-                            outputArea.innerHTML = html_i;
-                        });
-                    </script>
-                     @endif
-                </div>
+          <div class="output-areah">
+              @if(session('summary'))
+                      <div id="summary-output" style="text-align: justify;">{!! nl2br(e(session('summary'))) !!}</div>
+                  <script>
+                      document.addEventListener('DOMContentLoaded', function() {
+                          // Xử lý hiển thị markdown cho kết quả tóm tắt
+                          const summaryText = @json(session('summary'));
+                          const outputArea = document.getElementById('summary-output');
+                          // Chuyển đổi markdown thành HTML
+                          const html = summaryText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                          const html_i = html.replace(/\*(.*?)\*/g, '<i>$1</i>');
+                          outputArea.innerHTML = html_i;
+                      });
+                  </script>
+              @else
+                  <div style="position: relative; padding-top: 2rem; min-height: 3rem;">
+                      <div id="summary-output" style="text-align: justify;"></div>
+                  </div>
+              @endif
+          </div>
+          <button id="copy-button" class="mt-4 submit-button w-full text-center" style="margin-top: 1rem;">Sao chép</button>
 
         </div>
-      </div>
-
-        
-      </div>
-      
-
-
 
     <script src="https://kit.fontawesome.com/af877c9b83.js" crossorigin="anonymous"></script>
-        
+
     @if (Route::has('login'))
       <div class="h-14.5 hidden lg:block"></div>
     @endif
 
     <script src="script.js"></script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Thêm event listener cho nút sao chép
+            const copyButton = document.getElementById('copy-button');
+            if (copyButton) {
+                copyButton.addEventListener('click', function() {
+                    const summaryText = @json(session('summary') ?? '');
+                    if (summaryText) {
+                        navigator.clipboard.writeText(summaryText).then(function() {
+                            const originalText = copyButton.textContent;
+                            copyButton.textContent = 'Đã sao chép!';
+                            setTimeout(function() {
+                                copyButton.textContent = originalText;
+                            }, 2000);
+                        });
+                    } else {
+                        alert('Không có văn bản nào để sao chép!');
+                    }
+                });
+            }
+        });
+    </script>
+
 
     </body>
-    
+
 </html>
 
 
