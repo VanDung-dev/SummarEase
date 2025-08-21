@@ -145,22 +145,12 @@ new class extends Component {
                     <p>Tổng số người dùng: {{ $usrs->total() }}</p>
                     <br />
                     <p>{{ $usrs->links('pagination::bootstrap-5') }}</p>
-                    <div class="permissions">
-                        <select id="roleSelect">
-                            <option value="admin">Admin</option>
-                            <option value="user">Người dùng</option>
-                        </select>
-                        <input type="text" id="newUserInput" placeholder="Tên người dùng mới"/>
-                        <button type="button" onclick="addUser()"><strong>Thêm người dùng</strong></button>
-                    </div>
                 </div>
                 @if (session('message'))
                     <p>{{ session('message') }}</p>
                 @endif
             </div>
         <!-- </form> -->
-
-        <livewire:settings.delete-user-form />
     </x-settings.layout>
 </section>
 <script src="script.js"></script>
