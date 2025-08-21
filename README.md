@@ -1,4 +1,4 @@
-# SummarEase - Ứng dụng tóm tắt tài liệu thông minh
+# SummarEase - Ứng dụng tóm tắt tài liệu đơn giản
 
 ## Giới thiệu
 
