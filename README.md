@@ -1,9 +1,27 @@
-## **Kiến trúc hệ thống (High-level Architecture)**
+# SummarEase - Ứng dụng tóm tắt tài liệu thông minh
 
-```aiignore
+## Giới thiệu
+
+SummarEase là một ứng dụng tóm tắt tài liệu thông minh, giúp người dùng tiết kiệm thời gian bằng cách tự động rút gọn nội dung văn bản từ các định dạng như PDF, DOCX và TXT. Ứng dụng hỗ trợ cả tóm tắt trích xuất (sử dụng TextRank) và tóm tắt trừu tượng (sử dụng các mô hình AI như T5, BART, Gemini).
+
+## Tính năng chính
+
+- Đăng ký/đăng nhập người dùng
+- Tải lên và xử lý tài liệu (PDF, DOCX, TXT, EPUB, MD)
+- Tóm tắt văn bản sử dụng thuật toán TextRank
+- Tóm tắt nâng cao sử dụng AI (Gemini API)
+- Tùy chọn độ dài bản tóm tắt
+- Hiển thị nội dung gốc và bản tóm tắt
+- Lưu lịch sử tóm tắt theo người dùng
+- Trích xuất từ khóa quan trọng
+- Tự động tạo tiêu đề cho bản tóm tắt
+
+## Kiến trúc hệ thống
+
+```
 +----------------------------+
 |          Frontend          | <==> Người dùng
-|      React + Tailwind      |
+|        Blade + CSS         |
 +-------------+--------------+
               |
               v
@@ -14,15 +32,15 @@
               |
               v
 +----------------------------+      +-----------------------------+
-|     NLP Engine (Python)    | <--> |     LLM (T5/BART/OpenAI)    |
+|     NLP Engine (Python)    | <--> |     LLM (Gemini API)        |
 |TextRank / spaCy / T5 / BART|      |(Tóm tắt trừu tượng nâng cao)|
 +-------------+--------------+      +-----------------------------+
               |
               v
-+----------------------------+
-|   Document Preprocessing   |
-| PDF/DOCX/TXT => plain text |
-+-------------+--------------+
++----------------------------+      +-----------------------------+
+| Document Preprocessing     |      | OCR Engine (nâng cao)       |
+| PDF/DOCX/TXT => plain text | <--> | EasyOCR / Tesseract         |
++----------------------------+      +-----------------------------+
               |
               v
 +----------------------------+
@@ -31,132 +49,156 @@
 +----------------------------+
 ```
 
----
+## Công nghệ sử dụng
 
-## **Cấu trúc thư mục tổng thể**
-- Lưu ý: đây là khung mẫu, không nhất thiết phải làm đúng theo yêu cầu `thư mục tổng thể`
+### Backend PHP (Laravel)
+- **Framework**: Laravel 10+
+- **Ngôn ngữ**: PHP 8.2
+- **Database**: MySQL 8.0
+- **Authentication**: Laravel Sanctum
+- **Frontend**: Blade Templates, CSS
 
-```aiignore
+### Backend NLP (Python)
+- **Framework**: Flask
+- **Ngôn ngữ**: Python 3.12
+- **Xử lý ngôn ngữ tự nhiên**: NLTK, spaCy, sumy
+- **Xử lý tài liệu**: PyMuPDF, python-docx, ebooklib
+- **AI/LLM**: Gemini API (gemini-1.5-flash)
+
+### Frontend
+- **Template Engine**: Blade (Laravel)
+- **Styling**: CSS thuần + Tailwind CSS
+
+### DevOps
+- **Containerization**: Docker
+- **Web Server**: Apache/Nginx (thông qua Laragon)
+
+## Cấu trúc thư mục
+
+```
 SummarEase/
-│
-├── frontend/                    # Giao diện người dùng
-│   ├── public/                  # File tĩnh (index.html, favicon, v.v.)
-│   ├── src/                     # Source code chính
-│   │   ├── assets/              # Hình ảnh, font, style tĩnh
-│   │   ├── components/          # Các component React
-│   │   ├── pages/               # Các trang chính (Home, Upload, Summary)
-│   │   ├── services/            # API gọi Laravel
-│   │   └── App.jsx              # Entry chính
-│   └── package.json
-│
-├── backend-php/                 # Laravel backend chính
+├── backendPHP/                  # Laravel backend chính
 │   ├── app/                     # Controllers, Models, Services
-│   │   ├── Http/Controllers/    # Gọi xử lý file, NLP, quản lý user
-│   │   ├── Models/              # User, Document
-│   ├── routes/
-│   │   └── api.php              # Định nghĩa API chính
-│   ├── database/                # Migration, Seeder
-│   ├── storage/app/uploads/     # Thư mục chứa file người dùng
-│   ├── public/                  # Thư mục public Laravel
-│   └── .env                     # Thông số kết nối NLP, DB
-│
-├── backend-nlp/                 # Python NLP engine
+│   │   ├── Http/Controllers/    # Các controller xử lý yêu cầu
+│   │   ├── Models/              # Các model cơ sở dữ liệu
+│   │   └── Services/            # Dịch vụ xử lý logic
+│   ├── resources/views/         # Giao diện người dùng (Blade templates)
+│   ├── routes/                  # Định nghĩa API/Web routes
+│   └── ...
+├── backendNLP/                  # Python NLP engine
 │   ├── app/                     
-│   │   ├── summarizer.py        # Script TextRank, xử lý đầu vào
-│   │   ├── utils.py             # Hàm xử lý văn bản
-│   │   └── __init__.py
-│   ├── api.py                   # Flask app định nghĩa API POST /summarize
-│   ├── requirements.txt         # Thư viện cần cài
-│   └── run.sh                   # File chạy Flask app
-│
-├── .devcontainer/               # Cấu hình Devcontainer
-│   └── docker-compose.yml
-│
+│   │   ├── utils/               # Các tiện ích xử lý văn bản
+│   │   ├── routes.py            # API endpoints cho tóm tắt
+│   │   └── main.py              # Khởi tạo ứng dụng Flask
+│   ├── tests/                   # Unit tests
+│   ├── requirements.txt         # Thư viện Python cần cài
+│   └── ...
 ├── docker/                      # Cấu hình Docker
-│   ├── Dockerfile-php
-│   ├── Dockerfile-python
-│   ├── Dockerfile-node
-│   └── docker-compose.yml
-│
-├── .gitignore                   # Loại bỏ file không cần theo dõi
-│
-└── README.md                    # Mô tả dự án
+└── testsAPI/                    # API tests (Bruno)
 ```
 
----
+## Cài đặt và chạy dự án
 
-## **Các Giai Đoạn Phát Triển & Ưu tiên**
+### Yêu cầu hệ thống
+- PHP 8.2+
+- Python 3.12+
+- MySQL 8.0+
+- Node.js 22.x (cho Tailwind CSS)
+- Docker (tùy chọn)
 
-### **Giai đoạn 1: Phiên bản MVP**
+### Cài đặt
 
-**Mục tiêu:** Tạo sản phẩm hoạt động được, hỗ trợ tóm tắt trích xuất văn bản cơ bản.
+1. **Clone repository:**
+```bash
+git clone <repository-url>
+cd SummarEase
+```
 
-* Đăng ký/đăng nhập (Laravel Auth / Sanctum)
-* Tải file PDF, DOCX, TXT → xử lý bằng `Python + textract / PyMuPDF / docx2txt`
-* Làm sạch văn bản, chuẩn hóa, loại bỏ stopwords (`spaCy`, `nltk`)
-* Thuật toán TextRank hoặc LexRank
-* Giao diện đơn giản: form upload + hiển thị tóm tắt
-* Tùy chọn độ dài tóm tắt (% hoặc số câu)
-* Hiển thị song song bản gốc & tóm tắt (2 cột)
+2. **Cài đặt dependencies cho backend PHP:**
+```bash
+cd backendPHP
+composer install
+```
 
-**Công nghệ nên dùng:**
+3. **Cài đặt dependencies cho backend NLP:**
+```bash
+cd ../backendNLP
+pip install -r requirements.txt
+```
 
-* Frontend: ReactJS + Tailwind
-* Backend: Laravel (REST API) + Python Script (microservice gọi bằng shell hoặc HTTP)
-* NLP: Python (NLTK, spaCy, Gensim)
-* Database: MySQL
+4. **Cài đặt dependencies cho frontend (Tailwind CSS):**
+```bash
+npm install
+```
 
----
+### Cấu hình
 
-### **Giai đoạn 2: Tối ưu hóa UX & NLP**
+1. **Backend PHP:**
+   - Tạo file `.env` từ `.env.example`
+   - Cấu hình database connection
+   - Chạy migration: `php artisan migrate`
 
-**Mục tiêu:** Trải nghiệm tốt hơn và tăng tính học thuật.
+2. **Backend NLP:**
+   - Tạo file `.env` từ `.env.example`
+   - Thêm Gemini API key: `GEMINI_API_KEY=your_api_key_here`
 
-* In đậm/gạch chân câu được chọn từ văn bản gốc
-* Giao diện hiện đại: “Highlight câu quan trọng trực tiếp”
-* Lưu lịch sử tóm tắt (user-wise)
-* Phân loại tài liệu (giáo trình, nghiên cứu, luận văn…)
-* Hỗ trợ tiếng Việt tốt hơn (xử lý stopwords riêng, mô hình BERT/VietnameseBERT cho ranking)
+### Chạy dự án
 
----
+1. **Chạy backend PHP:**
+```bash
+cd backendPHP
+php artisan serve
+```
 
-### **Giai đoạn 3: AI nâng cao & Thông minh**
+2. **Chạy backend NLP:**
+```bash
+cd backendNLP
+python run.py
+```
 
-**Mục tiêu:** Tăng độ chính xác và tự nhiên của bản tóm tắt.
+3. **Chạy frontend (development):**
+```bash
+npm run dev
+```
 
-* **Tóm tắt trừu tượng**: dùng T5-small, BART hoặc tích hợp OpenAI GPT-4 API
-* **Tóm tắt theo chủ đề** (chỉ tóm phần “phương pháp”, “kết quả”)
-* **Tóm tắt nhiều tài liệu một lúc** (gộp nội dung, phân cụm theo chủ đề)
-* **Chấm điểm bản tóm tắt**: mô hình đánh giá chất lượng (sử dụng BLEU, ROUGE, hoặc cosine similarity với bản chuẩn)
+4. **Chạy với Docker (nếu có):**
+```bash
+cd docker
+docker-compose up -d
+```
 
----
+## API Endpoints
 
-##  **Chi tiết các thành phần chính**
+### Backend PHP (Laravel)
+- `GET /` - Trang chủ
+- `GET /dashboard` - Bảng điều khiển người dùng
+- `POST /api/summarize` - Tóm tắt văn bản
+- `GET /history` - Lịch sử tóm tắt
 
-### 1. **Xử lý tài liệu**
+### Backend NLP (Flask)
+- `POST /summarize` - Tóm tắt văn bản với TextRank
+- `POST /summarize-files` - Tóm tắt từ file với TextRank
+- `POST /summarize-url` - Tóm tắt từ URL với TextRank
+- `POST /summarize-gemini` - Tóm tắt văn bản với Gemini
+- `POST /summarize-file-gemini` - Tóm tắt từ file với Gemini
+- `POST /summarize-url-gemini` - Tóm tắt từ URL với Gemini
 
-| Loại file        | Công cụ                                                         |
-| ---------------- | --------------------------------------------------------------- |
-| TXT              | Python natively                                                 |
-| DOCX             | `python-docx`, `docx2txt`                                       |
-| PDF              | `PyMuPDF`, `pdfminer.six`, `fitz`, `pytesseract` (OCR optional) |
-| Image (nâng cao) | `EasyOCR`, `Tesseract`                                          |
+## Testing
 
----
+### Backend NLP
+```bash
+cd backendNLP
+python -m pytest tests/
+```
 
-### 2. **Thuật toán tóm tắt trích xuất**
+## Đóng góp
 
-* **TextRank** (Gensim): dựa vào mối liên kết giữa các câu
-* **LexRank**: dựa vào cosine similarity
-* **Frequency-based**: lọc câu chứa nhiều từ khóa có trọng số cao
-* **TF-IDF Summarizer**: thủ công nhưng hiệu quả
+1. Fork repository
+2. Tạo feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit thay đổi (`git commit -m 'Add some AmazingFeature'`)
+4. Push lên branch (`git push origin feature/AmazingFeature`)
+5. Mở Pull Request
 
----
+## Giấy phép
 
-### 3. **Tóm tắt trừu tượng**
-
-* Mô hình: `t5-base`, `facebook/bart-large-cnn`
-* Tùy chọn tích hợp:
-
-    * Local với transformers (nếu có GPU tốt)
-    * Gọi qua API GPT-4 / Gemini
+Dự án được cấp phép dưới giấy phép MIT - xem file [LICENSE](LICENSE) để biết thêm chi tiết.
