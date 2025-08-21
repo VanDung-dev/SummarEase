@@ -40,7 +40,7 @@
                 background-color: #333;
                 border-color: #555;
             }
-            
+
             .close-button:hover {
                 background-color: #e0e0e0;
             }
@@ -48,9 +48,23 @@
             .dark .close-button:hover {
                 background-color: #555;
             }
-            
+
             .h-content {
                 margin-bottom: 15px;
+            }
+
+            .submit-button {
+                background-color: #3b82f6;
+                color: white;
+                padding: 0 1rem;
+                border: none;
+                cursor: pointer;
+                font-weight: 500;
+                transition: background-color 0.2s;
+            }
+
+            .submit-button:hover {
+                background-color: #2563eb;
             }
         </style>
 
@@ -70,7 +84,7 @@
                 {{ $history->doctext }}
             </div>
             @endif
-            
+
             <h2 class="h-content">Nội dung đã được tóm tắt:</h2>
             <div class="output-areaa">
                 <?php
@@ -87,11 +101,39 @@
                     $markdown = '<p>' . $markdown . '</p>';
                 ?>
                 {!! $markdown !!}
-            </div>        
+            </div>
+            <button id="copy-button" class="mt-4 submit-button" style="display: block; width: 100%; text-align: center;">Sao chép</button>
         @else
             <p class="h-content">Không tìm thấy bản tóm tắt.</p>
         @endif
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Thêm event listener cho nút sao chép
+                const copyButton = document.getElementById('copy-button');
+                if (copyButton) {
+                    copyButton.addEventListener('click', function() {
+                        const summaryText = @json($history->summary_text ?? '');
+                        if (summaryText) {
+                            // Xóa định dạng in đậm Markdown (** văn bản **) Khi sao chép
+                            const plainText = summaryText.replace(/\*\*(.*?)\*\*/g, '$1');
+                            // Cũng xóa định dạng in nghiêng (*văn bản*)
+                            const plainTextClean = plainText.replace(/\*(.*?)\*/g, '$1');
+                            navigator.clipboard.writeText(plainTextClean).then(function() {
+                                const originalText = copyButton.textContent;
+                                copyButton.textContent = 'Đã sao chép!';
+                                setTimeout(function() {
+                                    copyButton.textContent = originalText;
+                                }, 2000);
+                            });
+                        } else {
+                            alert('Không có văn bản nào để sao chép!');
+                        }
+                    });
+                }
+            });
+        </script>
     </body>
-    
+
 </html>
