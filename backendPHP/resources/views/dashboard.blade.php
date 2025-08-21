@@ -17,9 +17,10 @@
                     <textarea style="text-align: justify;" name="text" id="text" class="input-areaa" placeholder="Hãy nhập văn bản cần tóm tắt...">{{ session('original_text') }}</textarea>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio')}}" class="mt-4 w-full" />
                     <p class="text-sm text-gray-500 mt-1"></p>
-                    <button type="submit" name="sum" value="summarease" class="mt-4 submit-button">{{ __('Tóm tắt với SummarEase') }}</button>
-                    <br />
-                    <button type="submit" name="sum" value="gemini" class="mt-4 submit-button">{{ __('Tóm tắt với Gemini') }}</button>
+                    <div class="flex" style="gap: 1rem;">
+                        <button type="submit" name="sum" value="summarease" class="mt-4 submit-button">{{ __('Tóm tắt với SummarEase') }}</button>
+                        <button type="submit" name="sum" value="gemini" class="mt-4 submit-button">{{ __('Tóm tắt với Gemini') }}</button>
+                    </div>
         </form>
 
                 <div class="output-areaa">
@@ -64,4 +65,5 @@
 
     <!-- Thêm script để xử lý markdown -->
     <script src="{{ asset('js/script.js') }}"></script>
+</div>
 </x-layouts.app>
