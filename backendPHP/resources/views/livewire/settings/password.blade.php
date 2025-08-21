@@ -92,10 +92,11 @@ use Livewire\Volt\Component;
                             @endforelse
                         </tbody>
                     </table>
-                    <p>Tổng số tập tin: {{ $docs->total() }}</p>
-                    <br />
-                    <p>{{ $docs->links('pagination::bootstrap-5') }}</p>
+                    <!-- <p>Tổng số tập tin: {{ $docs->total() }}</p> -->
+                    <!-- <br />
+                    <p>{{ $docs->links('pagination::bootstrap-5') }}</p> -->
                 </div>
+                <p>Tổng số tập tin: {{ $docs->total() }}</p>
                 @if (session('message'))
                     <p>{{ session('message') }}</p>
                 @endif

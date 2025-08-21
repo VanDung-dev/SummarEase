@@ -142,10 +142,11 @@ new class extends Component {
                             @endforelse
                         </tbody>
                     </table>
-                    <p>Tổng số người dùng: {{ $usrs->total() }}</p>
-                    <br />
-                    <p>{{ $usrs->links('pagination::bootstrap-5') }}</p>
+                    <!-- <p>Tổng số người dùng: {{ $usrs->total() }}</p> -->
+                    <!-- <br />
+                    <p>{{ $usrs->links('pagination::bootstrap-5') }}</p> -->
                 </div>
+                <p>Tổng số người dùng: {{ $usrs->total() }}</p>
                 @if (session('message'))
                     <p>{{ session('message') }}</p>
                 @endif
