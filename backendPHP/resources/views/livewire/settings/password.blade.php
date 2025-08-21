@@ -49,7 +49,8 @@ use Livewire\Volt\Component;
                         <button type="submit">Tìm</button>
                     </form>
                 </div>
-                <div class="table-container" style="max-height: 300px; overflow-y: auto;">
+                <br />
+                <div class="table-container" style="max-height: 400px; overflow-y: auto; border-radius: 8px; border: 1px solid #ccc;">
                     <table class="file-table" id="fileTable">
                         @php
                             $query = request('search');
