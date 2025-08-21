@@ -54,12 +54,10 @@ use Livewire\Volt\Component;
                         @php
                             $query = request('search');
                             $docs = DB::table('documents')
-                            ->select('documents.id as docid', 'documents.file_type as doctype', 'documents.file_name as docname', 'documents.uploaded_at as uploadtime')
+                            ->select('documents.id as docid', 'documents.title as doctitle', 'documents.file_type as doctype', 'documents.file_name as docname', 'documents.uploaded_at as uploadtime')
                             ->orderBy('documents.uploaded_at', 'desc')
-                            ->where('file_type', '!=', 'url')
-                            ->where('file_type', '!=', 'text')
                             ->when($query, function ($q) use ($query) {
-                                return $q->where('documents.file_name', 'like', '%' . $query . '%');
+                                return $q->where('documents.file_name', 'like', '%' . $query . '%')->orWhere('documents.title', 'like', '%' . $query . '%')->orWhere('documents.file_type', 'like', '%' . $query . '%');
                             })
                             ->get();
                         @endphp
@@ -74,7 +72,7 @@ use Livewire\Volt\Component;
                         <tbody id="fileTableBody">
                             @forelse($docs as $item)
                                 <tr>
-                                    <td>{{ $item->docname }}</td>
+                                    <td>{{ $item->docname ?? $item->doctitle }}</td>
                                     <td>{{ $item->doctype }}</td>
                                     <td>{{ $item->uploadtime }}</td>
                                     <td>
