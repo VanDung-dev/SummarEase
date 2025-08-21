@@ -2,7 +2,7 @@
 
 ## Giới thiệu
 
-SummarEase là một ứng dụng tóm tắt tài liệu thông minh, giúp người dùng tiết kiệm thời gian bằng cách tự động rút gọn nội dung văn bản từ các định dạng như PDF, DOCX và TXT. Ứng dụng hỗ trợ cả tóm tắt trích xuất (sử dụng TextRank) và tóm tắt trừu tượng (sử dụng các mô hình AI như T5, BART, Gemini).
+SummarEase là một Ứng dụng tóm tắt tài liệu đơn giản, giúp người dùng tiết kiệm thời gian bằng cách tự động rút gọn nội dung văn bản từ các định dạng như PDF, DOCX và TXT. Ứng dụng hỗ trợ cả tóm tắt trích xuất (sử dụng TextRank) và tóm tắt trừu tượng (sử dụng các mô hình AI như T5, BART, Gemini).
 
 ## Tính năng chính
 
