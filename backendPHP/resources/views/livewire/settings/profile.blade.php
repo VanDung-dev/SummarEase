@@ -88,20 +88,27 @@ new class extends Component {
     @include('partials.settings-heading')
 
     <x-settings.layout :heading="__('Người dùng')" :subheading="__('Danh sách người dùng')">
-        <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
+        <!-- <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6"> -->
             <div id="users" class="section">
                 <div class="search-bar">
-                    <input type="text" id="userSearchInput" placeholder="Tìm kiếm người dùng..."/>
-                    <button onclick="searchUsers()">Tìm</button>
+                    <form method="get">
+                        <input type="text" id="userSearchInput" name="search" placeholder="Tìm kiếm người dùng..." />
+                        <button type="submit">Tìm</button>
+                    </form>
                 </div>
                 <div class="table-container" style="max-height: 400px; overflow-y: auto;">
                     <table class="file-table" id="userTable">
                         @php
+                            $query = request('search');
                             $usrs = DB::table('users')
                             ->select('users.id as uid', 'users.name as username', 'roles.name as rolename')
                             ->orderBy('users.created_at', 'desc')
                             ->join('user_roles', 'users.id', '=', 'user_id')
                             ->join('roles', 'roles.id', '=', 'role_id')
+                            ->where('users.name', 'like', '%' . $query . '%')
+                            ->when($query, function ($q) use ($query) {
+                                return $q->where('users.name', 'like', '%' . $query . '%');
+                            })
                             ->paginate();
                         @endphp
                         <thead>
@@ -117,10 +124,14 @@ new class extends Component {
                                     <td>{{ $item->username }}</td>
                                     <td>{{ $item->rolename }}</td>
                                     <td>
-                                        @if ($item->uid != Auth::id())
-                                            Xóa
+                                        @if ($item->uid != Auth::id() and $item->rolename != 'admin')
+                                            <form action="{{ route('delete-user', $item->uid) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" style="color: red;">Xóa</button>
+                                            </form>
                                         @else
-                                        <span>Không thể xóa chính mình</span>
+                                        <span>Không thể thao tác với quản trị viên hay bản thân</span>
                                         @endif
                                     </td>
                                 </tr>
@@ -143,8 +154,11 @@ new class extends Component {
                         <button type="button" onclick="addUser()"><strong>Thêm người dùng</strong></button>
                     </div>
                 </div>
+                @if (session('message'))
+                    <p>{{ session('message') }}</p>
+                @endif
             </div>
-        </form>
+        <!-- </form> -->
 
         <livewire:settings.delete-user-form />
     </x-settings.layout>

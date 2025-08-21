@@ -10,7 +10,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-
+use App\Models\User;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -42,6 +42,14 @@ Route::post('dashboard-file', [SummaryController::class, 'summarizeFile'])
 Route::post('dashboard-url', [SummaryController::class, 'summarizeUrlGemini'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard-url.summarize');
+
+Route::delete('delete-user/{userId}', [SummaryController::class, 'del_user'])
+    ->middleware(['admin'])
+    ->name('delete-user');
+
+Route::delete('delete-file/{fileId}', [SummaryController::class, 'del_file'])
+    ->middleware(['admin'])
+    ->name('delete-file');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/appearance');

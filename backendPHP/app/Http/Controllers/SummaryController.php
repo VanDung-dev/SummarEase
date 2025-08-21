@@ -10,6 +10,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class SummaryController extends Controller
 {
@@ -452,5 +453,21 @@ class SummaryController extends Controller
         } elseif ($action === 'gemini') {
             return $this->summarizeUrlGemini($request);
         }
+    }
+
+    public function del_user($userId)
+    {
+        $user = User::find($userId);
+        if ($user) {
+            $user->delete();
+            return back()->with('message', 'Người dùng đã được xóa thành công.');
+        }
+        return back()->with('message', 'Không tìm thấy người dùng.');
+    }
+
+    public function del_file($fileId)
+    {
+        DB::table('documents')->where('id', $fileId)->delete();
+        return back()->with('message','Tài liệu đã được xóa thành công.');
     }
 }

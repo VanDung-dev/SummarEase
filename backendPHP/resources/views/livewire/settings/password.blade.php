@@ -41,25 +41,32 @@ use Livewire\Volt\Component;
     @include('partials.settings-heading')
 
     <x-settings.layout :heading="__('Tài liệu')" :subheading="__('Các tài liệu đã tải lên')">
-        <form wire:submit="updatePassword" class="mt-6 space-y-6">
+        <!-- <form wire:submit="updatePassword" class="mt-6 space-y-6"> -->
             <div id="files" class="section">
                 <div class="search-bar">
-                    <input type="text" id="fileSearchInput" placeholder="Tìm kiếm tài liệu..."/>
-                    <button onclick="searchFiles()">Tìm</button>
+                    <form method="get">
+                        <input type="text" id="fileSearchInput" name="search" placeholder="Tìm kiếm tài liệu..."/>
+                        <button type="submit">Tìm</button>
+                    </form>
                 </div>
-                <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+                <div class="table-container" style="max-height: 300px; overflow-y: auto;">
                     <table class="file-table" id="fileTable">
                         @php
+                            $query = request('search');
                             $docs = DB::table('documents')
-                            ->select('documents.id as docid', 'documents.file_name as docname', 'documents.uploaded_at as uploadtime')
+                            ->select('documents.id as docid', 'documents.file_type as doctype', 'documents.file_name as docname', 'documents.uploaded_at as uploadtime')
                             ->orderBy('documents.uploaded_at', 'desc')
                             ->where('file_type', '!=', 'url')
                             ->where('file_type', '!=', 'text')
+                            ->when($query, function ($q) use ($query) {
+                                return $q->where('documents.file_name', 'like', '%' . $query . '%');
+                            })
                             ->paginate();
                         @endphp
                         <thead>
                             <tr>
                                 <th>Tên tài liệu</th>
+                                <th>Loại tài liệu</th>
                                 <th>Ngày tải lên</th>
                                 <th>Hành động</th>
                             </tr>
@@ -68,9 +75,14 @@ use Livewire\Volt\Component;
                             @forelse($docs as $item)
                                 <tr>
                                     <td>{{ $item->docname }}</td>
+                                    <td>{{ $item->doctype }}</td>
                                     <td>{{ $item->uploadtime }}</td>
                                     <td>
-                                        Xóa
+                                        <form action="{{ route('delete-file', $item->docid) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài liệu này?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" style="color: red;">Xóa</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @empty
@@ -83,10 +95,12 @@ use Livewire\Volt\Component;
                     <p>Tổng số tập tin: {{ $docs->total() }}</p>
                     <br />
                     <p>{{ $docs->links('pagination::bootstrap-5') }}</p>
-                    <button type="button" onclick="addFile()">Thêm tài liệu mới</button>
                 </div>
+                @if (session('message'))
+                    <p>{{ session('message') }}</p>
+                @endif
             </div>
-        </form>
+        <!-- </form> -->
     </x-settings.layout>
 </section>
 <script src="script.js"></script>
