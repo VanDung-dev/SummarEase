@@ -51,7 +51,7 @@
     <script src="https://kit.fontawesome.com/af877c9b83.js" crossorigin="anonymous"></script>
 
     <script>
-        // Force Page Refresh khi điều hướng giữa các phương pháp tóm tắt
+        // Force Page Refresh khi điều hướng giữa các phương thức tóm tắt
         document.addEventListener('DOMContentLoaded', function() {
             const navItems = document.querySelectorAll('.nal-list');
             navItems.forEach(item => {
@@ -78,7 +78,11 @@
             copyButton.addEventListener('click', function() {
                 const summaryText = @json(session('summary') ?? '');
                 if (summaryText) {
-                    navigator.clipboard.writeText(summaryText).then(function() {
+                    // Xóa định dạng in đậm Markdown (** văn bản **) Khi sao chép
+                    const plainText = summaryText.replace(/\*\*(.*?)\*\*/g, '$1');
+                    // Cũng xóa định dạng in nghiêng (*văn bản*)
+                    const plainTextClean = plainText.replace(/\*(.*?)\*/g, '$1');
+                    navigator.clipboard.writeText(plainTextClean).then(function() {
                         const originalText = copyButton.textContent;
                         copyButton.textContent = 'Đã sao chép!';
                         setTimeout(function() {

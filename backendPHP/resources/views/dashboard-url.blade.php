@@ -78,6 +78,11 @@
                 copyButton.addEventListener('click', function() {
                     const summaryText = @json(session('summary') ?? '');
                     if (summaryText) {
+                        // Xóa định dạng in đậm Markdown (** văn bản **) Khi sao chép
+                        const plainText = summaryText.replace(/\*\*(.*?)\*\*/g, '$1');
+                        // Cũng xóa định dạng in nghiêng (*văn bản*)
+                        const plainTextClean = plainText.replace(/\*(.*?)\*/g, '$1');
+                        navigator.clipboard.writeText(plainTextClean).then(function() {
                         navigator.clipboard.writeText(summaryText).then(function() {
                             const originalText = copyButton.textContent;
                             copyButton.textContent = 'Đã sao chép!';
