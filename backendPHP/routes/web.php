@@ -134,7 +134,18 @@ Route::get('/history', function () {
 })->middleware(['auth', 'verified'])->name('history');
 
 Route::get('history-content/{summaryid}', function ($summaryid) {
-    if (auth()->check()) {
+    $usr = auth()->user();
+    $isAdmin = $usr && $usr->isAdmin();
+    if ($isAdmin) {
+        $history = DB::table('summaries')
+            ->select('summaries.id', 'summary_text', 'summary_ratio', 'title', 'file_name', 'content as doctext', 'summaries.created_at')
+            ->orderBy('summaries.created_at', 'desc')
+            ->join('documents', 'documents.id', '=', 'document_id')
+            ->join('users', 'users.id', '=', 'documents.user_id')
+            ->where('summaries.id', '=', $summaryid)
+            ->first();
+    }
+    elseif (auth()->check()) {
         $userId = Auth::id();
         $history = DB::table('summaries')
             ->select('summaries.id', 'summary_text', 'summary_ratio', 'title', 'file_name', 'content as doctext', 'summaries.created_at')

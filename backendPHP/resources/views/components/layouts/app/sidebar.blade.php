@@ -32,10 +32,11 @@ use Illuminate\Support\Str;
             $usr = auth()->user();
             $isAdmin = $usr && $usr->isAdmin();
             $query = request('search');
+            session(['original_query' => $query]);
             @endphp
 
             <form method="get">
-                <input type="text" id="HistorySearchInput" name="search" placeholder="Tìm kiếm lịch sử..." style="height: 30px; width: 100%; padding: 3px; border-radius: 5px; border: 1px solid #ccc; overflow-x: auto;" />
+                <input type="text" id="HistorySearchInput" name="search" placeholder="Tìm kiếm lịch sử..." style="height: 30px; width: 100%; padding: 3px; border-radius: 5px; border: 1px solid #ccc; overflow-x: auto;" value="{{ session('original_query') ?? '' }}" />
                 <button type="submit" style="height: 30px; padding: 3px 10px; border-radius: 5px; border: 1px solid #ccc; background-color: #4a6cff; width: 100%">Tìm</button>
             </form>
             <br />

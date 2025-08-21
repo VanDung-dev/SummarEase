@@ -95,28 +95,30 @@
     <script src="script.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Thêm event listener cho nút sao chép
-            const copyButton = document.getElementById('copy-button');
-            if (copyButton) {
-                copyButton.addEventListener('click', function() {
-                    const summaryText = @json(session('summary') ?? '');
-                    if (summaryText) {
-                        // Xóa định dạng in đậm Markdown (** văn bản **) Khi sao chép
-                        const plainText = summaryText.replace(/\*\*(.*?)\*\*/g, '$1');
-                        // Cũng xóa định dạng in nghiêng (*văn bản*)
-                        const plainTextClean = plainText.replace(/\*(.*?)\*/g, '$1');
-                        navigator.clipboard.writeText(plainTextClean).then(function() {
-                        navigator.clipboard.writeText(summaryText).then(function() {
-                            const originalText = copyButton.textContent;
-                            copyButton.textContent = 'Đã sao chép!';
-                            setTimeout(function() {
-                                copyButton.textContent = originalText;
-                            }, 2000);
-                        });
-                    } else {
-                        alert('Không có văn bản nào để sao chép!');
-                    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        form.id = 'summary-form';
+
+        // Thêm event listener cho nút sao chép
+        const copyButton = document.getElementById('copy-button');
+        if (copyButton) {
+            copyButton.addEventListener('click', function() {
+                const summaryText = @json(session('summary') ?? '');
+                if (summaryText) {
+                    // Xóa định dạng in đậm Markdown (** văn bản **) Khi sao chép
+                    const plainText = summaryText.replace(/\*\*(.*?)\*\*/g, '$1');
+                    // Cũng xóa định dạng in nghiêng (*văn bản*)
+                    const plainTextClean = plainText.replace(/\*(.*?)\*/g, '$1');
+                    navigator.clipboard.writeText(plainTextClean).then(function() {
+                        const originalText = copyButton.textContent;
+                        copyButton.textContent = 'Đã sao chép!';
+                        setTimeout(function() {
+                            copyButton.textContent = originalText;
+                        }, 2000);
+                    });
+                } else {
+                    alert('Không có văn bản nào để sao chép!');
+                }
                 });
             }
         });
