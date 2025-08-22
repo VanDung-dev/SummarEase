@@ -34,12 +34,12 @@ use Illuminate\Support\Str;
             @php
             $usr = auth()->user();
             $isAdmin = $usr && $usr->isAdmin();
-            $query = request('search');
-            session(['original_query' => $query]);
+            $hquery = request('hsearch');
+            session(['original_hquery' => $hquery]);
             @endphp
 
             <form method="get">
-                <input type="text" id="HistorySearchInput" name="search" placeholder="Tìm kiếm lịch sử..." style="height: 30px; width: 100%; padding: 3px; border-radius: 5px; border: 1px solid #ccc; overflow-x: auto;" value="{{ session('original_query') ?? '' }}" />
+                <input type="text" id="HistorySearchInput" name="hsearch" placeholder="Tìm kiếm lịch sử..." style="height: 30px; width: 100%; padding: 3px; border-radius: 5px; border: 1px solid #ccc; overflow-x: auto;" value="{{ session('horiginal_query') ?? '' }}" />
                 <button type="submit" style="height: 30px; padding: 3px 10px; border-radius: 5px; border: 1px solid #ccc; background-color: #4a6cff; width: 100%">Tìm</button>
             </form>
             <br />
@@ -50,8 +50,8 @@ use Illuminate\Support\Str;
                     ->orderBy('summaries.created_at', 'desc')
                     ->join('documents', 'documents.id', '=', 'document_id')
                     ->join('users', 'users.id', '=', 'documents.user_id')
-                    ->when($query, function ($q) use ($query) {
-                                    return $q->where('users.name', 'like', '%' . $query . '%')->orWhere('title', 'like', '%' . $query . '%')->orWhere('file_name', 'like', '%' . $query . '%');
+                    ->when($hquery, function ($q) use ($hquery) {
+                                    return $q->where('users.name', 'like', '%' . $hquery . '%')->orWhere('title', 'like', '%' . $hquery . '%')->orWhere('file_name', 'like', '%' . $hquery . '%');
                                 })
                     ->paginate();
                 @endphp
@@ -64,8 +64,8 @@ use Illuminate\Support\Str;
                     ->join('documents', 'documents.id', '=', 'document_id')
                     ->join('users', 'users.id', '=', 'documents.user_id')
                     ->where('users.id', '=', $userId)
-                    ->when($query, function ($q) use ($query) {
-                                    return $q->where('title', 'like', '%' . $query . '%')->orWhere('file_name', 'like', '%' . $query . '%');
+                    ->when($hquery, function ($q) use ($hquery) {
+                                    return $q->where('title', 'like', '%' . $hquery . '%')->orWhere('file_name', 'like', '%' . $hquery . '%');
                                 })
                     ->paginate();
                 @endphp

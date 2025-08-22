@@ -138,7 +138,7 @@ new class extends Component {
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="3">Không có người dùng</td>
+                                    <td colspan="3">Không có người dùng.</td>
                                 </tr>
                             @endforelse
                         </tbody>

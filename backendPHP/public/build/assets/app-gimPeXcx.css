@@ -8762,7 +8762,7 @@ h1 {
     border: 1px solid rgb(100, 100, 100);
     border-radius: 24px;
     padding: 18px 18px 12px 18px;
-    margin-top: 10px;
+    margin-top: 30px;
     margin-bottom: 30px;
     min-height: 150px;
     max-height: 150px;
@@ -8795,6 +8795,26 @@ h1 {
     resize: none;
     padding: 8px;
     box-sizing: border-box;
+}
+
+.input-area-html {
+    overflow: auto;
+    background: #ffffff;
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 24px;
+    padding: 18px 18px 12px 18px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    min-height: 50px;
+    max-height: 50px;
+    width: 100%;
+    position: relative;
+}
+
+.dark .input-area-html {
+    background: #2d2d2d;
+    border: 1px solid #555;
+    color: #fff;
 }
 
 .section {
@@ -9271,7 +9291,7 @@ input[type="range"].w-full {
 .input-areah {
     height: 120px;
     max-height: 150px;
-    margin-top: 50px;
+    margin-top: 30px;
     margin-bottom: 20px;
     display: flex;
     justify-self: center;
@@ -9279,7 +9299,7 @@ input[type="range"].w-full {
 
 .output-areah {
     height: 150px;
-    margin-top: 30px;
+    margin-top: 20px;
     display: flex;
     justify-self: center;
 }
