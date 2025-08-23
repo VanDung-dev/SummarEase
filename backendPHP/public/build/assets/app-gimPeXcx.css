@@ -8681,6 +8681,7 @@ h1 {
     position: relative;
     /*overflow: hidden;*/
     box-sizing: border-box;
+    
 }
 
 .container-summary.menu-show {
@@ -9151,6 +9152,7 @@ h1 {
 }
 
 .siba {
+    position: relative; 
     width: 80px;
     height: 100%;
     display: flex;
@@ -9163,8 +9165,10 @@ h1 {
     overflow: hidden;
 }
 
+
 .siba .nav-text,
-.siba .overflow-y-auto {
+.siba .overflow-y-auto,
+.siba .close-siba-btn {
     display: none;
 }
 
@@ -9176,20 +9180,32 @@ h1 {
     height: 40px;
 }
 
-.siba:focus-within {
+
+.siba.open {
     width: 250px;
 }
 
-.siba:focus-within .nav-text {
+.siba.open .nav-text {
     display: inline-flex;
 }
 
-.siba:focus-within .overflow-y-auto {
+.siba.open .overflow-y-auto {
     display: block;
 }
 
-.siba:focus-within flux-navlist-item {
+.siba.open flux-navlist-item {
     justify-content: flex-start;
+}
+
+
+.siba.open .close-siba-btn {
+    display: block; 
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.close-siba-btn:hover {
+    color: #3578e5;
 }
 
 input[type="range"].w-full {

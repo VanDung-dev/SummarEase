@@ -85,4 +85,26 @@ if (subtitle) {
     "Công cụ hỗ trợ tóm tắt nhanh và chính xác các văn bản học thuật";
   typewriterEffect(subtitle, subtitleText, 100);
 }
+//////////////////////////////////////////////////////////////////////////////////////////////
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.querySelector('.siba');
+    const closeBtn = document.querySelector('.close-siba-btn');
 
+    if (sidebar && closeBtn) {
+        // Sự kiện click để mở sidebar (có thể đặt ở một nút khác)
+        // Hiện tại, mã của bạn mở khi click vào chính sidebar
+        sidebar.addEventListener('click', function(event) {
+            // Ngăn sự kiện nổi bọt để nó không ảnh hưởng đến nút đóng
+            event.stopPropagation();
+            sidebar.classList.add('open');
+        });
+
+        // Sự kiện click để đóng sidebar
+        closeBtn.addEventListener('click', function(event) {
+            // Ngăn sự kiện nổi bọt (quan trọng!)
+            event.stopPropagation();
+            // Xóa class 'open' để đóng sidebar
+            sidebar.classList.remove('open');
+        });
+    }
+});
