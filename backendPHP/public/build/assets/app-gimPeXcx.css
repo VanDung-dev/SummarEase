@@ -9153,7 +9153,7 @@ h1 {
 
 .siba {
     position: relative; 
-    width: 80px;
+    width: 250px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -9165,48 +9165,6 @@ h1 {
     overflow: hidden;
 }
 
-
-.siba .nav-text,
-.siba .overflow-y-auto,
-.siba .close-siba-btn {
-    display: none;
-}
-
-.siba flux-navlist-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    height: 40px;
-}
-
-
-.siba.open {
-    width: 250px;
-}
-
-.siba.open .nav-text {
-    display: inline-flex;
-}
-
-.siba.open .overflow-y-auto {
-    display: block;
-}
-
-.siba.open flux-navlist-item {
-    justify-content: flex-start;
-}
-
-
-.siba.open .close-siba-btn {
-    display: block; 
-    position: absolute;
-    top: 10px;
-    right: 10px;
-}
-.close-siba-btn:hover {
-    color: #3578e5;
-}
 
 input[type="range"].w-full {
     width: 75rem;
