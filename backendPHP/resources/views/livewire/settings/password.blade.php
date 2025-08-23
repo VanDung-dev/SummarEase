@@ -50,7 +50,7 @@ use Livewire\Volt\Component;
                     </form>
                 </div>
                 <br />
-                <div class="table-container" style="max-height: 400px; overflow-y: auto; border-radius: 8px; border: 1px solid #ccc;">
+                <div class="table-container" style="max-height: 350px; overflow-y: auto; border-radius: 8px; border: 1px solid #ccc;">
                     <table class="file-table" id="fileTable">
                         @php
                             $query = request('search');

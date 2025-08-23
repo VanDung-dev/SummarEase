@@ -6,7 +6,7 @@
 
         </div>
 
-        <h1 class="title">Tóm tắt văn bản học thuật</h1>
+        <h1 style="margin-top: -1rem" class="title">Tóm tắt văn bản học thuật</h1>
 
         <p class="sub">
         Công cụ hỗ trợ tóm tắt nhanh và chính xác các văn bản học thuật
