@@ -10,6 +10,109 @@ use Illuminate\Support\Str;
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+        <style>
+            .history-item {
+                position: relative;
+                border: 1px solid #696c71;
+                border-radius: 5px;
+                margin-bottom: 10px;
+                padding: 5px;
+                overflow: hidden;
+            }
+            
+            .history-menu {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                cursor: pointer;
+                padding: 2px 5px;
+                border-radius: 3px;
+                background: transparent;
+                border: none;
+                color: #696c71;
+                font-size: 18px;
+                line-height: 1;
+            }
+            
+            .history-menu:hover {
+                background-color: #e5e7eb;
+            }
+            
+            .dark .history-menu:hover {
+                background-color: #3f3f46;
+            }
+            
+            .dropdown-menu {
+                position: absolute;
+                right: 0;
+                top: 25px;
+                background: white;
+                border: 1px solid #d1d5db;
+                border-radius: 0.375rem;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+                min-width: 120px;
+                display: none;
+            }
+            
+            .dark .dropdown-menu {
+                background: #3f3f46;
+                border-color: #52525b;
+            }
+            
+            .dropdown-menu.show {
+                display: block;
+            }
+            
+            .dropdown-item {
+                display: block;
+                width: 100%;
+                padding: 0.5rem 1rem;
+                text-align: left;
+                background: none;
+                border: none;
+                cursor: pointer;
+                font-size: 0.875rem;
+                color: #374151;
+            }
+            
+            .dark .dropdown-item {
+                color: #d4d4d8;
+            }
+            
+            .dropdown-item:hover {
+                background-color: #f3f4f6;
+            }
+            
+            .dark .dropdown-item:hover {
+                background-color: #52525b;
+            }
+        </style>
+        
+        <script>
+            function toggleDropdown(id) {
+                event.stopPropagation();
+                const dropdown = document.getElementById('dropdown-' + id);
+                const isOpen = dropdown.classList.contains('show');
+                
+                // Close all dropdowns
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+                
+                // Open the clicked dropdown if it wasn't open
+                if (!isOpen) {
+                    dropdown.classList.add('show');
+                }
+            }
+            
+            // Close dropdowns when clicking elsewhere
+            document.addEventListener('click', function() {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            });
+        </script>
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
         <flux:sidebar sticky stashable class="siba">
@@ -75,17 +178,29 @@ use Illuminate\Support\Str;
             @endif
 
             @forelse($history as $item)
-                <a href="{{ route('history-content', $item->summaryid) }}">
-                <div style="border: 1px solid #696c71; border-radius: 5px; margin-bottom: 10px; padding: 5px; overflow: hidden;">
-                    <h4 style="font-weight: bold; font-style: italic; text-decoration: underline; text-align: center;">{{ $item->file_name }}</h4>
-                    <p style="text-align: justify;">{{ $item->title }}</p>
-                    @if (isset($item->username))
-                    <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Người dùng: {{ $item->username }}</p>
-                    @endif
-                    <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Tỉ lệ: {{ $item->summary_ratio }}</p>
-                    <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Ngày tạo: {{ $item->created_at }}</p>
+                <div class="history-item-container">
+                    <div class="history-item">
+                        <button class="history-menu" onclick="toggleDropdown({{ $item->summaryid }})">⋯</button>
+                        
+                        <div class="dropdown-menu" id="dropdown-{{ $item->summaryid }}">
+                            <form action="{{ route('history.delete', $item->summaryid) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa lịch sử này?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="dropdown-item">Xóa</button>
+                            </form>
+                        </div>
+                        
+                        <a href="{{ route('history-content', $item->summaryid) }}" style="display: block; text-decoration: none; color: inherit;">
+                            <h4 style="font-weight: bold; font-style: italic; text-decoration: underline; text-align: center;">{{ $item->file_name }}</h4>
+                            <p style="text-align: justify;">{{ $item->title }}</p>
+                            @if (isset($item->username))
+                            <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Người dùng: {{ $item->username }}</p>
+                            @endif
+                            <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Tỉ lệ: {{ $item->summary_ratio }}</p>
+                            <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Ngày tạo: {{ $item->created_at }}</p>
+                        </a>
+                    </div>
                 </div>
-                </a>
             @empty
                 <p style="text-align: center;">Lịch sử trống</p>
             @endforelse
