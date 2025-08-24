@@ -48,6 +48,36 @@
             .dark .close-button:hover {
                 background-color: #555;
             }
+            
+            .delete-button {
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                background-color: #ef4444;
+                border: 1px solid #dc2626;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+                cursor: pointer;
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .dark .delete-button {
+                background-color: #dc2626;
+                border-color: #b91c1c;
+            }
+            
+            .delete-button:hover {
+                background-color: #dc2626;
+            }
+            
+            .dark .delete-button:hover {
+                background-color: #b91c1c;
+            }
 
             .h-content {
                 margin-bottom: 15px;
@@ -71,6 +101,15 @@
     </head>
     <body>
         <div class="close-button" onclick="window.history.back()" title="Đóng trang">✕</div>
+        
+        @if(isset($history) && $history)
+            <form action="{{ route('history.delete', $history->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa lịch sử này?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="delete-button" title="Xóa lịch sử">🗑️</button>
+            </form>
+        @endif
+        
         <div class="body-history">
         @if(isset($history) && $history)
             <h1 class="h-content">{{ $history->title }}</h1>

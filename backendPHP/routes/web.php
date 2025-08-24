@@ -133,6 +133,38 @@ Route::get('/history', function () {
     // }
 })->middleware(['auth', 'verified'])->name('history');
 
+Route::delete('/history/{id}', function ($id) {
+    $userId = Auth::id();
+    
+    // Find the summary and check if it belongs to the current user
+    $summary = DB::table('summaries')
+        ->join('documents', 'documents.id', '=', 'summaries.document_id')
+        ->where('summaries.id', $id)
+        ->where('documents.user_id', $userId)
+        ->first();
+        
+    if ($summary) {
+        // Delete the summary
+        DB::table('summaries')->where('id', $id)->delete();
+        
+        return redirect()->route('dashboard')->with('success', 'Đã xóa lịch sử thành công');
+    }
+    
+    return redirect()->route('dashboard')->with('error', 'Không tìm thấy lịch sử hoặc bạn không có quyền xóa');
+})->middleware(['auth', 'verified'])->name('history.delete');
+
+Route::delete('/history-all', function () {
+    $userId = Auth::id();
+    
+    // Delete all summaries for the current user
+    DB::table('summaries')
+        ->join('documents', 'documents.id', '=', 'summaries.document_id')
+        ->where('documents.user_id', $userId)
+        ->delete();
+        
+    return redirect()->route('dashboard')->with('success', 'Đã xóa tất cả lịch sử thành công');
+})->middleware(['auth', 'verified'])->name('history.delete-all');
+
 Route::get('history-content/{summaryid}', function ($summaryid) {
     $usr = auth()->user();
     $isAdmin = $usr && $usr->isAdmin();
