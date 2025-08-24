@@ -19,33 +19,41 @@ use Illuminate\Support\Str;
                 padding: 5px;
                 overflow: hidden;
             }
-            
+
             .history-menu {
                 position: absolute;
                 top: 5px;
                 right: 5px;
                 cursor: pointer;
-                padding: 2px 5px;
-                border-radius: 3px;
-                background: transparent;
+                padding: 5px;
+                border-radius: 4px;
+                background: rgba(255, 255, 255, 0.9);
                 border: none;
                 color: #696c71;
                 font-size: 18px;
                 line-height: 1;
+                z-index: 10;
+                backdrop-filter: blur(2px);
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             }
-            
+
+            .dark .history-menu {
+                background: rgba(63, 63, 70, 0.9);
+                color: #d4d4d8;
+            }
+
             .history-menu:hover {
                 background-color: #e5e7eb;
             }
-            
+
             .dark .history-menu:hover {
-                background-color: #3f3f46;
+                background-color: #52525b;
             }
-            
+
             .dropdown-menu {
                 position: absolute;
                 right: 0;
-                top: 25px;
+                top: 30px;
                 background: white;
                 border: 1px solid #d1d5db;
                 border-radius: 0.375rem;
@@ -54,16 +62,16 @@ use Illuminate\Support\Str;
                 min-width: 120px;
                 display: none;
             }
-            
+
             .dark .dropdown-menu {
                 background: #3f3f46;
                 border-color: #52525b;
             }
-            
+
             .dropdown-menu.show {
                 display: block;
             }
-            
+
             .dropdown-item {
                 display: block;
                 width: 100%;
@@ -75,37 +83,41 @@ use Illuminate\Support\Str;
                 font-size: 0.875rem;
                 color: #374151;
             }
-            
+
             .dark .dropdown-item {
                 color: #d4d4d8;
             }
-            
+
             .dropdown-item:hover {
                 background-color: #f3f4f6;
             }
-            
+
             .dark .dropdown-item:hover {
                 background-color: #52525b;
             }
+
+            .history-content {
+                padding-right: 30px; /* Tạo khoảng trống bên phải để tránh nội dung bị chồng lên nút */
+            }
         </style>
-        
+
         <script>
             function toggleDropdown(id) {
                 event.stopPropagation();
                 const dropdown = document.getElementById('dropdown-' + id);
                 const isOpen = dropdown.classList.contains('show');
-                
+
                 // Close all dropdowns
                 document.querySelectorAll('.dropdown-menu').forEach(menu => {
                     menu.classList.remove('show');
                 });
-                
+
                 // Open the clicked dropdown if it wasn't open
                 if (!isOpen) {
                     dropdown.classList.add('show');
                 }
             }
-            
+
             // Close dropdowns when clicking elsewhere
             document.addEventListener('click', function() {
                 document.querySelectorAll('.dropdown-menu').forEach(menu => {
@@ -116,7 +128,7 @@ use Illuminate\Support\Str;
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
         <flux:sidebar sticky stashable class="siba">
-        
+
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
 <flux:navlist.item class="nal-list" :href="route('dashboard')" :current="request()->routeIs('dashboard')">
@@ -180,8 +192,8 @@ use Illuminate\Support\Str;
             @forelse($history as $item)
                 <div class="history-item-container">
                     <div class="history-item">
-                        <button class="history-menu" onclick="toggleDropdown({{ $item->summaryid }})">⋯</button>
-                        
+                        <button class="history-menu" onclick="toggleDropdown({{ $item->summaryid }})" title="Tùy chọn">⋯</button>
+
                         <div class="dropdown-menu" id="dropdown-{{ $item->summaryid }}">
                             <form action="{{ route('history.delete', $item->summaryid) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa lịch sử này?');">
                                 @csrf
@@ -189,16 +201,18 @@ use Illuminate\Support\Str;
                                 <button type="submit" class="dropdown-item">Xóa</button>
                             </form>
                         </div>
-                        
-                        <a href="{{ route('history-content', $item->summaryid) }}" style="display: block; text-decoration: none; color: inherit;">
-                            <h4 style="font-weight: bold; font-style: italic; text-decoration: underline; text-align: center;">{{ $item->file_name }}</h4>
-                            <p style="text-align: justify;">{{ $item->title }}</p>
-                            @if (isset($item->username))
-                            <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Người dùng: {{ $item->username }}</p>
-                            @endif
-                            <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Tỉ lệ: {{ $item->summary_ratio }}</p>
-                            <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Ngày tạo: {{ $item->created_at }}</p>
-                        </a>
+
+                        <div class="history-content">
+                            <a href="{{ route('history-content', $item->summaryid) }}" style="display: block; text-decoration: none; color: inherit;">
+                                <h4 style="font-weight: bold; font-style: italic; text-decoration: underline; text-align: center;">{{ $item->file_name }}</h4>
+                                <p style="text-align: justify; font-size: 0.85rem;">{{ $item->title }}</p>
+                                @if (isset($item->username))
+                                <p style="text-align: left; font-size: 0.8rem; color: #696c71;">Người dùng: {{ $item->username }}</p>
+                                @endif
+                                <p style="text-align: left; font-size: 0.7rem; color: #696c71;">Tỉ lệ: {{ $item->summary_ratio }}</p>
+                                <p style="text-align: left; font-size: 0.7rem; color: #696c71;">Ngày tạo: {{ $item->created_at }}</p>
+                            </a>
+                        </div>
                     </div>
                 </div>
             @empty
@@ -208,10 +222,10 @@ use Illuminate\Support\Str;
                 <br />
                 <p>{{ $history->links('pagination::bootstrap-5') }}</p>
             </div>
-  
+
             <flux:spacer />
 
-    
+
 
             <!-- Desktop User Menu -->
             <flux:dropdown class="s" position="bottom" align="start">
@@ -243,9 +257,9 @@ use Illuminate\Support\Str;
 
                     <flux:menu.separator />
 
-                    <flux:menu.radio.group> 
+                    <flux:menu.radio.group>
                         <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Cài đặt') }}</flux:menu.item>
-                    </flux:menu.radio.group> 
+                    </flux:menu.radio.group>
 
                     <flux:menu.separator />
 
