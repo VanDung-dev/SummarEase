@@ -65,9 +65,11 @@ use Illuminate\Support\Str;
                     ->join('documents', 'documents.id', '=', 'document_id')
                     ->join('users', 'users.id', '=', 'documents.user_id')
                     ->where('users.id', '=', $userId)
-                    ->when($hquery, function ($q) use ($hquery) {
-                                    return $q->where('title', 'like', '%' . $hquery . '%')->orWhere('file_name', 'like', '%' . $hquery . '%');
-                                })
+                    ->when($hquery, function ($q) use ($hquery, $userId) {
+                        return $q->where('title', 'like', '%' . $hquery . '%')
+                                 ->orWhere('file_name', 'like', '%' . $hquery . '%')
+                                 ->where('users.id', '=', $userId);
+                    })
                     ->paginate();
                 @endphp
             @endif
