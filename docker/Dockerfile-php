@@ -24,8 +24,27 @@ RUN php artisan key:generate
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html
 
+# Wait for database to be ready
+RUN echo "<?php \
+    \$max_tries = 30; \
+    \$tries = 0; \
+    while (\$tries < \$max_tries) { \
+        try { \
+            new PDO('mysql:host=db;port=3306;dbname=summarease', 'summarease_user', 'summarease_password'); \
+            echo \"Database connection successful\n\"; \
+            exit(0); \
+        } catch (Exception \$e) { \
+            echo \"Waiting for database... (\$tries/\$max_tries)\n\"; \
+            sleep(1); \
+            \$tries++; \
+        } \
+    } \
+    echo \"Could not connect to database\n\"; \
+    exit(1); \
+?>" > /tmp/wait-for-db.php
+
 # Expose port for web access
 EXPOSE 8000
 
 # Start the application
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD ["sh", "-c", "php /tmp/wait-for-db.php && php artisan serve --host=0.0.0.0 --port=8000"]
