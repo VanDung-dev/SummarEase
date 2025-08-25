@@ -1,36 +1,65 @@
+# Hướng dẫn chạy ứng dụng Summarease
+
+## Chạy bằng terminal thông thường (không dùng Docker)
+
+### Bước 1: Cài đặt ban đầu
 ```
 cd backendPHP
 composer install
-npm install
-npm audit fix
 ```
-nhớ thêm file .env
-```
-php artisan serve
-```
+Nhớ thêm file .env
 
----
+### Bước 2: Chạy các dịch vụ
+Khi chạy server, cần thực hiện các quy trình sau:
 
-nếu lỗi test thì hãy kiểm tra .env.example và cập nhật những thành phần sau vào .env:
-- GOOGLE_REDIRECT=http://127.0.0.1:8000/auth/callback
-- GOOGLE_CLIENT_ID=
-- GOOGLE_CLIENT_SECRET=
-- APP_URL=http://localhost:8000
-- API_BASE_URI=http://localhost:5001
+1. Khởi động server cở sở dữ liệu MySQL
 
----
-
-khi chạy server php thì cần chạy thực hiện các quy trình sau:
-- khởi động laragon để chạy server php
-- Mở terminal 1 và chạy lệnh
+2. Mở terminal 1 và chạy lệnh:
 ```
 cd backendNLP
 python run.py
 ```
-> nếu lỗi thì chạy lệnh `pip install -r requirements.txt`
-- Mở terminal 2 và chạy lệnh
+> Nếu lỗi thì chạy lệnh `pip install -r requirements.txt` và `python -m nltk.downloader punkt stopwords`
+
+3. Mở terminal 2 và chạy lệnh:
 ```
 cd backendPHP
 php artisan serve
 ```
-> nếu lỗi thì chạy lệnh `composer install`
+> Nếu lỗi thì chạy lệnh `composer install`
+
+### Xử lý lỗi
+Nếu gặp lỗi test, hãy kiểm tra `.env.example` ở 2 thư mục `backendPHP` và `backendNLP` và điều chỉnh lại `.env`.
+
+---
+
+## Chạy bằng Docker
+
+### Yêu cầu hệ thống
+- Docker và docker-compose đã được cài đặt
+
+### Khởi chạy Docker
+Để chạy Docker với chế độ tự động build lại khi có thay đổi:
+```
+cd docker
+docker-compose up -d --build
+```
+
+Nếu bạn muốn force rebuild tất cả các image:
+```
+cd docker
+docker-compose down
+docker-compose build --no-cache
+docker-compose up -d
+```
+
+### Truy cập ứng dụng
+Sau khi chạy Docker, ứng dụng sẽ chạy trên các địa chỉ sau:
+- PHP frontend service: http://localhost:8000
+- Python NLP service API: http://localhost:5001
+
+### Quản lý container Docker
+- Kiểm tra trạng thái container: `docker-compose ps`
+- Xem log: `docker-compose logs -f`
+- Dừng dịch vụ: `docker-compose down`
+- Rebuild và restart services: `docker-compose up -d --build`
