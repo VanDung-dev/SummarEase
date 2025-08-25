@@ -7,10 +7,12 @@ services:
       context: ../backendPHP
       dockerfile: ../docker/Dockerfile-php
     ports:
-      - "8080:80"
+      - "8000:8000"
     volumes:
       - ../backendPHP:/var/www/html
     container_name: summar-backend
+    depends_on:
+      - db
 
   backend-nlp:
     build:
@@ -21,3 +23,23 @@ services:
     volumes:
       - ../backendNLP:/app
     container_name: summar-nlp
+
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile-mysql
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: summarease
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: summarease_user
+      MYSQL_PASSWORD: summarease_password
+    volumes:
+      - ../MySQL/summarease.sql:/docker-entrypoint-initdb.d/1_summarease.sql
+      - db_data:/var/lib/mysql
+    container_name: summar-db
+
+volumes:
+  db_data:
