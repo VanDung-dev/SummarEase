@@ -17,7 +17,7 @@
       ]
     }
   },
-  "forwardPorts": [8080, 5001],
+  "forwardPorts": [8000, 5001, 3306],
   "remoteUser": "root",
   "postCreateCommand": "echo 'Welcome to SummarEase dev environment!'"
 }
