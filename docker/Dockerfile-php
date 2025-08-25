@@ -1,30 +1,30 @@
 FROM php:8.2-cli
 
-# Install required system packages and PHP extensions
+# Cài đặt các gói hệ thống cần thiết và tiện ích mở rộng PHP
 RUN apt-get update && \
     apt-get install -y libzip-dev unzip git curl && \
     rm -rf /var/lib/apt/lists/* && \
     docker-php-ext-install pdo_mysql zip
 
-# Install Composer
+# Cài đặt Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
+# Đặt thư mục làm việc
 WORKDIR /var/www/html
 
-# Copy application files
+# Sao chép tệp ứng dụng
 COPY . /var/www/html
 
-# Install PHP dependencies
+# Cài đặt phụ thuộc PHP
 RUN composer install --no-dev --optimize-autoloader
 
-# Generate application key
+# Tạo khóa ứng dụng
 RUN php artisan key:generate
 
-# Set proper permissions
+# Đặt quyền thích hợp
 RUN chown -R www-data:www-data /var/www/html
 
-# Wait for database to be ready
+# Đợi cơ sở dữ liệu đã sẵn sàng
 RUN echo "<?php \
     \$max_tries = 30; \
     \$tries = 0; \
@@ -43,8 +43,8 @@ RUN echo "<?php \
     exit(1); \
 ?>" > /tmp/wait-for-db.php
 
-# Expose port for web access
+# Cổng để truy cập web
 EXPOSE 8000
 
-# Start the application
+# Bắt đầu ứng dụng
 CMD ["sh", "-c", "php /tmp/wait-for-db.php && php artisan serve --host=0.0.0.0 --port=8000"]

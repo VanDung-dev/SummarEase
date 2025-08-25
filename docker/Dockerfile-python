@@ -1,14 +1,22 @@
 FROM python:3.12-slim
 
+# Đặt thư mục làm việc
 WORKDIR /app
 
+# Sao chép requirements.txt
 COPY ./requirements.txt /app/requirements.txt
 
+# Cài đặt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Tải xuống dữ liệu NLTK
 RUN python -m nltk.downloader punkt stopwords
 
+# Sao chép các tệp dự án
 COPY . /app
 
-CMD ["python", "run.py"]
+# Cổng Python
 EXPOSE 5001
+
+# Chạy ứng dụng
+CMD ["python", "run.py"]
