@@ -30,7 +30,7 @@ RUN echo "<?php \
     \$tries = 0; \
     while (\$tries < \$max_tries) { \
         try { \
-            new PDO('mysql:host=db;port=3306;dbname=summarease', 'summarease_user', 'summarease_password'); \
+            new PDO('mysql:host=db;port=3306;dbname=summarease', 'root', ''); \
             echo \"Database connection successful\n\"; \
             exit(0); \
         } catch (Exception \$e) { \
@@ -43,8 +43,35 @@ RUN echo "<?php \
     exit(1); \
 ?>" > /tmp/wait-for-db.php
 
+# Đợi NLP service sẵn sàng
+RUN echo "<?php \
+    \$max_tries = 30; \
+    \$tries = 0; \
+    while (\$tries < \$max_tries) { \
+        \$ch = curl_init(); \
+        curl_setopt(\$ch, CURLOPT_URL, 'http://backend-nlp:5001/health'); \
+        curl_setopt(\$ch, CURLOPT_POST, true); \
+        curl_setopt(\$ch, CURLOPT_RETURNTRANSFER, true); \
+        curl_setopt(\$ch, CURLOPT_TIMEOUT, 5); \
+        \$response = curl_exec(\$ch); \
+        \$http_code = curl_getinfo(\$ch, CURLINFO_HTTP_CODE); \
+        curl_close(\$ch); \
+        \
+        if (\$http_code == 200) { \
+            echo \"NLP service is ready\n\"; \
+            exit(0); \
+        } \
+        \
+        echo \"Waiting for NLP service... (\$tries/\$max_tries)\n\"; \
+        sleep(1); \
+        \$tries++; \
+    } \
+    echo \"NLP service is not available\n\"; \
+    exit(1); \
+?>" > /tmp/wait-for-nlp.php
+
 # Cổng để truy cập web
 EXPOSE 8000
 
 # Bắt đầu ứng dụng
-CMD ["sh", "-c", "php /tmp/wait-for-db.php && php artisan serve --host=0.0.0.0 --port=8000"]
+CMD ["sh", "-c", "php /tmp/wait-for-db.php && php /tmp/wait-for-nlp.php && php artisan serve --host=0.0.0.0 --port=8000"]
