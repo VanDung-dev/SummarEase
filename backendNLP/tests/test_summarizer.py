@@ -52,47 +52,75 @@ def test_textrank_summarize_invalid_language():
         )
 
 
-def test_textrank_summarize_english():
+@patch('app.utils.summarizer.PlaintextParser')
+@patch('app.utils.summarizer.TextRankSummarizer')
+@patch('app.utils.summarizer.load_stop_words')
+@patch('app.utils.summarizer.extract_keywords')
+@patch('app.utils.summarizer.highlight_keywords')
+@patch('app.utils.summarizer.generate_title')
+def test_textrank_summarize_english(mock_generate_title, mock_highlight_keywords, mock_extract_keywords, mock_load_stop_words, mock_summarizer, mock_parser):
     """Kiểm tra hàm textrank_summarize với văn bản tiếng Anh."""
-    with patch('app.utils.summarizer.PlaintextParser') as mock_parser, \
-            patch('app.utils.summarizer.TextRankSummarizer') as mock_summarizer:
-        mock_parser_instance = mock_parser.from_string.return_value
-        mock_parser_instance.document.sentences = ['Sentence 1.', 'Sentence 2.', 'Sentence 3.']
-        mock_summarizer_instance = mock_summarizer.return_value
-        mock_summarizer_instance.return_value = ['Sentence 1.']
+    mock_parser_instance = mock_parser.from_string.return_value
+    mock_parser_instance.document.sentences = ['Sentence 1.', 'Sentence 2.', 'Sentence 3.']
+    mock_summarizer_instance = mock_summarizer.return_value
+    mock_summarizer_instance.return_value = ['Sentence 1.']
+    mock_load_stop_words.return_value = {'the', 'and', 'is'}
+    mock_extract_keywords.return_value = ['Sentence', 'English']
+    mock_highlight_keywords.return_value = '**Sentence** 1.'
+    mock_generate_title.return_value = 'Sentence 1'
 
-        result = textrank_summarize(
-            text="Sentence 1. Sentence 2. Sentence 3.",
-            ratio=0.3,
-            language="english",
-            stop_words_path="stopwords.txt"
-        )
+    result = textrank_summarize(
+        text="Sentence 1. Sentence 2. Sentence 3.",
+        ratio=0.3,
+        language="english",
+        stop_words_path="stopwords.txt"
+    )
 
-        assert result["summary"] == "Sentence 1."
-        mock_parser.from_string.assert_called_once()
-        mock_summarizer.assert_called_once()
-        mock_summarizer_instance.assert_called_once_with(mock_parser_instance.document, 1)
+    assert result["summary"] == "Sentence 1."
+    assert result["highlighted_summary"] == "**Sentence** 1."
+    assert result["keywords"] == ['Sentence', 'English']
+    assert result["title"] == 'Sentence 1'
+    mock_parser.from_string.assert_called_once()
+    mock_summarizer.assert_called_once()
+    mock_summarizer_instance.assert_called_once_with(mock_parser_instance.document, 1)
+    mock_load_stop_words.assert_called_once_with("stopwords.txt")
+    mock_extract_keywords.assert_called_once_with("Sentence 1. Sentence 2. Sentence 3.", "english")
+    mock_highlight_keywords.assert_called_once_with("Sentence 1.", ['Sentence', 'English'])
+    mock_generate_title.assert_called_once_with("Sentence 1.", ['Sentence', 'English'], "english")
 
 
-def test_textrank_summarize_success_vietnamese():
+@patch('app.utils.summarizer.PlaintextParser')
+@patch('app.utils.summarizer.TextRankSummarizer')
+@patch('app.utils.summarizer.load_stop_words')
+@patch('app.utils.summarizer.extract_keywords')
+@patch('app.utils.summarizer.highlight_keywords')
+@patch('app.utils.summarizer.generate_title')
+def test_textrank_summarize_success_vietnamese(mock_generate_title, mock_highlight_keywords, mock_extract_keywords, mock_load_stop_words, mock_summarizer, mock_parser):
     """Kiểm tra hàm textrank_summarize với văn bản tiếng Việt hợp lệ."""
-    with patch('app.utils.summarizer.PlaintextParser') as mock_parser, \
-         patch('app.utils.summarizer.TextRankSummarizer') as mock_summarizer, \
-         patch('app.utils.summarizer.load_stop_words', return_value={'và', 'trên'}):
+    mock_parser_instance = mock_parser.from_string.return_value
+    mock_parser_instance.document.sentences = ['Câu 1.', 'Câu 2.', 'Câu 3.']
+    mock_summarizer_instance = mock_summarizer.return_value
+    mock_summarizer_instance.return_value = ['Câu 1.', 'Câu 2.']
+    mock_load_stop_words.return_value = {'và', 'trên'}
+    mock_extract_keywords.return_value = ['Câu', 'văn bản']
+    mock_highlight_keywords.return_value = '**Câu** 1. **Câu** 2.'
+    mock_generate_title.return_value = 'Câu 1'
 
-        mock_parser_instance = mock_parser.from_string.return_value
-        mock_parser_instance.document.sentences = ['Câu 1.', 'Câu 2.', 'Câu 3.']
-        mock_summarizer_instance = mock_summarizer.return_value
-        mock_summarizer_instance.return_value = ['Câu 1.', 'Câu 2.']
+    result = textrank_summarize(
+        text="Câu 1. Câu 2. Câu 3.",
+        ratio=0.6,
+        language="vietnamese",
+        stop_words_path="stopwords.txt"
+    )
 
-        result = textrank_summarize(
-            text="Câu 1. Câu 2. Câu 3.",
-            ratio=0.6,
-            language="vietnamese",
-            stop_words_path="stopwords.txt"
-        )
-
-        assert result["summary"] == "Câu 1. Câu 2."
-        mock_parser.from_string.assert_called_once()
-        mock_summarizer.assert_called_once()
-        mock_summarizer_instance.assert_called_once_with(mock_parser_instance.document, 1)
+    assert result["summary"] == "Câu 1. Câu 2."
+    assert result["highlighted_summary"] == "**Câu** 1. **Câu** 2."
+    assert result["keywords"] == ['Câu', 'văn bản']
+    assert result["title"] == 'Câu 1'
+    mock_parser.from_string.assert_called_once()
+    mock_summarizer.assert_called_once()
+    mock_summarizer_instance.assert_called_once_with(mock_parser_instance.document, 1)
+    mock_load_stop_words.assert_called_once_with("stopwords.txt")
+    mock_extract_keywords.assert_called_once_with("Câu 1. Câu 2. Câu 3.", "vietnamese")
+    mock_highlight_keywords.assert_called_once_with("Câu 1. Câu 2.", ['Câu', 'văn bản'])
+    mock_generate_title.assert_called_once_with("Câu 1. Câu 2.", ['Câu', 'văn bản'], "vietnamese")
