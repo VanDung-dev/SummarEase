@@ -57,7 +57,16 @@
                     <input type="hidden" name="is_guest" value="true">
                     <input type="hidden" name="guest_id" value="{{ session()->getId() }}">
                     <textarea style="text-align: justify;" name="text" id="text" class="input-areah" placeholder="Hãy nhập văn bản cần tóm tắt...">{{ session('original_text') ?? '' }}</textarea>
-                    <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio')}}" class="mt-4 w-full" />
+                    <p style="text-align: right; margin-bottom: -5px; margin-top: -15px; margin-right: 140px; color: white;">Tỉ lệ: <span id="ratioValue">{{ (session('original_ratio') ?? 0.5) *100 . '%' }}</span></p>
+                    <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio') }}" class="mt-4 w-full" />
+                    <script>
+                    const slider = document.getElementById('ratio');
+                    const display = document.getElementById('ratioValue');
+
+                    slider.addEventListener('input', () => {
+                    display.textContent = slider.value * 100 + '%';
+                    });
+                    </script>
                     <button type="submit" class="mt-4 submit-button">{{ __('Tóm tắt') }}</button>
 
             </form>

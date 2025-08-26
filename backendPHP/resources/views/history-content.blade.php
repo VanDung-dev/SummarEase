@@ -114,7 +114,7 @@
         @if(isset($history) && $history)
             <h1 class="h-content">{{ $history->title }}</h1>
             <p class="h-content">{{ $history->file_name ?? ''}}</p>
-            <p class="h-content">Tỉ lệ: {{ $history->summary_ratio }}</p>
+            <p class="h-content">Tỉ lệ: {{ $history->summary_ratio*100 . '%' }}</p>
             <p class="h-content">Ngày tạo: {{ $history->created_at }}</p>
 
             @if(isset($history->doctext))

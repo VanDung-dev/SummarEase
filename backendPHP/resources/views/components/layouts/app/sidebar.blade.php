@@ -209,7 +209,7 @@ use Illuminate\Support\Str;
                                 @if (isset($item->username))
                                 <p style="text-align: left; font-size: 0.8rem; color: #696c71;">Người dùng: {{ $item->username }}</p>
                                 @endif
-                                <p style="text-align: left; font-size: 0.7rem; color: #696c71;">Tỉ lệ: {{ $item->summary_ratio }}</p>
+                                <p style="text-align: left; font-size: 0.7rem; color: #696c71;">Tỉ lệ: {{ $item->summary_ratio*100 . '%' }}</p>
                                 <p style="text-align: left; font-size: 0.7rem; color: #696c71;">Ngày tạo: {{ $item->created_at }}</p>
                             </a>
                         </div>
