@@ -2,13 +2,11 @@ FROM mysql:8.0
 
 # Đặt các biến môi trường
 ENV MYSQL_DATABASE=summarease
-ENV MYSQL_ROOT_PASSWORD=rootpassword
-ENV MYSQL_USER=summarease_user
-ENV MYSQL_PASSWORD=summarease_password
+ENV MYSQL_ALLOW_EMPTY_PASSWORD=yes
 
 # Cổng MySQL
 EXPOSE 3306
 
 # Đặt kiểm tra sức khỏe
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD mysqladmin ping -h localhost -u root --password=$MYSQL_ROOT_PASSWORD || exit 1
+  CMD mysqladmin ping -h localhost -u root || exit 1

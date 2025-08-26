@@ -33,9 +33,7 @@ services:
       - "3307:3306"
     environment:
       MYSQL_DATABASE: summarease
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_USER: summarease_user
-      MYSQL_PASSWORD: summarease_password
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     volumes:
       - ../MySQL/summarease.sql:/docker-entrypoint-initdb.d/1_summarease.sql
       - db_data:/var/lib/mysql

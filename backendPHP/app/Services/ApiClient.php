@@ -10,10 +10,13 @@ use Illuminate\Support\Facades\Auth;
 class ApiClient
 {
     protected $client;
-    protected $baseUri = 'http://localhost:5001'; // URL của API Flask
+    protected $baseUri;
 
     public function __construct()
     {
+        // Use the API_BASE_URI from .env.docker or fallback to localhost for development
+        $this->baseUri = env('API_BASE_URI', 'http://localhost:5001');
+        
         $this->client = new Client([
             'base_uri' => $this->baseUri,
             'timeout'  => 10.0,
