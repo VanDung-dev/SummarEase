@@ -15,7 +15,7 @@
         <form method="POST">
                     @csrf
                     <textarea style="text-align: justify;" name="text" id="text" class="input-areaa" placeholder="Hãy nhập văn bản cần tóm tắt...">{{ session('original_text') }}</textarea>
-                    <p style="text-align: right; margin-bottom: -5px; margin-top: -15px; margin-right: 10px;">Tỉ lệ: <span id="ratioValue">{{ session('original_ratio')*100 . '%' }}</span></p>
+                    <p style="text-align: right; margin-bottom: -5px; margin-top: -15px; margin-right: 10px;">Tỉ lệ: <span id="ratioValue">{{ (session('original_ratio') ?? 0.5) *100 . '%' }}</span></p>
                     <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio') }}" class="mt-4 w-full" />
                     <script>
                     const slider = document.getElementById('ratio');
