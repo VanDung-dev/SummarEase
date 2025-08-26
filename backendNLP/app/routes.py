@@ -824,3 +824,38 @@ def summarize_files_gemini():
                     os.remove(temp_path)
                 except Exception as e:
                     logger.warning(f"Could not remove temporary file {temp_path}: {str(e)}")
+
+
+@summarize_bp.route("/health", methods=["GET", "POST"])
+def health_check():
+    """
+    Kiểm tra tính sẵn sàng của dịch vụ NLP.
+
+    Trả về:
+        - JSON chứa trạng thái và thông báo thành công nếu dịch vụ hoạt động bình thường.
+    """
+    try:
+        # Kiểm tra các thành phần chính của dịch vụ NLP
+        # 1. Kiểm tra text_cleaner
+        from .utils.text_cleaner import clean_text
+        clean_text("test")
+
+        # 2. Kiểm tra language_detector
+        from .utils.language_detector import detect_language
+        detect_language("test")
+
+        # 3. Kiểm tra summarizer
+        from .utils.summarizer import textrank_summarize
+        textrank_summarize("test", ratio=0.1, language="english", stop_words_path=STOP_WORDS_PATH)
+
+        return jsonify({
+            "status": "success",
+            "message": "Dịch vụ NLP sẵn sàng"
+        }), 200
+    except Exception as e:
+        logger.error(f"Lỗi khi kiểm tra tính sẵn sàng của dịch vụ NLP: {str(e)}")
+        return jsonify({
+            "status": "error",
+            "message": "Dịch vụ NLP không sẵn sàng",
+            "details": str(e)
+        }), 500
