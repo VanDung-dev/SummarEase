@@ -1,5 +1,6 @@
 import pytest
 import sys
+import os
 from unittest.mock import patch, Mock
 from pathlib import Path
 
@@ -8,7 +9,7 @@ root_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(root_dir))
 
 try:
-    from app.utils.gemini_summarizer import gemini_summarize, gemini_summarize_url
+    from app.utils.gemini_summarizer import gemini_summarize, gemini_summarize_file
 except ImportError as e:
     print(f"Lỗi import: {e}")
     print(f"Current sys.path: {sys.path}")
@@ -17,22 +18,14 @@ except ImportError as e:
 
 @patch('app.utils.gemini_summarizer.os.getenv')
 @patch('app.utils.gemini_summarizer.requests.post')
-def test_gemini_summarize_success(mock_post, mock_getenv):
+@patch('app.utils.gemini_summarizer.extract_keywords')
+@patch('app.utils.gemini_summarizer.generate_title')
+def test_gemini_summarize_success(mock_generate_title, mock_extract_keywords, mock_post, mock_getenv):
     """Kiểm tra hàm gemini_summarize khi gọi API thành công."""
     # Thiết lập mock
     mock_getenv.return_value = "fake-api-key"
-    
-    # Mock response cho tiêu đề
-    mock_title_response = Mock()
-    mock_title_response.json.return_value = {
-        "candidates": [{
-            "content": {
-                "parts": [{
-                    "text": "Tiêu đề mẫu cho văn bản"
-                }]
-            }
-        }]
-    }
+    mock_extract_keywords.return_value = ["bản tóm tắt", "văn bản"]
+    mock_generate_title.return_value = "Tiêu đề mẫu cho văn bản"
     
     # Mock response cho nội dung tóm tắt
     mock_summary_response = Mock()
@@ -40,7 +33,7 @@ def test_gemini_summarize_success(mock_post, mock_getenv):
         "candidates": [{
             "content": {
                 "parts": [{
-                    "text": "Đây là bản tóm tắt văn bản bằng tiếng Việt."
+                    "text": "Đây là **bản tóm tắt** văn bản bằng tiếng Việt."
                 }]
             }
         }]
@@ -49,8 +42,8 @@ def test_gemini_summarize_success(mock_post, mock_getenv):
     mock_response = Mock()
     mock_response.raise_for_status.return_value = None
     
-    # Thiết lập mock để trả về các response khác nhau cho các lần gọi khác nhau
-    mock_post.side_effect = [mock_title_response, mock_summary_response]
+    # Thiết lập mock để trả về response
+    mock_post.return_value = mock_summary_response
 
     # Gọi hàm kiểm thử
     result = gemini_summarize(
@@ -61,13 +54,16 @@ def test_gemini_summarize_success(mock_post, mock_getenv):
 
     # Kiểm tra kết quả
     assert "summary" in result
-    assert "Đây là bản tóm tắt" in result["summary"]
+    assert "Đây là **bản tóm tắt**" in result["summary"]
     assert result["title"] == "Tiêu đề mẫu cho văn bản"
-    assert isinstance(result["keywords"], list)
+    assert result["keywords"] == ["bản tóm tắt", "văn bản"]
+    assert result["highlighted_summary"] == "Đây là **bản tóm tắt** văn bản bằng tiếng Việt."
     
     # Kiểm tra mock được gọi đúng cách
     mock_getenv.assert_called_once_with("GEMINI_API_KEY")
-    assert mock_post.call_count == 2
+    mock_post.assert_called_once()
+    mock_extract_keywords.assert_called_once_with("Đây là văn bản cần tóm tắt bằng Gemini API.", "vietnamese")
+    mock_generate_title.assert_called_once_with("Đây là **bản tóm tắt** văn bản bằng tiếng Việt.", ["bản tóm tắt", "văn bản"], "vietnamese")
 
 
 @patch('app.utils.gemini_summarizer.os.getenv')
@@ -98,40 +94,18 @@ def test_gemini_summarize_api_error(mock_post, mock_getenv):
         )
 
 
-@patch('app.utils.gemini_summarizer.requests.get')
 @patch('app.utils.gemini_summarizer.os.getenv')
 @patch('app.utils.gemini_summarizer.requests.post')
-def test_gemini_summarize_url_success(mock_post, mock_getenv, mock_get):
-    """Kiểm tra hàm gemini_summarize_url khi gọi API thành công."""
-    # Thiết lập mock cho requests.get
-    mock_response_get = Mock()
-    mock_response_get.text = """
-    <html>
-        <head><title>Test Page</title></head>
-        <body>
-            <h1>Tiêu đề trang web</h1>
-            <p>Đây là đoạn văn bản cần tóm tắt bằng Gemini API từ một trang web.</p>
-            <p>Đây là đoạn văn bản thứ hai để kiểm tra việc trích xuất nội dung.</p>
-        </body>
-    </html>
-    """
-    mock_response_get.raise_for_status.return_value = None
-    mock_get.return_value = mock_response_get
-    
+@patch('app.utils.gemini_summarizer.extract_keywords')
+@patch('app.utils.gemini_summarizer.generate_title')
+@patch('app.utils.gemini_summarizer.extract_text')
+def test_gemini_summarize_file_success(mock_extract_text, mock_generate_title, mock_extract_keywords, mock_post, mock_getenv):
+    """Kiểm tra hàm gemini_summarize_file khi gọi API thành công."""
     # Thiết lập mock cho API key
     mock_getenv.return_value = "fake-api-key"
-    
-    # Mock response cho tiêu đề
-    mock_title_response = Mock()
-    mock_title_response.json.return_value = {
-        "candidates": [{
-            "content": {
-                "parts": [{
-                    "text": "Tiêu đề mẫu cho văn bản từ URL"
-                }]
-            }
-        }]
-    }
+    mock_extract_text.return_value = "Đây là đoạn văn bản cần tóm tắt bằng Gemini API từ một file."
+    mock_extract_keywords.return_value = ["bản tóm tắt", "file"]
+    mock_generate_title.return_value = "Tiêu đề mẫu cho văn bản từ file"
     
     # Mock response cho nội dung tóm tắt
     mock_summary_response = Mock()
@@ -139,7 +113,7 @@ def test_gemini_summarize_url_success(mock_post, mock_getenv, mock_get):
         "candidates": [{
             "content": {
                 "parts": [{
-                    "text": "Đây là bản tóm tắt văn bản từ trang web bằng tiếng Việt."
+                    "text": "Đây là **bản tóm tắt** văn bản từ file bằng tiếng Việt."
                 }]
             }
         }]
@@ -148,36 +122,45 @@ def test_gemini_summarize_url_success(mock_post, mock_getenv, mock_get):
     mock_response = Mock()
     mock_response.raise_for_status.return_value = None
     
-    # Thiết lập mock để trả về các response khác nhau cho các lần gọi khác nhau
-    mock_post.side_effect = [mock_title_response, mock_summary_response]
+    # Thiết lập mock để trả về response
+    mock_post.return_value = mock_summary_response
 
-    # Gọi hàm kiểm thử
-    result = gemini_summarize_url(
-        url="https://example.com/test-page",
-        ratio=0.3,
-        language="vietnamese"
-    )
-
-    # Kiểm tra kết quả
-    assert "summary" in result
-    assert "Đây là bản tóm tắt" in result["summary"]
-    assert result["title"] == "Tiêu đề mẫu cho văn bản từ URL"
-    assert isinstance(result["keywords"], list)
+    # Tạo file test giả lập
+    with open('test.txt', 'w', encoding='utf-8') as f:
+        f.write("Đây là đoạn văn bản cần tóm tắt bằng Gemini API từ một file.")
     
-    # Kiểm tra mock được gọi đúng cách
-    mock_get.assert_called_once_with("https://example.com/test-page")
-    mock_getenv.assert_called_once_with("GEMINI_API_KEY")
-    assert mock_post.call_count == 2
+    try:
+        # Gọi hàm kiểm thử
+        result = gemini_summarize_file(
+            file_path="test.txt",
+            ratio=0.3,
+            language="vietnamese"
+        )
+
+        # Kiểm tra kết quả
+        assert "summary" in result
+        assert "Đây là **bản tóm tắt**" in result["summary"]
+        assert result["title"] == "Tiêu đề mẫu cho văn bản từ file"
+        assert result["keywords"] == ["bản tóm tắt", "file"]
+        assert result["highlighted_summary"] == "Đây là **bản tóm tắt** văn bản từ file bằng tiếng Việt."
+        
+        # Kiểm tra mock được gọi đúng cách
+        mock_getenv.assert_called_once_with("GEMINI_API_KEY")
+        mock_post.assert_called_once()
+        mock_extract_text.assert_called_once_with("test.txt")
+        mock_extract_keywords.assert_called_once_with("Đây là đoạn văn bản cần tóm tắt bằng Gemini API từ một file.", "vietnamese")
+        mock_generate_title.assert_called_once_with("Đây là **bản tóm tắt** văn bản từ file bằng tiếng Việt.", ["bản tóm tắt", "file"], "vietnamese")
+    finally:
+        # Dọn dẹp file test
+        if os.path.exists('test.txt'):
+            os.remove('test.txt')
 
 
-@patch('app.utils.gemini_summarizer.requests.get')
-def test_gemini_summarize_url_request_error(mock_get):
-    """Kiểm tra hàm gemini_summarize_url khi có lỗi tải trang web."""
-    mock_get.side_effect = Exception("Lỗi kết nối")
-    
-    with pytest.raises(Exception, match="Lỗi khi xử lý nội dung từ URL: Lỗi kết nối"):
-        gemini_summarize_url(
-            url="https://example.com/bad-url",
+def test_gemini_summarize_file_request_error():
+    """Kiểm tra hàm gemini_summarize_file khi có lỗi đọc file."""
+    with pytest.raises(FileNotFoundError, match="File không tồn tại: non-existent-file.txt"):
+        gemini_summarize_file(
+            file_path="non-existent-file.txt",
             ratio=0.2,
             language="vietnamese"
         )
