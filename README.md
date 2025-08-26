@@ -103,8 +103,7 @@ SummarEase/
 - PHP 8.2+
 - Python 3.12+
 - MySQL 8.0+
-- Node.js 22.x (cho Tailwind CSS)
-- Docker (tùy chọn)
+- Docker ([Xem thêm](docs/help.md))
 
 ### Cài đặt
 
