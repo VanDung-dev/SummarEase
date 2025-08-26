@@ -43,7 +43,16 @@
                             </div>
                         </div>
                     </div>
-                    <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio', 0.5) }}" class="mt-4 w-full" />
+                    <p style="text-align: right; margin-bottom: -5px; margin-top: -15px; margin-right: 10px;">Tỉ lệ: <span id="ratioValue">{{ session('original_ratio')*100 . '%' }}</span></p>
+                    <input type="range" name="ratio" id="ratio" min="0" max="1" step="0.1" value="{{ session('original_ratio') }}" class="mt-4 w-full" />
+                    <script>
+                    const slider = document.getElementById('ratio');
+                    const display = document.getElementById('ratioValue');
+
+                    slider.addEventListener('input', () => {
+                    display.textContent = slider.value * 100 + '%';
+                    });
+                    </script>
                     <p class="text-sm text-gray-500 mt-1"></p>
                     <div class="flex" style="gap: 1rem;">
                         <button type="submit" name="sum-file" value="summarease" class="mt-4 submit-button">{{ __('Tóm tắt với SummarEase') }}</button>
