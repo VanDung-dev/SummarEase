@@ -155,12 +155,7 @@ cd backendNLP
 python run.py
 ```
 
-3. **Chạy frontend (development):**
-```bash
-npm run dev
-```
-
-4. **Chạy với Docker:**
+3. **Chạy với Docker:**
 ```bash
 cd docker
 docker-compose up -d
