@@ -52,15 +52,15 @@ SummarEase là một Ứng dụng tóm tắt tài liệu đơn giản, giúp ng�
 ## Công nghệ sử dụng
 
 ### Backend PHP (Laravel)
-- **Framework**: Laravel 12+
+- **Framework**: Laravel 12
 - **Ngôn ngữ**: PHP 8.2
-- **Database**: MySQL 8.0
+- **Database**: MySQL 8.4
 - **Authentication**: Laravel Socialite
 - **Frontend**: Blade Templates, CSS
 
 ### Backend NLP (Python)
 - **Framework**: Flask
-- **Ngôn ngữ**: Python 3.12+
+- **Ngôn ngữ**: Python 3.12
 - **Xử lý ngôn ngữ tự nhiên**: NLTK, spaCy, sumy
 - **Xử lý tài liệu**: PyMuPDF, python-docx, ebooklib
 - **AI/LLM**: Gemini API (gemini-1.5-flash)
