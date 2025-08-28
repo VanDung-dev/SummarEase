@@ -38,7 +38,7 @@
             .dark .close-button {
                 background-color: #333;
             }
-            
+
             .close-button:hover {
                 background-color: #e0e0e0;
             }
@@ -46,7 +46,7 @@
             .dark .close-button:hover {
                 background-color: #555;
             }
-            
+
             .delete-all-button {
                 position: fixed;
                 top: 20px;
@@ -63,20 +63,20 @@
                 align-items: center;
                 justify-content: center;
             }
-            
+
             .dark .delete-all-button {
                 background-color: #dc2626;
                 border-color: #b91c1c;
             }
-            
+
             .delete-all-button:hover {
                 background-color: #dc2626;
             }
-            
+
             .dark .delete-all-button:hover {
                 background-color: #b91c1c;
             }
-            
+
             .delete-button {
                 background-color: #ef4444;
                 color: white;
@@ -88,7 +88,7 @@
                 float: right;
                 margin-top: 5px;
             }
-            
+
             .delete-button:hover {
                 background-color: #dc2626;
             }
@@ -96,7 +96,7 @@
     </head>
     <body>
         <div class="close-button" onclick="window.history.back()" title="Đóng trang">✕</div>
-        
+
         @if($history->count() > 0)
             <form action="{{ route('history.delete-all') }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tất cả lịch sử?');">
                 @csrf
@@ -104,7 +104,7 @@
                 <button type="submit" class="delete-all-button" title="Xóa tất cả lịch sử">🗑️</button>
             </form>
         @endif
-        
+
         @forelse($history as $item)
         <div style="border: 1px solid #696c71; border-radius: 5px; margin-bottom: 10px; padding: 5px;">
             <a href="{{ route('history-content', $item->summaryid) }}">
@@ -113,7 +113,7 @@
                 <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Tỉ lệ: {{ $item->summary_ratio }}</p>
                 <p style="text-align: right; font-size: 0.8rem; color: #696c71;">Ngày tạo: {{ $item->created_at }}</p>
             </a>
-            
+
             <form action="{{ route('history.delete', $item->summaryid) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa lịch sử này?');" style="display: inline;">
                 @csrf
                 @method('DELETE')
@@ -123,9 +123,7 @@
         @empty
             <p>Lịch sử trống</p>
         @endforelse
-        <p>Tổng số lần tóm tắt: {{ $history->total() }}</p>
-        <p>{{ $history->links('pagination::bootstrap-5') }}</p>
-        
+
         <script>
             // Hỗ trợ phím Esc để đóng trang
             document.addEventListener('keydown', function(event) {
@@ -135,5 +133,5 @@
             });
         </script>
     </body>
-    
+
 </html>

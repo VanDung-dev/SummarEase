@@ -169,7 +169,7 @@ use Illuminate\Support\Str;
                     ->when($hquery, function ($q) use ($hquery) {
                                     return $q->where('users.name', 'like', '%' . $hquery . '%')->orWhere('title', 'like', '%' . $hquery . '%')->orWhere('file_name', 'like', '%' . $hquery . '%');
                                 })
-                    ->paginate();
+                    ->get();
                 @endphp
             @elseif(auth()->check())
                 @php
@@ -185,9 +185,11 @@ use Illuminate\Support\Str;
                                  ->orWhere('file_name', 'like', '%' . $hquery . '%')
                                  ->where('users.id', '=', $userId);
                     })
-                    ->paginate();
+                    ->get();
                 @endphp
             @endif
+            <p>Tổng số lần tóm tắt: {{ $history->count() }}</p>
+            <br />
 
             @forelse($history as $item)
                 <div class="history-item-container">
@@ -218,9 +220,6 @@ use Illuminate\Support\Str;
             @empty
                 <p style="text-align: center;">Lịch sử trống</p>
             @endforelse
-                <p>Tổng số lần tóm tắt: {{ $history->total() }}</p>
-                <br />
-                <p>{{ $history->links('pagination::bootstrap-5') }}</p>
             </div>
 
             <flux:spacer />
