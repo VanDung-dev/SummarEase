@@ -125,11 +125,6 @@ cd ../backendNLP
 pip install -r requirements.txt
 ```
 
-4. **Cài đặt dependencies cho frontend (Tailwind CSS):**
-```bash
-npm install
-```
-
 ### Cấu hình
 
 1. **Backend PHP:**
