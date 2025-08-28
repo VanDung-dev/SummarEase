@@ -121,7 +121,7 @@ composer install
 
 3. **Cài đặt dependencies cho backend NLP:**
 ```bash
-cd ../backendNLP
+cd backendNLP
 pip install -r requirements.txt
 ```
 
