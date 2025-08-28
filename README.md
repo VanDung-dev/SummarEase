@@ -37,10 +37,10 @@ SummarEase là một Ứng dụng tóm tắt tài liệu đơn giản, giúp ng�
 +-------------+--------------+      +-----------------------------+
               |
               v
-+----------------------------+      +-----------------------------+
-| Document Preprocessing     |      | OCR Engine (nâng cao)       |
-| PDF/DOCX/TXT => plain text | <--> | EasyOCR / Tesseract         |
-+----------------------------+      +-----------------------------+
++----------------------------+
+| Document Preprocessing     |
+| PDF/DOCX/TXT => plain text |
++----------------------------+ 
               |
               v
 +----------------------------+
@@ -60,7 +60,7 @@ SummarEase là một Ứng dụng tóm tắt tài liệu đơn giản, giúp ng�
 
 ### Backend NLP (Python)
 - **Framework**: Flask
-- **Ngôn ngữ**: Python 3.12
+- **Ngôn ngữ**: Python 3.12+
 - **Xử lý ngôn ngữ tự nhiên**: NLTK, spaCy, sumy
 - **Xử lý tài liệu**: PyMuPDF, python-docx, ebooklib
 - **AI/LLM**: Gemini API (gemini-1.5-flash)
@@ -160,12 +160,12 @@ python run.py
 npm run dev
 ```
 
-4. **Chạy với Docker (nếu có):**
+4. **Chạy với Docker:**
 ```bash
 cd docker
 docker-compose up -d
 ```
-
+> Hướng dẫn chi tiết tại [docs/help.md](docs/help.md)
 ## API Endpoints
 
 ### Backend PHP (Laravel)
