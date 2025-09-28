@@ -50,7 +50,7 @@ use Livewire\Volt\Component;
                     </form>
                 </div>
                 <br />
-                <div class="table-container" style="max-height: 350px; overflow-y: auto; border-radius: 8px; border: 1px solid #ccc;">
+                <div class="table-container">
                     <table class="file-table" id="fileTable">
                         @php
                             $query = request('search');
@@ -80,7 +80,7 @@ use Livewire\Volt\Component;
                                         <form action="{{ route('delete-file', $item->docid) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài liệu này?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" style="color: red;">Xóa</button>
+                                            <button type="submit" style="color: red; margin: 0 auto;">Xóa</button>
                                         </form>
                                     </td>
                                 </tr>

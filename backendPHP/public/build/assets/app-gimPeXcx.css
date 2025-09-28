@@ -1,4 +1,293 @@
-/*! tailwindcss v4.0.8 | MIT License | https://tailwindcss.com */
+/* ==========================================================
+   1. Biến toàn cục, cấu hình theme, base, utilities (Tailwind, custom)
+   ========================================================== */
+   /*! tailwindcss v4.0.8 | MIT License | https://tailwindcss.com */
+   :root {
+    --primary-color: #4a6cff;
+}
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+@property --tw-translate-x {
+    syntax: "*";
+    inherits: false;
+    initial-value: 0;
+}
+
+@property --tw-translate-y {
+    syntax: "*";
+    inherits: false;
+    initial-value: 0;
+}
+
+@property --tw-translate-z {
+    syntax: "*";
+    inherits: false;
+    initial-value: 0;
+}
+
+@property --tw-space-y-reverse {
+    syntax: "*";
+    inherits: false;
+    initial-value: 0;
+}
+
+@property --tw-space-x-reverse {
+    syntax: "*";
+    inherits: false;
+    initial-value: 0;
+}
+
+@property --tw-border-style {
+    syntax: "*";
+    inherits: false;
+    initial-value: solid;
+}
+
+@property --tw-leading {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-font-weight {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-ordinal {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-slashed-zero {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-numeric-figure {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-numeric-spacing {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-numeric-fraction {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-shadow {
+    syntax: "*";
+    inherits: false;
+    initial-value: 0 0 #0000;
+}
+
+@property --tw-shadow-color {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-inset-shadow {
+    syntax: "*";
+    inherits: false;
+    initial-value: 0 0 #0000;
+}
+
+@property --tw-inset-shadow-color {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-ring-color {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-ring-shadow {
+    syntax: "*";
+    inherits: false;
+    initial-value: 0 0 #0000;
+}
+
+@property --tw-inset-ring-color {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-inset-ring-shadow {
+    syntax: "*";
+    inherits: false;
+    initial-value: 0 0 #0000;
+}
+
+@property --tw-ring-inset {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-ring-offset-width {
+    syntax: "<length>";
+    inherits: false;
+    initial-value: 0;
+}
+
+@property --tw-ring-offset-color {
+    syntax: "*";
+    inherits: false;
+    initial-value: #fff;
+}
+
+@property --tw-ring-offset-shadow {
+    syntax: "*";
+    inherits: false;
+    initial-value: 0 0 #0000;
+}
+
+@property --tw-outline-style {
+    syntax: "*";
+    inherits: false;
+    initial-value: solid;
+}
+
+@property --tw-blur {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-brightness {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-contrast {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-grayscale {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-hue-rotate {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-invert {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-opacity {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-saturate {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-sepia {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-drop-shadow {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-duration {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-ease {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-content {
+    syntax: "*";
+    inherits: false;
+    initial-value: "";
+}
+
+@property --tw-scale-x {
+    syntax: "*";
+    inherits: false;
+    initial-value: 1;
+}
+
+@property --tw-scale-y {
+    syntax: "*";
+    inherits: false;
+    initial-value: 1;
+}
+
+@property --tw-scale-z {
+    syntax: "*";
+    inherits: false;
+    initial-value: 1;
+}
+
+@property --tw-gradient-position {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-gradient-from {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #0000;
+}
+
+@property --tw-gradient-via {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #0000;
+}
+
+@property --tw-gradient-to {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #0000;
+}
+
+@property --tw-gradient-stops {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-gradient-via-stops {
+    syntax: "*";
+    inherits: false;
+}
+
+@property --tw-gradient-from-position {
+    syntax: "<length-percentage>";
+    inherits: false;
+    initial-value: 0%;
+}
+
+@property --tw-gradient-via-position {
+    syntax: "<length-percentage>";
+    inherits: false;
+    initial-value: 50%;
+}
+
+@property --tw-gradient-to-position {
+    syntax: "<length-percentage>";
+    inherits: false;
+    initial-value: 100%;
+}
 @layer theme {
     :root,
     :host {
@@ -271,9 +560,7 @@
         -webkit-tap-highlight-color: transparent;
     }
 
-    body {
-        line-height: inherit;
-    }
+    
 
     hr {
         height: 0;
@@ -537,7 +824,6 @@
 }
 
 @layer components;
-
 @layer utilities {
     .\@container {
         container-type: inline-size;
@@ -7897,7 +8183,36 @@
         border-color: #0000;
     }
 }
+/* ==========================================================
+   2. Các chức năng khởi chạy khi trang web tải xong
+   ========================================================== */
 
+input:focus[data-flux-control],
+textarea:focus[data-flux-control],
+select:focus[data-flux-control] {
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
+        calc(2px + var(--tw-ring-offset-width))
+        var(--tw-ring-color, currentColor);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
+        var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    --tw-ring-color: var(--color-accent);
+    --tw-ring-offset-width: 2px;
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
+        var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-offset-color: var(--color-accent-foreground);
+    outline-style: none;
+}
+
+@media (forced-colors: active) {
+    :is(
+            input:focus[data-flux-control],
+            textarea:focus[data-flux-control],
+            select:focus[data-flux-control]
+        ) {
+        outline-offset: 2px;
+        outline: 2px solid #0000;
+    }
+}
 :has(> [data-flux-main]) {
     grid-template:
         "header header header" "sidebar main aside" 1fr "sidebar footer aside" / min-content minmax(
@@ -8035,516 +8350,38 @@ ui-toast [popover]:popover-open {
     margin-bottom: calc(var(--spacing) * 0) !important;
     line-height: var(--leading-tight) !important;
 }
+/* ==========================================================
+   3. Cấu trúc chung và vị trí toàn bộ trang web
+   ========================================================== */
 
-input:focus[data-flux-control],
-textarea:focus[data-flux-control],
-select:focus[data-flux-control] {
-    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
-        calc(2px + var(--tw-ring-offset-width))
-        var(--tw-ring-color, currentColor);
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
-        var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-    --tw-ring-color: var(--color-accent);
-    --tw-ring-offset-width: 2px;
-    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
-        var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-    --tw-ring-offset-color: var(--color-accent-foreground);
-    outline-style: none;
+.headerr {
+    width: 700px;
+    margin-left: 290px;
+    margin-bottom: 550px;
 }
 
-@media (forced-colors: active) {
-    :is(
-            input:focus[data-flux-control],
-            textarea:focus[data-flux-control],
-            select:focus[data-flux-control]
-        ) {
-        outline-offset: 2px;
-        outline: 2px solid #0000;
-    }
+.body-history {
+    width: 90%;
+    height: 100%;
 }
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@property --tw-translate-x {
-    syntax: "*";
-    inherits: false;
-    initial-value: 0;
-}
-
-@property --tw-translate-y {
-    syntax: "*";
-    inherits: false;
-    initial-value: 0;
-}
-
-@property --tw-translate-z {
-    syntax: "*";
-    inherits: false;
-    initial-value: 0;
-}
-
-@property --tw-space-y-reverse {
-    syntax: "*";
-    inherits: false;
-    initial-value: 0;
-}
-
-@property --tw-space-x-reverse {
-    syntax: "*";
-    inherits: false;
-    initial-value: 0;
-}
-
-@property --tw-border-style {
-    syntax: "*";
-    inherits: false;
-    initial-value: solid;
-}
-
-@property --tw-leading {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-font-weight {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-ordinal {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-slashed-zero {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-numeric-figure {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-numeric-spacing {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-numeric-fraction {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-shadow {
-    syntax: "*";
-    inherits: false;
-    initial-value: 0 0 #0000;
-}
-
-@property --tw-shadow-color {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-inset-shadow {
-    syntax: "*";
-    inherits: false;
-    initial-value: 0 0 #0000;
-}
-
-@property --tw-inset-shadow-color {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-ring-color {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-ring-shadow {
-    syntax: "*";
-    inherits: false;
-    initial-value: 0 0 #0000;
-}
-
-@property --tw-inset-ring-color {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-inset-ring-shadow {
-    syntax: "*";
-    inherits: false;
-    initial-value: 0 0 #0000;
-}
-
-@property --tw-ring-inset {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-ring-offset-width {
-    syntax: "<length>";
-    inherits: false;
-    initial-value: 0;
-}
-
-@property --tw-ring-offset-color {
-    syntax: "*";
-    inherits: false;
-    initial-value: #fff;
-}
-
-@property --tw-ring-offset-shadow {
-    syntax: "*";
-    inherits: false;
-    initial-value: 0 0 #0000;
-}
-
-@property --tw-outline-style {
-    syntax: "*";
-    inherits: false;
-    initial-value: solid;
-}
-
-@property --tw-blur {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-brightness {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-contrast {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-grayscale {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-hue-rotate {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-invert {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-opacity {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-saturate {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-sepia {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-drop-shadow {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-duration {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-ease {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-content {
-    syntax: "*";
-    inherits: false;
-    initial-value: "";
-}
-
-@property --tw-scale-x {
-    syntax: "*";
-    inherits: false;
-    initial-value: 1;
-}
-
-@property --tw-scale-y {
-    syntax: "*";
-    inherits: false;
-    initial-value: 1;
-}
-
-@property --tw-scale-z {
-    syntax: "*";
-    inherits: false;
-    initial-value: 1;
-}
-
-@property --tw-gradient-position {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-gradient-from {
-    syntax: "<color>";
-    inherits: false;
-    initial-value: #0000;
-}
-
-@property --tw-gradient-via {
-    syntax: "<color>";
-    inherits: false;
-    initial-value: #0000;
-}
-
-@property --tw-gradient-to {
-    syntax: "<color>";
-    inherits: false;
-    initial-value: #0000;
-}
-
-@property --tw-gradient-stops {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-gradient-via-stops {
-    syntax: "*";
-    inherits: false;
-}
-
-@property --tw-gradient-from-position {
-    syntax: "<length-percentage>";
-    inherits: false;
-    initial-value: 0%;
-}
-
-@property --tw-gradient-via-position {
-    syntax: "<length-percentage>";
-    inherits: false;
-    initial-value: 50%;
-}
-
-@property --tw-gradient-to-position {
-    syntax: "<length-percentage>";
-    inherits: false;
-    initial-value: 100%;
-}
-
-.login {
+.main {
     position: absolute;
+    justify-self: center;
+    margin-top: 30px;
+}
+
+.mt-4 {
+    /* background-color: #1e88e5; */
+    width: 1150px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    top: 25px;
-    right: 50px;
-    font-size: 24px;
-    font-weight: bold;
-    text-decoration: none;
-    width: 150px;
-    height: 40px;
-    color: rgb(62, 126, 228);
+    margin: 0 auto;
+    border-radius: 15px;
 }
 
-.login:hover {
-    color: rgb(201, 63, 32);
-    top: 18px;
-}
-
-/* Sáng */
-.custom-header {
-    border-bottom: 1px solid #e4e4e7;
-    /* zinc-200 */
-    background-color: #fafafa;
-    /* zinc-50 */
-    padding: 1rem;
-}
-
-/* Sửa lỗi viền trắng trong menu khi ở chế độ tối */
-.dark .siba {
-    border: 2px solid #3f3f46;
-    /* Sử dụng màu viền phù hợp với dark mode */
-    background-color: #18181b;
-    /* Nền phù hợp với dark mode */
-}
-
-.dark .nal-list {
-    border: 2px solid #3f3f46;
-    /* Sử dụng màu viền phù hợp với dark mode */
-}
-
-/* Đảm bảo tất cả các thành phần Flux trong dark mode có viền phù hợp */
-.dark [data-flux-sidebar] {
-    border-color: #3f3f46 !important;
-    background-color: #18181b !important;
-}
-
-.dark [data-flux-navlist-item] {
-    border-color: #3f3f46 !important;
-}
-
-.dark [data-flux-dropdown] {
-    border-color: #3f3f46 !important;
-}
-
-.dark [data-flux-menu] {
-    border-color: #3f3f46 !important;
-    background-color: #18181b !important;
-}
-
-.dark [data-flux-menu-separator] div {
-    background-color: #3f3f46 !important;
-}
-
-/* Đảm bảo tất cả các thành phần có viền phù hợp trong dark mode */
-.dark .border,
-.dark .border-t,
-.dark .border-r,
-.dark .border-b,
-.dark .border-l {
-    border-color: #3f3f46 !important;
-}
-
-/* Cập nhật màu nền cho body trong dark mode */
-.dark body {
-    background: #272727;
-    /* Màu nền tối */
-}
-
-/* Dark mode styles for login page */
-.dark .login-container {
-    background: #18181b;
-    border: 2px solid #3f3f46;
-    color: #fff;
-}
-
-.dark .login-card {
-    background-color: #18181b;
-    border: 2px solid #3f3f46;
-    color: #fff;
-}
-
-.dark .login-header {
-    color: #fff;
-}
-
-.dark h1 {
-    color: #63a0ff;
-}
-
-.dark .login-description {
-    color: #a0a0a0;
-}
-
-.dark .google-login-btn {
-    background: #ffffff;
-    border: 1px solid #000000;
-    color: #fff;
-}
-
-.dark .google-login-btn:hover {
-    background: #f5f5f5;
-}
-
-.dark .footer-links {
-    color: #a0a0a0;
-}
-
-.dark .footer-links a {
-    color: #63a0ff;
-}
-
-.dark .footer-text {
-    color: #a0a0a0;
-}
-
-.dark .footer-text a {
-    color: #63a0ff;
-}
-
-/* Auth layout dark mode styles */
-.dark body {
-    background: linear-gradient(to bottom, #0a0a0a, #171717);
-}
-
-.dark .bg-background {
-    background-color: transparent;
-}
-
-.dark flux-input,
-.dark [data-flux-input] {
-    background-color: #2d2d2d !important;
-    border-color: #3f3f46 !important;
-    color: #fff !important;
-}
-
-.dark flux-input input,
-.dark [data-flux-input] input {
-    background-color: #2d2d2d !important;
-    color: #fff !important;
-}
-
-.dark flux-input label,
-.dark [data-flux-input] label {
-    color: #d4d4d4 !important;
-}
-
-.dark flux-button,
-.dark [data-flux-button] {
-    background-color: #4a6cff !important;
-    border-color: #4a6cff !important;
-    color: #fff !important;
-}
-
-.dark flux-button:hover,
-.dark [data-flux-button]:hover {
-    background-color: #3578e5 !important;
-    border-color: #3578e5 !important;
-}
-
-.dark flux-checkbox label,
-.dark [data-flux-checkbox] label {
-    color: #d4d4d4 !important;
-}
-
-.dark flux-link,
-.dark [data-flux-link] {
-    color: #63a0ff !important;
-}
-
-.dark flux-link:hover,
-.dark [data-flux-link]:hover {
-    color: #8ab4ff !important;
-}
-
-.dark .text-zinc-600 {
-    color: #a0a0a0 !important;
-}
-
-.dark .text-zinc-400 {
-    color: #d4d4d4 !important;
-}
-
-/* ==========================================================
-  Cấu trúc chung và vị trí toàn bộ trang web
-  ========================================================== */
 body {
     font-family: "Arial", sans-serif;
     background: #ffffff;
@@ -8554,11 +8391,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.dark body {
-    background: #272727;
-    /* Màu nền tối */
 }
 
 .login-container {
@@ -8574,7 +8406,7 @@ body {
     height: 400px;
 }
 
-.main-dasboard {
+.main-dashboard {
     margin-left: 100px;
 }
 
@@ -8585,14 +8417,10 @@ body {
     color: #666;
 }
 
-.footer-text a {
-    color: #4a6cff;
-    text-decoration: none;
-    font-size: 0.8rem;
-}
-
-.footer-text a:hover {
-    text-decoration: underline;
+.footer-links {
+    font-size: 12px;
+    color: #757575;
+    margin-top: auto;
 }
 
 .login-card {
@@ -8653,24 +8481,10 @@ h1 {
     margin-right: 10px;
 }
 
-.footer-links {
-    font-size: 12px;
-    color: #757575;
-    margin-top: auto;
-}
-
-.footer-links a {
-    color: #1e88e5;
-    text-decoration: none;
-}
-
-.footer-links a:hover {
-    text-decoration: underline;
-}
-
 /* ==========================================================
-  Header và các thành phần chính
-  ========================================================== */
+   4. Header và các thành phần chính
+   ========================================================== */
+
 .container-summary {
     background: #ffffff;
     width: 100vw;
@@ -8686,6 +8500,53 @@ h1 {
 
 .container-summary.menu-show {
     padding-left: 270px;
+}
+
+.header {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+    padding-top: 20px;
+}
+
+.header a {
+    display: flex;
+    justify-self: flex-end;
+    justify-content: center;
+    align-items: center;
+    right: 100px;
+    top: 20px;
+    transform: translateX(50%);
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #4a6cff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.title-2 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #4a6cff;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.sub {
+    color: #696c71;
+    font-size: 1.5rem;
+    margin-top: 5px;
+    text-align: center;
 }
 
 .in-login {
@@ -8710,139 +8571,43 @@ h1 {
     vertical-align: middle;
 }
 
-.header {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 20px;
-    padding-top: 20px;
-}
-
-.header a {
+.h-content {
     display: flex;
-    justify-self: flex-end;
-    justify-content: center;
-    align-items: center;
-    right: 100px;
-    top: 20px;
-    transform: translateX(50%);
-}
-
-.main {
-    position: absolute;
-    justify-self: center;
-    margin-top: 30px;
-}
-
-.title {
-    font-size: 3rem;
-    font-weight: bold;
-    color: #4a6cff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-    margin-top: 20px;
-}
-
-.sub {
-    color: #696c71;
-    font-size: 1.5rem;
-    margin-top: 5px;
-    text-align: center;
-}
-
-/* ==========================================================
-  Khu vực nhập liệu, tải tệp và các nút điều khiển
-  ========================================================== */
-
-.input-areaa,
-.output-areaa {
-    overflow: auto;
-    background: #ffffff;
-    border: 1px solid rgb(100, 100, 100);
-    border-radius: 24px;
-    padding: 18px 18px 12px 18px;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    min-height: 150px;
-    max-height: 150px;
-    width: 100%;
-    height: 165px;
-    position: relative;
-}
-
-.dark .input-areaa,
-.dark .output-areaa {
-    background: #2d2d2d;
-    border: 1px solid #555;
-    color: #fff;
-}
-
-/* Thêm hiệu ứng focus cho output-areaa trong chế độ tối*/
-.dark .output-areaa.focus,
-.dark .output-areaa:focus {
-    outline: hidden;
-    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #525252;
-}
-
-.text-input {
-    width: 100%;
-    height: 70px;
-    border: none;
-    outline: none;
-    font-size: 16px;
-    background: transparent;
-    resize: none;
-    padding: 8px;
-    box-sizing: border-box;
-}
-
-.input-area-html {
-    overflow: auto;
-    background: #ffffff;
-    border: 1px solid rgb(100, 100, 100);
-    border-radius: 24px;
-    padding: 18px 18px 12px 18px;
-    margin-top: 10px;
-    margin-bottom: 30px;
-    min-height: 50px;
-    max-height: 50px;
-    width: 100%;
-    position: relative;
-}
-
-.dark .input-area-html {
-    background: #2d2d2d;
-    border: 1px solid #555;
-    color: #fff;
-}
-
-.section {
-    margin-bottom: 30px;
-}
-
-.section label {
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin-bottom: 8px;
-    display: block;
-    color: #333;
-}
-
-.file-row {
-    display: flex;
-    align-items: flex-end;
-    flex-wrap: wrap;
-    gap: 0px;
-}
-
-.file-upload-controls {
-    display: flex;
+    margin: 20px;
     flex-direction: column;
-    align-items: flex-start;
-    z-index: 2;
+    align-items: center;
+    justify-content: center;
+    text-align: justify;
+    margin-bottom: 15px;
 }
+.login {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 25px;
+    right: 50px;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    width: 150px;
+    height: 40px;
+    color: rgb(62, 126, 228);
+}
+
+.login:hover {
+    color: rgb(201, 63, 32);
+    top: 18px;
+}
+
+.custom-header {
+    border-bottom: 1px solid #e4e4e7;
+    background-color: #fafafa;
+    padding: 1rem;
+}
+/* ==========================================================
+   5. Khu vực nhập liệu, tải tệp và các nút điều khiển
+   ========================================================== */
 
 .action-btns {
     display: flex;
@@ -8857,27 +8622,6 @@ h1 {
     color: #888;
     margin-bottom: 5px;
     z-index: 2;
-}
-
-.file-btn {
-    background: #fcfbfb;
-    color: #020202;
-    border-radius: 10px;
-    border: 2px solid #050505;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: background 0.2s;
-    width: 120px;
-    height: 40px;
-}
-
-.dark .file-btn {
-    border: 2px solid #fafafa;
-    color: #fafafa;
 }
 
 .file-btn:hover {
@@ -8913,8 +8657,84 @@ h1 {
     gap: 6px;
 }
 
-.dark .file {
-    background-color: #444;
+.input-areah {
+    height: 120px;
+    max-height: 150px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-self: center;
+}
+
+.input-areaa, .output-areaa {
+    overflow: auto;
+    background: #ffffff;
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 24px;
+    padding: 18px 18px 12px 18px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    min-height: 150px;
+    max-height: 150px;
+    width: 100%;
+    height: 165px;
+    position: relative;
+}
+
+.input-area-html {
+    overflow: auto;
+    background: #ffffff;
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 24px;
+    padding: 18px 18px 12px 18px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    min-height: 50px;
+    max-height: 50px;
+    width: 100%;
+    position: relative;
+}
+
+.text-input {
+    width: 100%;
+    height: 70px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background: transparent;
+    resize: none;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.file-row {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 0px;
+}
+
+.file-upload-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 2;
+}
+
+.file-btn {
+    background: #fcfbfb;
+    color: #020202;
+    border-radius: 10px;
+    border: 2px solid #050505;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+    width: 120px;
+    height: 40px;
 }
 
 .send-btn,
@@ -8947,6 +8767,25 @@ h1 {
     padding: 18px;
     font-size: 1.1rem;
     color: #444;
+}
+
+.output-areah {
+    height: 150px;
+    margin-top: 20px;
+    display: flex;
+    justify-self: center;
+}
+
+.input-areah,
+.output-areah {
+    overflow: auto;
+    background: #eeeeee;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 24px;
+    padding: 18px 18px 12px 18px;
+    min-height: 150px;
+    width: 100%;
+    max-width: 75rem;
 }
 
 .input-wrapper {
@@ -8986,9 +8825,29 @@ h1 {
     background: #3578e5;
 }
 
-/*
-    Responsive
-*/
+.section {
+    margin-bottom: 30px;
+}
+
+.section label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+    color: #333;
+}
+
+/* ==========================================================
+   6. Menu, sidebar, navigation
+   ========================================================== */
+
+.nal-list:nth-of-type(2) {
+    margin-top: 0;
+}
+
+.nal-list:nth-of-type(3) {
+    margin-top: 0;
+}
 #menu {
     border: 2.5px solid #000000;
     border-radius: 0 20px 20px 0;
@@ -9009,38 +8868,6 @@ h1 {
     opacity: 1;
     height: 735px;
     width: 270px;
-}
-
-#menu .history {
-    font-size: 20px;
-    padding-top: 65px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-#menu .history {
-    padding-top: 40px;
-    display: flex;
-    align-items: center;
-    /* dọc */
-    justify-content: center;
-    /* ngang */
-}
-
-.body-history {
-    width: 90%;
-    height: 100%;
-}
-
-.h-content {
-    display: flex;
-    margin: 20px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: justify;
 }
 
 .menu-btn {
@@ -9071,7 +8898,6 @@ h1 {
     right: 10px;
     z-index: 7;
     color: black;
-    /* Đã xóa dòng display: none; */
 }
 
 .close-menu-btn:hover {
@@ -9091,17 +8917,6 @@ h1 {
     width: 100%;
 }
 
-.title-2 {
-    font-size: 3rem;
-    font-weight: bold;
-    color: #4a6cff;
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-}
-
 .nal-list {
     display: flex;
     flex-direction: column;
@@ -9111,20 +8926,6 @@ h1 {
     margin-top: 30px;
     height: 40px;
     font-size: 30px;
-}
-
-.nal-list:nth-of-type(2) {
-    margin-top: 0;
-}
-
-.nal-list:nth-of-type(3) {
-    margin-top: 0;
-}
-
-.headerr {
-    width: 700px;
-    margin-left: 290px;
-    margin-bottom: 550px;
 }
 
 .welcome-siba {
@@ -9152,7 +8953,7 @@ h1 {
 
 .siba {
     position: relative; 
-    width: 250px;
+    width: 80px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -9164,45 +8965,26 @@ h1 {
     overflow: hidden;
 }
 
-
-input[type="range"].w-full {
-    width: 75rem;
-    min-width: 0;
-    max-width: 100%;
-    display: block;
-    height: 2.5rem;
-    background: transparent;
-    border: none;
-    padding: 0;
-    border-radius: 0.75rem;
+.siba .nav-text,
+.siba .overflow-y-auto,
+.siba .close-siba-btn {
+    display: none;
 }
 
-.submit-button {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    padding: 0.75rem 1.5rem;
-    font-size: 1.3rem;
-    border-radius: 0.75rem;
-    background-color: #1e88e5;
-    color: #fff;
-    border: none;
-    margin-top: 1rem;
-    display: block;
-    transition: background 0.2s, color 0.2s;
+.siba:focus-within {
+    width: 250px;   
 }
 
-.submit-button:hover {
-    background-color: #1565c0;
-    color: #e3f2fd;
+.siba:focus-within .nav-text{
+    display: inline-flex;
 }
 
-@media (max-width: 600px) {
-    .submit-button {
-        max-width: 100%;
-        font-size: 0.95rem;
-        padding: 0.6rem 1rem;
-    }
+.siba:focus-within .overflow-y-auto {
+    display: block; 
+}
+
+.siba:focus-within .flux-navlist-item{
+    justify-content: flex-start
 }
 
 .sabi {
@@ -9220,144 +9002,17 @@ input[type="range"].w-full {
     margin-top: 10px;
 }
 
-.chat-container {
-    padding: 5px 30px 0 10px;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    overflow-y: auto;
-    flex-grow: 1;
-}
-
-.logout {
-    padding: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 20px;
-    font-weight: bold;
-    color: black;
-    transition: background-color 0.2s;
-    border-radius: 10px;
-}
-
-.logout:hover {
-    background-color: #c9dff7;
-}
-
-.logout a {
-    text-decoration: none;
-    color: black;
-}
-
-/* Thêm class 'hidden' để ẩn các phần tử */
-.hidden {
-    display: none !important;
-}
-
-.dark .container-summary {
-    background-color: #18181b;
-}
-
-.input-areah {
-    height: 120px;
-    max-height: 150px;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-self: center;
-}
-
-.output-areah {
-    height: 150px;
-    margin-top: 20px;
-    display: flex;
-    justify-self: center;
-}
-
-.input-areah,
-.output-areah {
-    overflow: auto;
-    background: #eeeeee;
-    border: 1px solid rgb(0, 0, 0);
-    border-radius: 24px;
-    padding: 18px 18px 12px 18px;
-    /* căn giữa chính div */
-    min-height: 150px;
-    width: 100%;
-    max-width: 75rem;
-
-    /*justify-content: center;*/
-    /* Căn giữa nội dung ngang */
-    /*align-items: center;*/
-    /* Căn giữa nội dung dọc */
-}
-
-.dark .input-areah,
-.dark .output-areah {
-    background: #2d2d2d;
-    border: 1px solid #555;
-    color: #fff;
-}
-
-.mt-4 {
-    /* background-color: #1e88e5; */
-    width: 1150px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    border-radius: 15px;
-}
-
-.dark .mt-4 {
-    color: white;
-}
-
-:root {
-    --primary-color: #4a6cff;
-}
-
-.search-bar button:hover {
-    background-color: #3b59d8;
-}
+/* ==========================================================
+   7. Các thành phần phụ: bảng, search, permissions, ... 
+   ========================================================== */
 
 .table-container {
-    overflow-x: auto;
-    width: 120%;
-    /* Chỉnh độ rộng của bảng */
+    overflow-y: auto;
+    max-height: 350px;
+    width: 150%;
     margin: 0 auto;
-    /* Căn giữa bảng */
-}
-
-.file-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.file-table th,
-.file-table td {
-    padding: 12px;
-    border: 1px solid #000000;
-    text-align: left;
-}
-
-.file-table td {
-    background-color: #f9f9f930;
-}
-
-.file-table th {
-    background-color: var(--primary-color);
-    color: #fff;
-}
-
-#userTable tbody tr:hover,
-#fileTable tbody tr:hover {
-    background-color: inherit !important;
+    border-radius: 8px;
+    border: 1px solid #ccc;
 }
 
 .file-table .action-buttons button,
@@ -9375,26 +9030,53 @@ input[type="range"].w-full {
     margin-top: 20px;
 }
 
-.search-bar button {
-    background-color: var(--primary-color);
-    color: #fff;
-    border: 1px solid #000000;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+.file-table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.search-bar button:hover {
-    background-color: #3b59d8;
+.file-table th,
+.file-table td {
+    padding: 12px;
+    border: 1px solid #000000;
+    text-align: left;
+}
+
+.file-table td {
+    background-color: #f9f9f930;
+    max-width: 150px;
+}
+
+.file-table th {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+#userTable tbody tr:hover,
+#fileTable tbody tr:hover {
+    background-color: inherit !important;
 }
 
 .search-bar input {
     flex-grow: 1;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 16px;
     font-size: 1rem;
+}
+
+.search-bar button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: 1px solid #000000;
+    padding: 10px 20px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.search-bar button:hover {
+    background-color: #3b59d8;
 }
 
 .permissions {
@@ -9427,4 +9109,520 @@ input[type="range"].w-full {
 
 .permissions button:hover {
     background-color: #218838;
+}
+
+/* ==========================================================
+   8. Các nút chức năng đặc biệt (close, delete, submit, logout, ...)
+   ========================================================== */
+
+.close-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-button:hover {
+    background-color: #e0e0e0;
+}
+
+.delete-all-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: #ef4444;
+    border: 1px solid #dc2626;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-all-button:hover {
+    background-color: #dc2626;
+}
+
+.delete-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: #ef4444;
+    border: 1px solid #dc2626;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-button:hover {
+    background-color: #dc2626;
+}
+
+.submit-button {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.3rem;
+    border-radius: 0.75rem;
+    background-color: #1e88e5;
+    color: #fff;
+    border: none;
+    margin-top: 1rem;
+    display: block;
+    transition: background 0.2s, color 0.2s;
+}
+
+.submit-button:hover {
+    background-color: #1565c0;
+    color: #e3f2fd;
+}
+
+.logout {
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    transition: background-color 0.2s;
+    border-radius: 10px;
+}
+
+.logout:hover {
+    background-color: #c9dff7;
+}
+
+.logout a {
+    text-decoration: none;
+    color: black;
+}
+
+/* ==========================================================
+   9. Lịch sử, dropdown, menu phụ
+   ========================================================== */
+
+.history-item {
+    position: relative;
+    border: 1px solid #696c71;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.history-menu {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    color: #696c71;
+    font-size: 18px;
+    line-height: 1;
+    z-index: 10;
+    backdrop-filter: blur(2px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.history-menu:hover {
+    background-color: #e5e7eb;
+}
+
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 30px;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    min-width: 120px;
+    display: none;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+.dropdown-item:hover {
+    background-color: #f3f4f6;
+}
+
+.history-content {
+    padding-right: 30px; 
+}
+
+/* ==========================================================
+   10. Footer, liên kết, text phụ
+   ========================================================== */
+
+.footer-text a {
+    color: #4a6cff;
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+.footer-text a:hover {
+    text-decoration: underline;
+}
+
+.footer-links a {
+    color: #1e88e5;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+/* ==========================================================
+   11. Dark mode styles (chèn vào từng khối hoặc tổng hợp riêng)
+   ========================================================== */
+
+.dark .siba {
+    border: 2px solid #3f3f46;
+    background-color: #18181b;
+}
+
+.dark .nal-list {
+    border: 2px solid #3f3f46;
+}
+
+.dark [data-flux-sidebar] {
+    border-color: #3f3f46 !important;
+    background-color: #18181b !important;
+}
+
+.dark [data-flux-navlist-item] {
+    border-color: #3f3f46 !important;
+}
+
+.dark [data-flux-dropdown] {
+    border-color: #3f3f46 !important;
+}
+
+.dark [data-flux-menu] {
+    border-color: #3f3f46 !important;
+    background-color: #18181b !important;
+}
+
+.dark [data-flux-menu-separator] div {
+    background-color: #3f3f46 !important;
+}
+
+.dark .border,
+.dark .border-t,
+.dark .border-r,
+.dark .border-b,
+.dark .border-l {
+    border-color: #3f3f46 !important;
+}
+
+.dark .login-container {
+    background: #18181b;
+    border: 2px solid #3f3f46;
+    color: #fff;
+}
+
+.dark .login-card {
+    background-color: #18181b;
+    border: 2px solid #3f3f46;
+    color: #fff;
+}
+
+.dark .login-header {
+    color: #fff;
+}
+
+.dark h1 {
+    color: #63a0ff;
+}
+
+.dark .login-description {
+    color: #a0a0a0;
+}
+
+.dark .google-login-btn {
+    background: #ffffff;
+    border: 1px solid #000000;
+    color: #fff;
+}
+
+.dark .google-login-btn:hover {
+    background: #f5f5f5;
+}
+
+.dark .footer-links {
+    color: #a0a0a0;
+}
+
+.dark .footer-links a {
+    color: #63a0ff;
+}
+
+.dark .footer-text {
+    color: #a0a0a0;
+}
+
+.dark .footer-text a {
+    color: #63a0ff;
+}
+
+
+.dark .bg-background {
+    background-color: transparent;
+}
+
+.dark flux-input,
+.dark [data-flux-input] {
+    background-color: #2d2d2d !important;
+    border-color: #3f3f46 !important;
+    color: #fff !important;
+}
+
+.dark flux-input input,
+.dark [data-flux-input] input {
+    background-color: #2d2d2d !important;
+    color: #fff !important;
+}
+
+.dark flux-input label,
+.dark [data-flux-input] label {
+    color: #d4d4d4 !important;
+}
+
+.dark flux-button,
+.dark [data-flux-button] {
+    background-color: #4a6cff !important;
+    border-color: #4a6cff !important;
+    color: #fff !important;
+}
+
+.dark flux-button:hover,
+.dark [data-flux-button]:hover {
+    background-color: #3578e5 !important;
+    border-color: #3578e5 !important;
+}
+
+.dark flux-checkbox label,
+.dark [data-flux-checkbox] label {
+    color: #d4d4d4 !important;
+}
+
+.dark flux-link,
+.dark [data-flux-link] {
+    color: #63a0ff !important;
+}
+
+.dark flux-link:hover,
+.dark [data-flux-link]:hover {
+    color: #8ab4ff !important;
+}
+
+.dark .text-zinc-600 {
+    color: #a0a0a0 !important;
+}
+
+.dark .text-zinc-400 {
+    color: #d4d4d4 !important;
+}
+
+.dark body {
+    background: #272727;
+}
+
+.dark .input-areaa,
+.dark .output-areaa {
+    background: #2d2d2d;
+    border: 1px solid #555;
+    color: #fff;
+}
+
+.dark .output-areaa.focus,
+.dark .output-areaa:focus {
+    outline: hidden;
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #525252;
+}
+
+.dark .input-area-html {
+    background: #2d2d2d;
+    border: 1px solid #555;
+    color: #fff;
+}
+
+.dark .file-btn {
+    border: 2px solid #fafafa;
+    color: #fafafa;
+}
+
+.dark .file {
+    background-color: #444;
+}
+
+.dark .container-summary {
+    background-color: #18181b;
+}
+
+.dark .input-areah,
+.dark .output-areah {
+    background: #2d2d2d;
+    border: 1px solid #555;
+    color: #fff;
+}
+
+.dark .mt-4 {
+    color: white;
+}
+
+.dark .close-button {
+    background-color: #333;
+}
+
+.dark .close-button:hover {
+    background-color: #555;
+}
+
+.dark .delete-all-button {
+    background-color: #dc2626;
+    border-color: #b91c1c;
+}
+
+.dark .delete-all-button:hover {
+    background-color: #b91c1c;
+}
+
+.dark .close-button {
+    background-color: #333;
+    border-color: #555;
+}
+
+.dark .close-button:hover {
+    background-color: #555;
+}
+
+.dark .delete-button {
+    background-color: #dc2626;
+    border-color: #b91c1c;
+}
+
+.dark .delete-button:hover {
+    background-color: #b91c1c;
+}
+
+.dark .history-menu {
+    background: rgba(63, 63, 70, 0.9);
+    color: #d4d4d8;
+}
+
+.dark .history-menu:hover {
+    background-color: #52525b;
+}
+
+.dark .dropdown-menu {
+    background: #3f3f46;
+    border-color: #52525b;
+}
+
+.dark .dropdown-item {
+    color: #d4d4d8;
+}
+
+.dark .dropdown-item:hover {
+    background-color: #52525b;
+}
+
+/* ==========================================================
+   12. Responsive styles (media queries)
+   ========================================================== */
+
+@media (max-width: 600px) {
+    .submit-button {
+        max-width: 100%;
+        font-size: 0.95rem;
+        padding: 0.6rem 1rem;
+    }
+}
+input[type="range"].w-full {
+    width: 75rem;
+    min-width: 0;
+    max-width: 100%;
+    display: block;
+    height: 2.5rem;
+    background: transparent;
+    border: none;
+    padding: 0;
+    border-radius: 0.75rem;
+}
+
+.chat-container {
+    padding: 5px 30px 0 10px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+#menu .history {
+    font-size: 20px;
+    padding-top: 65px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#menu .history {
+    padding-top: 40px;
+    display: flex;
+    align-items: center;
+    /* dọc */
+    justify-content: center;
+    /* ngang */
+}
+/* ==========================================================
+   13. Các class phụ, trạng thái, hiệu ứng, ẩn hiện
+   ========================================================== */
+
+.hidden {
+    display: none !important;
 }

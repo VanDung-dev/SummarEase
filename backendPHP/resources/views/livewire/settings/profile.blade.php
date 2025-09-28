@@ -97,7 +97,7 @@ new class extends Component {
                     </form>
                 </div>
                 <br />
-                <div class="table-container" style="max-height: 350px; overflow-y: auto; border-radius: 8px; border: 1px solid #ccc;">
+                <div class="table-container" >
                     <table class="file-table" id="userTable">
                         @php
                             $query = request('search');
@@ -119,7 +119,7 @@ new class extends Component {
                                 <th>Hành động</th>
                             </tr>
                         </thead>
-                        <tbody id="userTableBody" style="max-height: 300px; overflow-y: auto;">
+                        <tbody id="userTableBody" >
                             @forelse($usrs as $item)
                                 <tr>
                                     <td>{{ $item->username }}</td>

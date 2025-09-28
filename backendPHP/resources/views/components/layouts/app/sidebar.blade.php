@@ -11,94 +11,7 @@ use Illuminate\Support\Str;
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
         <style>
-            .history-item {
-                position: relative;
-                border: 1px solid #696c71;
-                border-radius: 5px;
-                margin-bottom: 10px;
-                padding: 5px;
-                overflow: hidden;
-            }
-
-            .history-menu {
-                position: absolute;
-                top: 5px;
-                right: 5px;
-                cursor: pointer;
-                padding: 5px;
-                border-radius: 4px;
-                background: rgba(255, 255, 255, 0.9);
-                border: none;
-                color: #696c71;
-                font-size: 18px;
-                line-height: 1;
-                z-index: 10;
-                backdrop-filter: blur(2px);
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            }
-
-            .dark .history-menu {
-                background: rgba(63, 63, 70, 0.9);
-                color: #d4d4d8;
-            }
-
-            .history-menu:hover {
-                background-color: #e5e7eb;
-            }
-
-            .dark .history-menu:hover {
-                background-color: #52525b;
-            }
-
-            .dropdown-menu {
-                position: absolute;
-                right: 0;
-                top: 30px;
-                background: white;
-                border: 1px solid #d1d5db;
-                border-radius: 0.375rem;
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-                z-index: 1000;
-                min-width: 120px;
-                display: none;
-            }
-
-            .dark .dropdown-menu {
-                background: #3f3f46;
-                border-color: #52525b;
-            }
-
-            .dropdown-menu.show {
-                display: block;
-            }
-
-            .dropdown-item {
-                display: block;
-                width: 100%;
-                padding: 0.5rem 1rem;
-                text-align: left;
-                background: none;
-                border: none;
-                cursor: pointer;
-                font-size: 0.875rem;
-                color: #374151;
-            }
-
-            .dark .dropdown-item {
-                color: #d4d4d8;
-            }
-
-            .dropdown-item:hover {
-                background-color: #f3f4f6;
-            }
-
-            .dark .dropdown-item:hover {
-                background-color: #52525b;
-            }
-
-            .history-content {
-                padding-right: 30px; /* Tạo khoảng trống bên phải để tránh nội dung bị chồng lên nút */
-            }
+            
         </style>
 
         <script>
@@ -127,7 +40,7 @@ use Illuminate\Support\Str;
         </script>
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
-        <flux:sidebar sticky stashable class="siba">
+        <flux:sidebar sticky stashable class="siba" tabindex="0">
 
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
